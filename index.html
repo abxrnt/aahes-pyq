@@ -2,435 +2,681 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AAHES PYQ Portal</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="icon" type="image/x-icon" href="favicon.png">
-  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600&display=swap" rel="stylesheet">
-  <script src="https://unpkg.com/lucide@latest"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AAHES PYQ Portal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="icon" type="image/x-icon" href="favicon.png">
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+/* GLOBAL */
+body,
+html {
+    margin: 0;
+    font-family: 'Quicksand', sans-serif;
+    background: #e3e6ff;
+    height: 100%;
+}
 
-  <!-- MathJax for LaTeX equations -->
-  <script>
-    window.MathJax = {
-      tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] },
-      svg: { fontCache: 'global' }
-    };
-  </script>
-  <script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+/* LOGIN SECTION */
+.login-bg {
+    display: flex;
+    height: 100vh;
+    width: 100%;
+    background: linear-gradient(135deg, #1f2a44, #117a65);
+}
 
-  <style>
-    body,
-    html {
-      margin: 0;
-      font-family: 'Quicksand', sans-serif;
-      background: #e3e6ff;
-      height: 100%;
-    }
+/* LEFT SIDE (Login Panel) */
+.login-left {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 5rem 3rem;
+    color: #f0f0f0;
+    backdrop-filter: blur(10px);
+    background: rgba(0, 0, 0, 0.25);
+    animation: fadeSlide 0.8s ease forwards;
+    border-radius: 0 2rem 2rem 0;
+}
 
-    .login-bg {
-      display: flex;
-      height: 100vh;
-      width: 100%;
-      background: linear-gradient(135deg, #1f2a44, #117a65);
-    }
+.login-left h1 {
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+}
 
-    .login-left {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      padding: 5rem 3rem;
-      color: #f0f0f0;
-      backdrop-filter: blur(10px);
-      background: rgba(0, 0, 0, 0.25);
-      border-radius: 0 2rem 2rem 0;
-      animation: fadeSlide 0.8s ease forwards;
-    }
+.login-left input {
+    width: 100%;
+    padding: 0.9rem;
+    margin-bottom: 1.2rem;
+    border-radius: 1rem;
+    border: none;
+    background: rgba(255, 255, 255, 0.1);
+    color: #f0f0f0;
+    font-size: 0.95rem;
+    outline: none;
+    transition: all 0.3s ease;
+}
 
-    .login-left input {
-      width: 100%;
-      padding: 0.9rem;
-      margin-bottom: 1.2rem;
-      border-radius: 1rem;
-      border: none;
-      background: rgba(255, 255, 255, 0.1);
-      color: #f0f0f0;
-      font-size: 0.95rem;
-      outline: none;
-      transition: all 0.3s ease;
-    }
+.login-left input:focus {
+    background: rgba(255, 255, 255, 0.2);
+    box-shadow: 0 0 12px rgba(255, 255, 255, 0.25);
+}
 
-    .login-left input:focus {
-      background: rgba(255, 255, 255, 0.2);
-      box-shadow: 0 0 12px rgba(255, 255, 255, 0.25);
-    }
+.login-left button {
+    width: 100%;
+    padding: 0.9rem;
+    border-radius: 1rem;
+    border: none;
+    background: #14b8a6;
+    color: white;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
 
-    .login-left button {
-      width: 100%;
-      padding: 0.9rem;
-      border-radius: 1rem;
-      border: none;
-      background: #14b8a6;
-      color: white;
-      font-weight: 600;
-      font-size: 1rem;
-      cursor: pointer;
-      transition: all 0.3s;
-    }
+.login-left button:hover {
+    transform: translateY(-3px) scale(1.03);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+    background: #0d9488;
+}
 
-    .login-left button:hover {
-      transform: translateY(-3px) scale(1.03);
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
-      background: #0d9488;
-    }
+.login-left p {
+    font-size: 0.9rem;
+    opacity: 0.85;
+}
 
-    .login-right {
-      flex: 1;
-      background: url('https://images.unsplash.com/photo-1688494930045-328d0f95efe9?fm=jpg&q=60&w=3000') center/cover no-repeat;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      color: white;
-      border-radius: 2rem 0 0 2rem;
-      position: relative;
-      overflow: hidden;
-      padding: 3rem;
-    }
+.login-left a {
+    color: #facc15;
+    text-decoration: underline;
+}
 
-    .login-right::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.35);
-      z-index: 0;
-      border-radius: 2rem 0 0 2rem;
-    }
+/* RIGHT SIDE (Logo + Info Section) */
+.login-right {
+    flex: 1;
+    background: url('https://images.unsplash.com/photo-1688494930045-328d0f95efe9?fm=jpg&q=60&w=3000')
+        center/cover no-repeat;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: white;
+    position: relative;
+    padding: 3rem;
+    border-radius: 2rem 0 0 2rem;
+    overflow: hidden;
+}
 
-    .login-right>div {
-      position: relative;
-      z-index: 1;
-    }
+.login-right::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.35);
+    border-radius: 2rem 0 0 2rem;
+    z-index: 0;
+}
 
-    @keyframes fadeSlide {
-      from {
+.login-right > div {
+    position: relative;
+    z-index: 1;
+    animation: fadeInUp 1s ease forwards;
+}
+
+#logoimg {
+    width: 110px;
+    margin-bottom: 1rem;
+    filter: drop-shadow(0 0 12px rgba(255, 255, 255, 0.4));
+}
+
+.login-right h2 {
+    font-size: 2.6rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    text-shadow: 0 3px 10px rgba(0, 0, 0, 0.6);
+}
+
+.login-right p {
+    font-size: 1.05rem;
+    line-height: 1.6;
+    opacity: 0.9;
+    text-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
+}
+
+/* ANIMATIONS */
+@keyframes fadeSlide {
+    0% {
         opacity: 0;
         transform: translateX(-40px);
-      }
+    }
 
-      to {
+    100% {
         opacity: 1;
         transform: translateX(0);
-      }
+    }
+}
+
+@keyframes fadeInUp {
+    0% {
+        opacity: 0;
+        transform: translateY(30px);
     }
 
-    #mainApp {
-      display: none;
-      padding: 1rem 2rem;
-      max-width: 1200px;
-      margin: auto;
+    100% {
+        opacity: 1;
+        transform: translateY(0);
     }
+}
 
-    .navbar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 0.5rem 1rem;
-      background: #0c2b4e;
-      border-radius: 0.8rem;
-      flex-wrap: wrap;
-      margin-bottom: 1rem;
-    }
+/* MAIN APP */
+#welcomeMsg {
+    color: #0c2b4e;
+}
 
-    .navbar img {
-      height: 60px;
-    }
+#mainApp {
+    display: none;
+    padding: 1rem 2rem;
+    max-width: 1200px;
+    margin: auto;
+}
 
-    .navbar .center {
-      display: flex;
-      gap: 0.4rem;
-      flex-wrap: wrap;
-      justify-content: center;
-      flex-grow: 1;
-    }
+/* NAVBAR */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 1rem;
+    background: #0c2b4e;
+    border-radius: 0.8rem;
+    flex-wrap: wrap;
+    margin-bottom: 1rem;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
 
-    .navbar button {
-      padding: 0.35rem 0.7rem;
-      border-radius: 0.5rem;
-      font-weight: 500;
-      cursor: pointer;
-      font-size: 0.85rem;
-      color: white;
-      border: none;
-      transition: all 0.3s;
-      background: #1a3d64;
-    }
+.navbar img {
+    height: 60px;
+    width: auto;
+}
 
-    .navbar button:hover {
-      transform: translateY(-2px) scale(1.03);
-      background: #1d546c;
-    }
+.navbar .center {
+    display: flex;
+    gap: 0.4rem;
+    flex-wrap: wrap;
+    flex-grow: 1;
+    justify-content: center;
+    margin: 0.5rem 0;
+}
 
-    .tab-active {
-      background: linear-gradient(135deg, #2563eb, #1e40af) !important;
-      color: #f8fafc !important;
-      font-weight: 600;
-      box-shadow: 0 4px 15px rgba(37, 99, 235, 0.5);
-    }
+.navbar .right {
+    display: flex;
+    gap: 0.4rem;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+}
 
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 1rem;
-      background: white;
-      border-radius: 0.8rem;
-      overflow: hidden;
-    }
+.navbar button {
+    padding: 0.35rem 0.7rem;
+    border-radius: 0.5rem;
+    font-weight: 500;
+    cursor: pointer;
+    font-size: 0.85rem;
+    color: white;
+    border: none;
+    transition: all 0.3s;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+    background: #1a3d64;
+}
 
-    th,
-    td {
-      padding: 0.7rem;
-      border-bottom: 1px solid #e2e8f0;
-      text-align: left;
-    }
+.navbar button:hover {
+    transform: translateY(-2px) scale(1.03);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.35);
+    background: #1d546c;
+}
 
-    th {
-      background: #0c2b4e;
-      color: white;
-    }
+.tab-active {
+    background: linear-gradient(135deg, #2563eb, #1e40af) !important;
+    color: #f8fafc !important;
+    font-weight: 600;
+    box-shadow: 0 4px 15px rgba(37, 99, 235, 0.5);
+    transform: translateY(-2px);
+    transition: all 0.3s ease;
+}
 
-    tr:hover {
-      background: #f0f8f5;
-    }
 
-    .view-btn {
-      color: #0c2b4e;
-      cursor: pointer;
-    }
+/* PROFILE & LOGOUT BUTTONS */
+.profile-btn {
+    background: #facc15;
+    color: #1f2a44;
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 0.5rem 1rem;
+    border-radius: 0.7rem;
+    font-weight: 500;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s;
+}
 
-    .modal {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.6);
-      justify-content: center;
-      align-items: center;
-      z-index: 50;
-    }
+.profile-btn:hover {
+    background: #eab308;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.35);
+}
 
-    .modal-content {
-      background: white;
-      padding: 2rem;
-      border-radius: 1.2rem;
-      max-width: 500px;
-      width: 90%;
-      position: relative;
-    }
+.logout-btn {
+    background: #f43f5e;
+    color: white;
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 0.5rem 1rem;
+    border-radius: 0.7rem;
+    font-weight: 500;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s;
+}
 
-    .close-btn {
-      position: absolute;
-      top: 1rem;
-      right: 1rem;
-      font-size: 1.3rem;
-      font-weight: bold;
-      cursor: pointer;
-    }
-  </style>
+.logout-btn:hover {
+    background: #e11d48;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.35);
+}
+
+/* TABLE */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+    background: white;
+    border-radius: 0.8rem;
+    overflow: hidden;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+th,
+td {
+    padding: 0.7rem;
+    border-bottom: 1px solid #e2e8f0;
+    text-align: left;
+}
+
+th {
+    background: #0c2b4e;
+    color: white;
+}
+
+tr:hover {
+    background: #f0f8f5;
+}
+
+.view-btn {
+    color: #0c2b4e;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.view-btn:hover {
+    transform: scale(1.1);
+    color: #0c2b4e;
+}
+
+/* MODALS */
+.modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    justify-content: center;
+    align-items: center;
+    z-index: 50;
+}
+
+.modal-content {
+    background: white;
+    padding: 2rem;
+    border-radius: 1.2rem;
+    max-width: 500px;
+    width: 90%;
+    position: relative;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+}
+
+.close-btn {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    font-size: 1.3rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.close-btn:hover {
+    color: #f39c12;
+    transform: scale(1.2);
+}
+
+.modal-content input {
+    width: 100%;
+    padding: 0.6rem;
+    margin-bottom: 0.8rem;
+    border-radius: 0.5rem;
+    border: 1px solid #ccc;
+    outline: none;
+}
+
+.modal-content button {
+    background: #0d9488;
+    color: white;
+    font-weight: 500;
+    border-radius: 0.5rem;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.25);
+    transition: all 0.3s;
+}
+
+.modal-content button:hover {
+    background: #0b7669;
+    transform: translateY(-2px) scale(1.03);
+}
+
+#imageModal .modal-content {
+    max-width: 350px;
+    padding: 1rem;
+    border-radius: 1rem;
+}
+
+    </style>
+    <script>
+window.MathJax = {
+  tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] },
+  svg: { fontCache: 'global' }
+};
+</script>
+<script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
 </head>
 
 <body>
-  <!-- LOGIN -->
-  <div class="login-bg" id="loginSection">
-    <div class="login-left">
-      <h1>Welcome Back</h1>
-      <input type="email" placeholder="Email" id="emailInput">
-      <input type="password" placeholder="Password" id="passInput">
-      <button id="loginBtn">Login</button>
-      <p>Forgot your password? <a href="https://aahes-assam.vercel.app/#pyqs">Click here</a></p>
-    </div>
-    <div class="login-right">
-      <div>
-        <img id="logoimg" src="favicon.png" width="100px">
-        <h2>AAHES PYQ Portal</h2>
-        <p>Access previous year questions and solutions easily.<br>Prepare smarter and faster for your exams.</p>
-      </div>
-    </div>
-  </div>
 
-  <!-- MAIN APP -->
-  <section id="mainApp">
-    <div class="navbar">
-      <div class="left"><img src="favicon.png"></div>
-      <div class="center" id="subjectButtons"></div>
-      <div class="center" id="yearButtons"></div>
-      <div class="right">
-        <button id="logoutBtn" class="logout-btn flex items-center gap-1 bg-red-600 hover:bg-red-700 px-3 py-1 rounded-lg"><i data-lucide="log-out"></i>Logout</button>
-      </div>
+    <!-- LOGIN -->
+    <div class="login-bg" id="loginSection">
+        <div class="login-left">
+            <h1>Welcome Back</h1>
+            <input type="email" placeholder="Email" id="emailInput">
+            <input type="password" placeholder="Password" id="passInput">
+            <button id="loginBtn">Login</button>
+            <p>Forgot your password? <a href="https://aahes-assam.vercel.app/#pyqs">Click here</a></p>
+        </div>
+        <div class="login-right">
+            <div>
+                <img id="logoimg" src="favicon.png" width="100px">
+                <h2>AAHES PYQ Portal</h2>
+                <p>Access previous year questions and solutions easily.<br>Prepare smarter and faster for your exams.
+                </p>
+            </div>
+        </div>
     </div>
 
-    <h2 id="welcomeMsg" class="text-2xl font-semibold mb-4"></h2>
+    <!-- MAIN APP -->
+    <section id="mainApp">
+        <!-- NAVBAR -->
+        <div class="navbar">
+            <div class="left">
+                <img src="favicon.png" alt="Logo">
+            </div>
+            <div class="center" id="subjectButtons"></div>
+            <div class="center" id="yearButtons"></div>
+            <div class="right">
+                <button id="profileBtn" class="profile-btn"><i data-lucide="user"></i> Profile</button>
+                <button id="logoutBtn" class="logout-btn"><i data-lucide="log-out"></i> Logout</button>
+            </div>
+        </div>
 
-    <div class="overflow-x-auto bg-white rounded-xl shadow-lg">
-      <table>
-        <thead>
-          <tr>
-            <th>QNo</th>
-            <th>Question</th>
-            <th>View</th>
-            <th>Solution</th>
-          </tr>
-        </thead>
-        <tbody id="pyqTableBody">
-          <tr>
-            <td colspan="4" class="text-center p-4">Select a subject and year</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+        <!-- WELCOME MESSAGE -->
+        <h2 id="welcomeMsg" class="text-2xl font-semibold mb-4"></h2>
 
-    <!-- VIEW MODAL -->
-    <div id="viewModal" class="modal" onclick="closeViewModal()">
-      <div class="modal-content" onclick="event.stopPropagation()">
-        <span class="close-btn" onclick="closeViewModal()">&times;</span>
-        <p id="viewQuestion" class="text-lg"></p>
-      </div>
-    </div>
-  </section>
+        <!-- PYQ TABLE -->
+        <div class="overflow-x-auto bg-white rounded-xl shadow-lg">
+            <table>
+                <thead>
+                    <tr>
+                        <th>QNo</th>
+                        <th>Question</th>
+                        <th>View</th>
+                        <th>Solution</th>
+                    </tr>
+                </thead>
+                <tbody id="pyqTableBody">
+                    <tr>
+                        <td colspan="4" class="text-center p-4">Select a subject and year</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
 
-  <!-- FIREBASE + LOGIC -->
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
-    import { getFirestore, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
+        <!-- VIEW MODAL -->
+        <div id="viewModal" class="modal" onclick="closeViewModal()">
+            <div class="modal-content" onclick="event.stopPropagation()">
+                <span class="close-btn" onclick="closeViewModal()">&times;</span>
+                <p id="viewQuestion"></p>
+            </div>
+        </div>
+        <!-- IMAGE VIEW MODAL -->
+        <div id="imageModal" class="modal" onclick="closeImageModal()">
+            <div class="modal-content" style="max-width: 400px; text-align: center;" onclick="event.stopPropagation()">
+                <span class="close-btn" onclick="closeImageModal()">&times;</span>
+                <img id="pyqImage" src="" alt="PYQ Image" style="max-width:100%; border-radius:0.8rem;">
+            </div>
+        </div>
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyBOVl1hdmprJXpgdN_sNTO3FsNePD_zNZY",
-      authDomain: "aahes-cee-cutoffs.firebaseapp.com",
-      projectId: "aahes-cee-cutoffs",
-      storageBucket: "aahes-cee-cutoffs.firebasestorage.app",
-      messagingSenderId: "706066626405",
-      appId: "1:706066626405:web:0d254ab82beb288108938c"
-    };
+        <!-- PROFILE MODAL -->
+        <div id="profileModal" class="modal">
+            <div class="modal-content">
+                <span id="closeProfileBtn" class="close-btn">&times;</span>
+                <h2 class="text-xl font-semibold mb-2">User Profile</h2>
+                <label>Name</label>
+                <input type="text" id="profileName">
+                <label>Class</label>
+                <input type="text" id="profileClass">
+                <label>Old Password</label>
+                <input type="password" id="oldPassword">
+                <label>New Password</label>
+                <input type="password" id="newPassword">
+                <button id="saveProfileBtn">Save Changes</button>
+            </div>
+        </div>
+    </section>
 
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+        import { getFirestore, collection, query, where, getDocs, doc, updateDoc } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
 
-    const loginBtn = document.getElementById("loginBtn");
-    const loginSection = document.getElementById("loginSection");
-    const mainApp = document.getElementById("mainApp");
-    const pyqTableBody = document.getElementById("pyqTableBody");
-    const subjectButtons = document.getElementById("subjectButtons");
-    const yearButtons = document.getElementById("yearButtons");
+        const firebaseConfig = {
+            apiKey: "AIzaSyBOVl1hdmprJXpgdN_sNTO3FsNePD_zNZY",
+            authDomain: "aahes-cee-cutoffs.firebaseapp.com",
+            databaseURL: "https://aahes-cee-cutoffs-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "aahes-cee-cutoffs",
+            storageBucket: "aahes-cee-cutoffs.firebasestorage.app",
+            messagingSenderId: "706066626405",
+            appId: "1:706066626405:web:0d254ab82beb288108938c"
+        };
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
 
-    const subjects = ["physics", "chemistry", "maths"];
-    const years = [2025, 2024, 2023, 2022];
-    let currentUser = null, currentSubject = "physics", currentYear = 2025;
+        const loginBtn = document.getElementById("loginBtn");
+        const loginSection = document.getElementById("loginSection");
+        const mainApp = document.getElementById("mainApp");
+        const pyqTableBody = document.getElementById("pyqTableBody");
+        const subjectButtons = document.getElementById("subjectButtons");
+        const yearButtons = document.getElementById("yearButtons");
 
-    // LOGIN
-    loginBtn.addEventListener("click", async () => {
-      const email = document.getElementById("emailInput").value.trim();
-      const pass = document.getElementById("passInput").value.trim();
-      if (!email || !pass) return alert("Enter email & password");
+        let currentUser = null, currentSubject = "physics", currentYear = 2025;
+        const subjects = ["physics", "chemistry", "maths"];
+        const years = [2025, 2024, 2023, 2022];
 
-      const q = query(collection(db, "users"), where("email", "==", email));
-      const snap = await getDocs(q);
-      if (snap.empty) return alert("User not found");
+        // LOGIN
+        loginBtn.addEventListener("click", async () => {
+            const email = document.getElementById("emailInput").value.trim();
+            const password = document.getElementById("passInput").value.trim();
+            if (!email || !password) { alert("Enter email & password"); return; }
 
-      let found = false;
-      snap.forEach(d => {
-        if (d.data().password === pass) {
-          currentUser = { id: d.id, ...d.data() };
-          found = true;
+            const q = query(collection(db, "users"), where("email", "==", email));
+            const snapshot = await getDocs(q);
+            if (snapshot.empty) { alert("User not found"); return; }
+
+            let found = false;
+            snapshot.forEach(docSnap => {
+                const data = docSnap.data();
+                if (data.password === password) { found = true; currentUser = { id: docSnap.id, ...data }; }
+            });
+            if (!found) { alert("Incorrect password"); return; }
+
+            loginSection.style.display = "none";
+            mainApp.style.display = "block";
+
+            document.getElementById("welcomeMsg").innerText = `Welcome, ${currentUser.name}!😊`;
+
+            generateButtons();
+            loadPYQs();
+
+            document.getElementById("profileName").value = currentUser.name;
+            document.getElementById("profileClass").value = currentUser.class || "";
+        });
+
+        // LOGOUT
+        document.getElementById("logoutBtn").addEventListener("click", () => {
+            currentUser = null; loginSection.style.display = "flex"; mainApp.style.display = "none";
+        });
+
+        // GENERATE BUTTONS
+        function generateButtons() {
+            // Subjects
+            subjectButtons.innerHTML = "";
+            subjects.forEach(s => {
+                const btn = document.createElement("button");
+                btn.innerText = s.charAt(0).toUpperCase() + s.slice(1);
+                if (s === currentSubject) btn.classList.add("tab-active");
+                btn.addEventListener("click", () => {
+                    currentSubject = s;
+                    subjectButtons.querySelectorAll("button").forEach(b => b.classList.remove("tab-active"));
+                    btn.classList.add("tab-active");
+                    loadPYQs();
+                });
+                subjectButtons.appendChild(btn);
+            });
+
+            // Years
+            yearButtons.innerHTML = "";
+            years.forEach(y => {
+                const btn = document.createElement("button");
+                btn.innerText = y;
+                if (y === currentYear) btn.classList.add("tab-active");
+                btn.addEventListener("click", () => {
+                    currentYear = y;
+                    yearButtons.querySelectorAll("button").forEach(b => b.classList.remove("tab-active"));
+                    btn.classList.add("tab-active");
+                    loadPYQs();
+                });
+                yearButtons.appendChild(btn);
+            });
         }
-      });
-      if (!found) return alert("Incorrect password");
 
-      loginSection.style.display = "none";
-      mainApp.style.display = "block";
-      document.getElementById("welcomeMsg").innerText = `Welcome, ${currentUser.name}! 😊`;
+        // LOAD PYQs
+        async function loadPYQs() {
+            pyqTableBody.innerHTML = "<tr><td colspan='4' class='text-center p-4'>Loading...</td></tr>";
+            const q = query(collection(db, "pyqs"), where("subject", "==", currentSubject), where("year", "==", currentYear));
+            const snapshot = await getDocs(q);
+            pyqTableBody.innerHTML = "";
+            if (snapshot.empty) { pyqTableBody.innerHTML = "<tr><td colspan='4' class='text-center p-4'>No questions found</td></tr>"; return; }
+            let items = [];
+            snapshot.forEach(docSnap => {
+                items.push(docSnap.data());
+            });
 
-      generateButtons();
-      loadPYQs();
-    });
+            // Sort ascending by qno
+            items.sort((a, b) => a.qno - b.qno);
 
-    document.getElementById("logoutBtn").addEventListener("click", () => {
-      currentUser = null;
-      loginSection.style.display = "flex";
-      mainApp.style.display = "none";
-    });
+            pyqTableBody.innerHTML = "";
+            items.forEach(item => {
+                const tr = document.createElement("tr");
+                tr.innerHTML = `
+    <td>${item.qno}</td>
+<td class="pyq-question">${item.question.replace(/\n/g, "<br>")}</td>
+    <td class="text-center">
+      <i data-lucide="eye" class="view-btn cursor-pointer" 
+         onclick="openViewModal('${item.question.replace(/'/g, "\\'")}')"></i>
+    </td>
+    <td class="text-blue-600 hover:underline">
+      <a href="${item.solution}" target="_blank">Open</a>
+    </td>`;
+                pyqTableBody.appendChild(tr);
+            });
+            lucide.createIcons();
+        }
 
-    function generateButtons() {
-      subjectButtons.innerHTML = "";
-      subjects.forEach(s => {
-        const b = document.createElement("button");
-        b.textContent = s.charAt(0).toUpperCase() + s.slice(1);
-        if (s === currentSubject) b.classList.add("tab-active");
-        b.addEventListener("click", () => {
-          currentSubject = s;
-          subjectButtons.querySelectorAll("button").forEach(x => x.classList.remove("tab-active"));
-          b.classList.add("tab-active");
-          loadPYQs();
+        // VIEW MODAL
+window.openViewModal = function (q) {
+  const viewQ = document.getElementById("viewQuestion");
+  viewQ.innerHTML = q.replace(/\n/g, "<br>");
+  document.getElementById("viewModal").style.display = "flex";
+  if (window.MathJax) MathJax.typesetPromise([viewQ]);
+}        function closeViewModal() { document.getElementById("viewModal").style.display = "none"; }
+
+        // PROFILE MODAL
+        const profileModal = document.getElementById("profileModal");
+        const closeProfileBtn = document.getElementById("closeProfileBtn");
+        const profileBtn = document.getElementById("profileBtn");
+
+        profileBtn.addEventListener("click", () => { if (currentUser) profileModal.style.display = "flex"; });
+        closeProfileBtn.addEventListener("click", () => profileModal.style.display = "none");
+        profileModal.addEventListener("click", () => profileModal.style.display = "none");
+        profileModal.querySelector(".modal-content").addEventListener("click", (e) => e.stopPropagation());
+
+        // IMAGE MODAL
+        window.openImageModal = function (imgUrl) {
+            if (!imgUrl) {
+                alert("No image available for this question.");
+                return;
+            }
+            const modal = document.getElementById("imageModal");
+            const img = document.getElementById("pyqImage");
+            img.src = imgUrl;
+            modal.style.display = "flex";
+        };
+
+        function closeImageModal() {
+            const modal = document.getElementById("imageModal");
+            modal.style.display = "none";
+        }
+
+
+        // SAVE PROFILE
+        document.getElementById("saveProfileBtn").addEventListener("click", async () => {
+            const newName = document.getElementById("profileName").value.trim();
+            const newClass = document.getElementById("profileClass").value.trim();
+            const oldPass = document.getElementById("oldPassword").value;
+            const newPass = document.getElementById("newPassword").value;
+            if (oldPass && oldPass !== currentUser.password) { alert("Old password incorrect"); return; }
+            try {
+                const userRef = doc(db, "users", currentUser.id);
+                const updateData = { name: newName, class: newClass };
+                if (newPass) updateData.password = newPass;
+                await updateDoc(userRef, updateData);
+                currentUser = { ...currentUser, ...updateData };
+                alert("Profile updated successfully!");
+                profileModal.style.display = "none";
+            } catch (err) { console.error(err); alert("Failed to update profile."); }
         });
-        subjectButtons.appendChild(b);
-      });
 
-      yearButtons.innerHTML = "";
-      years.forEach(y => {
-        const b = document.createElement("button");
-        b.textContent = y;
-        if (y === currentYear) b.classList.add("tab-active");
-        b.addEventListener("click", () => {
-          currentYear = y;
-          yearButtons.querySelectorAll("button").forEach(x => x.classList.remove("tab-active"));
-          b.classList.add("tab-active");
-          loadPYQs();
-        });
-        yearButtons.appendChild(b);
-      });
-    }
+        // ESC
+        document.addEventListener("keydown", (e) => { if (e.key === "Escape") { closeViewModal(); profileModal.style.display = "none"; } });
+lucide.createIcons();
+if (window.MathJax) MathJax.typesetPromise();
 
-    async function loadPYQs() {
-      pyqTableBody.innerHTML = "<tr><td colspan='4' class='text-center p-4'>Loading...</td></tr>";
-      const q = query(collection(db, "pyqs"), where("subject", "==", currentSubject), where("year", "==", currentYear));
-      const snap = await getDocs(q);
-      if (snap.empty) {
-        pyqTableBody.innerHTML = "<tr><td colspan='4' class='text-center p-4'>No questions found</td></tr>";
-        return;
-      }
-
-      let data = [];
-      snap.forEach(d => data.push(d.data()));
-      data.sort((a, b) => a.qno - b.qno);
-
-      pyqTableBody.innerHTML = "";
-      data.forEach(item => {
-        const tr = document.createElement("tr");
-        tr.innerHTML = `
-          <td>${item.qno}</td>
-          <td class="pyq-question">${item.question.replace(/\n/g, "<br>")}</td>
-          <td class="text-center"><i data-lucide="eye" class="view-btn" onclick="openViewModal(\`${item.question.replace(/`/g, '\\`')}\`)"></i></td>
-          <td><a href="${item.solution}" target="_blank" class="text-blue-600 hover:underline">Open</a></td>`;
-        pyqTableBody.appendChild(tr);
-      });
-
-      lucide.createIcons();
-      if (window.MathJax) MathJax.typesetPromise();
-    }
-
-    // VIEW MODAL
-    window.openViewModal = function (q) {
-      const modal = document.getElementById("viewModal");
-      const viewQ = document.getElementById("viewQuestion");
-      viewQ.innerHTML = q.replace(/\n/g, "<br>");
-      modal.style.display = "flex";
-      if (window.MathJax) MathJax.typesetPromise([viewQ]);
-    };
-
-    window.closeViewModal = function () {
-      document.getElementById("viewModal").style.display = "none";
-    };
-
-    lucide.createIcons();
-  </script>
+    </script>
 </body>
+
 </html>
