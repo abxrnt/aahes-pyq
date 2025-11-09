@@ -390,6 +390,13 @@ tr:hover {
 }
 
     </style>
+    <script>
+window.MathJax = {
+  tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] },
+  svg: { fontCache: 'global' }
+};
+</script>
+<script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
 </head>
 
 <body>
@@ -597,7 +604,7 @@ tr:hover {
                 const tr = document.createElement("tr");
                 tr.innerHTML = `
     <td>${item.qno}</td>
-    <td>${item.question}</td>
+<td class="pyq-question">${item.question.replace(/\n/g, "<br>")}</td>
     <td class="text-center">
       <i data-lucide="eye" class="view-btn cursor-pointer" 
          onclick="openViewModal('${item.question.replace(/'/g, "\\'")}')"></i>
@@ -663,7 +670,10 @@ tr:hover {
         // ESC
         document.addEventListener("keydown", (e) => { if (e.key === "Escape") { closeViewModal(); profileModal.style.display = "none"; } });
         lucide.createIcons();
+        if (window.MathJax) MathJax.typesetPromise();
+
     </script>
 </body>
 
 </html>
+
