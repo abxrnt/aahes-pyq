@@ -260,7 +260,7 @@
     <div id="imageModal" class="modal" onclick="closeImageModal()">
       <div class="modal-content" onclick="event.stopPropagation()">
         <span class="close-btn" onclick="closeImageModal()">&times;</span>
-        <img id="pyqImage" src="" alt="PYQ Image" />
+<img id="pyqImage" src="" alt="PYQ Image" style="max-width:100%; height:auto; border-radius:0.5rem;" />
       </div>
     </div>
   </section>
@@ -366,7 +366,9 @@
 
           tr.innerHTML = `
             <td class="text-center">${item.qno ?? '-'}</td>
-            <td class="text-center"><img src="${item.img ?? ''}" alt="Question ${item.qno}" onclick="openImageModal('${item.img ?? ''}')" class="cursor-pointer" /></td>
+<td class="text-center">
+  <img src="${item.img ?? ''}" alt="Question ${item.qno}" onclick="openImageModal('${item.img ?? ''}')" class="pyq-img" />
+</td>
             <td class="text-center">${item.sol ? `<a href="${item.sol}" target="_blank" class="bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700 transition">Solution</a>` : '-'}</td>
           `;
 
@@ -394,4 +396,5 @@
   </script>
 </body>
 </html>
+
 
