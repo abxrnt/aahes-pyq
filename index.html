@@ -18,13 +18,8 @@
   <!-- Lucide icons -->
   <script src="https://unpkg.com/lucide@latest"></script>
 
-  <!-- ======================================================================
-       STYLES
-       ====================================================================== -->
   <style>
-    /* GLOBAL */
-    body,
-    html {
+    body, html {
       margin: 0;
       font-family: 'Quicksand', sans-serif;
       background: #e3e6ff;
@@ -52,11 +47,7 @@
       border-radius: 0 2rem 2rem 0;
     }
 
-    .login-left h1 {
-      font-size: 2rem;
-      margin-bottom: 1.5rem;
-    }
-
+    .login-left h1 { font-size: 2rem; margin-bottom: 1.5rem; }
     .login-left input {
       width: 100%;
       padding: 0.9rem;
@@ -95,15 +86,8 @@
       background: #0d9488;
     }
 
-    .login-left p {
-      font-size: 0.9rem;
-      opacity: 0.85;
-    }
-
-    .login-left a {
-      color: #facc15;
-      text-decoration: underline;
-    }
+    .login-left p { font-size: 0.9rem; opacity: 0.85; }
+    .login-left a { color: #facc15; text-decoration: underline; }
 
     .login-right {
       flex: 1;
@@ -140,56 +124,16 @@
       filter: drop-shadow(0 0 12px rgba(255, 255, 255, 0.4));
     }
 
-    .login-right h2 {
-      font-size: 2.6rem;
-      font-weight: 600;
-      margin-bottom: 1rem;
-      text-shadow: 0 3px 10px rgba(0, 0, 0, 0.6);
-    }
+    .login-right h2 { font-size: 2.6rem; font-weight: 600; margin-bottom: 1rem; text-shadow: 0 3px 10px rgba(0,0,0,0.6); }
+    .login-right p { font-size: 1.05rem; line-height: 1.6; opacity: 0.9; text-shadow: 0 2px 6px rgba(0,0,0,0.5); }
 
-    .login-right p {
-      font-size: 1.05rem;
-      line-height: 1.6;
-      opacity: 0.9;
-      text-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
-    }
-
-    /* ANIMATIONS */
-    @keyframes fadeSlide {
-      0% {
-        opacity: 0;
-        transform: translateX(-40px);
-      }
-
-      100% {
-        opacity: 1;
-        transform: translateX(0);
-      }
-    }
-
-    @keyframes fadeInUp {
-      0% {
-        opacity: 0;
-        transform: translateY(30px);
-      }
-
-      100% {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
+    @keyframes fadeSlide { 0% {opacity:0; transform:translateX(-40px);} 100% {opacity:1; transform:translateX(0);} }
+    @keyframes fadeInUp { 0% {opacity:0; transform:translateY(30px);} 100% {opacity:1; transform:translateY(0);} }
 
     /* MAIN APP */
-    #mainApp {
-      display: none;
-      padding: 1rem 2rem;
-      max-width: 1200px;
-      margin: auto;
-    }
+    #mainApp { display: none; padding: 1rem 2rem; max-width: 1200px; margin: auto; }
 
-    #welcomeMsg {
-      color: #0c2b4e;
-    }
+    #welcomeMsg { color: #0c2b4e; }
 
     /* NAVBAR */
     .navbar {
@@ -201,30 +145,12 @@
       border-radius: 0.8rem;
       flex-wrap: wrap;
       margin-bottom: 1rem;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
     }
 
-    .navbar img {
-      height: 60px;
-      width: auto;
-    }
-
-    .navbar .center {
-      display: flex;
-      gap: 0.4rem;
-      flex-wrap: wrap;
-      flex-grow: 1;
-      justify-content: center;
-      margin: 0.5rem 0;
-    }
-
-    .navbar .right {
-      display: flex;
-      gap: 0.4rem;
-      flex-wrap: wrap;
-      justify-content: flex-end;
-    }
-
+    .navbar img { height: 60px; width: auto; }
+    .navbar .center { display: flex; gap: 0.4rem; flex-wrap: wrap; flex-grow:1; justify-content:center; margin:0.5rem 0; }
+    .navbar .right { display:flex; gap:0.4rem; flex-wrap:wrap; justify-content:flex-end; }
     .navbar button {
       padding: 0.35rem 0.7rem;
       border-radius: 0.5rem;
@@ -234,201 +160,40 @@
       color: white;
       border: none;
       transition: all 0.3s;
-      box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+      box-shadow:0 3px 6px rgba(0,0,0,0.2);
       background: #1a3d64;
     }
+    .navbar button:hover { transform:translateY(-2px) scale(1.03); box-shadow:0 6px 12px rgba(0,0,0,0.35); background:#1d546c; }
+    .tab-active { background: linear-gradient(135deg,#2563eb,#1e40af)!important; color:#f8fafc!important; font-weight:600; box-shadow:0 4px 15px rgba(37,99,235,0.5); transform:translateY(-2px); transition: all 0.3s ease; }
 
-    .navbar button:hover {
-      transform: translateY(-2px) scale(1.03);
-      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.35);
-      background: #1d546c;
-    }
-
-    .tab-active {
-      background: linear-gradient(135deg, #2563eb, #1e40af) !important;
-      color: #f8fafc !important;
-      font-weight: 600;
-      box-shadow: 0 4px 15px rgba(37, 99, 235, 0.5);
-      transform: translateY(-2px);
-      transition: all 0.3s ease;
-    }
-
-    /* PROFILE & LOGOUT BUTTONS */
-    .profile-btn {
-      background: #facc15;
-      color: #1f2a44;
-      display: flex;
-      align-items: center;
-      gap: 0.3rem;
-      padding: 0.5rem 1rem;
-      border-radius: 0.7rem;
-      font-weight: 500;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-      transition: all 0.3s;
-    }
-
-    .profile-btn:hover {
-      background: #eab308;
-      transform: translateY(-2px);
-      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.35);
-    }
-
-    .logout-btn {
-      background: #f43f5e;
-      color: white;
-      display: flex;
-      align-items: center;
-      gap: 0.3rem;
-      padding: 0.5rem 1rem;
-      border-radius: 0.7rem;
-      font-weight: 500;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-      transition: all 0.3s;
-    }
-
-    .logout-btn:hover {
-      background: #e11d48;
-      transform: translateY(-2px);
-      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.35);
-    }
+    /* PROFILE & LOGOUT */
+    .profile-btn { background:#facc15; color:#1f2a44; display:flex; align-items:center; gap:0.3rem; padding:0.5rem 1rem; border-radius:0.7rem; font-weight:500; box-shadow:0 4px 8px rgba(0,0,0,0.2); transition:all 0.3s; }
+    .profile-btn:hover { background:#eab308; transform:translateY(-2px); box-shadow:0 8px 16px rgba(0,0,0,0.35); }
+    .logout-btn { background:#f43f5e; color:white; display:flex; align-items:center; gap:0.3rem; padding:0.5rem 1rem; border-radius:0.7rem; font-weight:500; box-shadow:0 4px 8px rgba(0,0,0,0.2); transition:all 0.3s; }
+    .logout-btn:hover { background:#e11d48; transform:translateY(-2px); box-shadow:0 8px 16px rgba(0,0,0,0.35); }
 
     /* TABLE */
-    /* TABLE */
-table {
-  width: 100%;
-  border-collapse: collapse;
-  table-layout: fixed; /* keeps columns from stretching */
-  font-size: 0.875rem; /* smaller text */
-}
+    table { width:100%; border-collapse: collapse; font-size:0.875rem; }
+    th, td { padding:0.6rem; border-bottom:1px solid #e2e8f0; text-align:left; }
+    th { background:#0c2b4e; color:white; }
+    td img { max-width:100%; border-radius:0.6rem; }
+    tr:hover { background:#f0f8ff; }
 
-th, td {
-  padding: 0.4rem 0.6rem; /* smaller padding */
-  border-bottom: 1px solid #e2e8f0;
-  text-align: left;
-}
-
-th:nth-child(1), td:nth-child(1) { width: 8%; }
-th:nth-child(2), td:nth-child(2) {
-  width: 64%;
-  white-space: normal;
-  word-wrap: break-word;
-  overflow-wrap: break-word;
-}
-th:nth-child(3), td:nth-child(3),
-th:nth-child(4), td:nth-child(4) { width: 14%; text-align: center; }
-
-tr:hover { background: #f0f8ff; }
-
-.pyq-question { display: block; }
-
-
-    th {
-      background: #0c2b4e;
-      color: white;
-    }
-
-    tr:hover {
-      background: #f0f8f5;
-    }
-
-    .view-btn {
-      color: #0c2b4e;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-
-    .view-btn:hover {
-      transform: scale(1.1);
-      color: #0c2b4e;
-    }
+    .view-btn { color:#0c2b4e; cursor:pointer; transition: all 0.2s; }
+    .view-btn:hover { transform: scale(1.1); color:#0c2b4e; }
 
     /* MODALS */
-    .modal {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.6);
-      justify-content: center;
-      align-items: center;
-      z-index: 50;
-    }
+    .modal { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6); justify-content:center; align-items:center; z-index:50; }
+    .modal-content { background:white; padding:2rem; border-radius:1.2rem; max-width:500px; width:90%; position:relative; box-shadow:0 15px 30px rgba(0,0,0,0.4); }
+    .close-btn { position:absolute; top:1rem; right:1rem; font-size:1.3rem; font-weight:bold; cursor:pointer; transition:all 0.2s; }
+    .close-btn:hover { color:#f39c12; transform:scale(1.2); }
 
-    .modal-content {
-      background: white;
-      padding: 2rem;
-      border-radius: 1.2rem;
-      max-width: 500px;
-      width: 90%;
-      position: relative;
-      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
-    }
-
-    .close-btn {
-      position: absolute;
-      top: 1rem;
-      right: 1rem;
-      font-size: 1.3rem;
-      font-weight: bold;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-
-    .close-btn:hover {
-      color: #f39c12;
-      transform: scale(1.2);
-    }
-
-    .modal-content input {
-      width: 100%;
-      padding: 0.6rem;
-      margin-bottom: 0.8rem;
-      border-radius: 0.5rem;
-      border: 1px solid #ccc;
-      outline: none;
-    }
-
-    .modal-content button {
-      background: #0d9488;
-      color: white;
-      font-weight: 500;
-      border-radius: 0.5rem;
-      padding: 0.5rem 1rem;
-      cursor: pointer;
-      box-shadow: 0 3px 6px rgba(0, 0, 0, 0.25);
-      transition: all 0.3s;
-    }
-
-    .modal-content button:hover {
-      background: #0b7669;
-      transform: translateY(-2px) scale(1.03);
-    }
-
-    #imageModal .modal-content {
-      max-width: 350px;
-      padding: 1rem;
-      border-radius: 1rem;
-      text-align: center;
-    }
-
-    #pyqImage {
-      max-width: 100%;
-      border-radius: 0.8rem;
-    }
+    #imageModal .modal-content { max-width:350px; padding:1rem; border-radius:1rem; text-align:center; }
+    #pyqImage { max-width:100%; border-radius:0.8rem; }
 
     /* UTILITY */
-    .spacer {
-      height: 12px;
-    }
+    .spacer { height: 12px; }
   </style>
-
-  <!-- MathJax -->
-  <script>
-    window.MathJax = {
-      tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] },
-      svg: { fontCache: 'global' }
-    };
-  </script>
-  <script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
 </head>
 
 <body>
@@ -447,7 +212,7 @@ tr:hover { background: #f0f8ff; }
       <div>
         <img id="logoimg" src="favicon.png" width="100px" alt="AAHES logo" />
         <h2>AAHES PYQ Portal</h2>
-        <p>Access previous year questions and solutions easily.<br />Prepare smarter and faster for your exams.</p>
+        <p>Access previous year questions as images easily.<br />Prepare smarter and faster for your exams.</p>
       </div>
     </div>
   </div>
@@ -471,28 +236,18 @@ tr:hover { background: #f0f8ff; }
 
     <!-- PYQ TABLE -->
     <div class="w-full overflow-x-auto mt-2">
-  <table class="w-full text-sm border-collapse">
-    <thead class="bg-gray-800 text-white">
-  <tr>
-    <th class="px-2 py-1">QNo</th>
-    <th class="px-2 py-1">Question</th>
-  </tr>
-</thead>
-
-    <tbody id="pyqTableBody">
-      <tr>
-        <td colspan="4" class="text-center p-2">Select a subject and year</td>
-      </tr>
-    </tbody>
-  </table>
-</div>
-
-    <!-- VIEW MODAL -->
-    <div id="viewModal" class="modal" onclick="closeViewModal()">
-      <div class="modal-content" onclick="event.stopPropagation()">
-        <span class="close-btn" onclick="closeViewModal()">&times;</span>
-        <p id="viewQuestion" class="break-words max-w-full"></p>
-      </div>
+      <table class="w-full text-sm border-collapse">
+        <thead>
+          <tr>
+            <th>QNo</th>
+            <th>Question Image</th>
+            <th>Solution</th>
+          </tr>
+        </thead>
+        <tbody id="pyqTableBody">
+          <tr><td colspan="3" class="text-center p-2">Select a subject and year</td></tr>
+        </tbody>
+      </table>
     </div>
 
     <!-- IMAGE MODAL -->
@@ -502,31 +257,11 @@ tr:hover { background: #f0f8ff; }
         <img id="pyqImage" src="" alt="PYQ Image" />
       </div>
     </div>
-
-    <!-- PROFILE MODAL -->
-    <div id="profileModal" class="modal">
-      <div class="modal-content">
-        <span id="closeProfileBtn" class="close-btn">&times;</span>
-        <h2 class="text-xl font-semibold mb-2">User Profile</h2>
-        <label>Name</label>
-        <input type="text" id="profileName" />
-        <label>Class</label>
-        <input type="text" id="profileClass" />
-        <label>Old Password</label>
-        <input type="password" id="oldPassword" />
-        <label>New Password</label>
-        <input type="password" id="newPassword" />
-        <button id="saveProfileBtn">Save Changes</button>
-      </div>
-    </div>
   </section>
 
-  <!-- ======================================================================
-       SCRIPT: Firebase + Logic
-       ====================================================================== -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
-    import { getFirestore, collection, query, where, getDocs, doc, updateDoc } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
+    import { getFirestore, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyBOVl1hdmprJXpgdN_sNTO3FsNePD_zNZY",
@@ -548,10 +283,6 @@ tr:hover { background: #f0f8ff; }
     const subjectButtons = document.getElementById("subjectButtons");
     const yearButtons = document.getElementById("yearButtons");
 
-    const profileModal = document.getElementById("profileModal");
-    const closeProfileBtn = document.getElementById("closeProfileBtn");
-    const profileBtn = document.getElementById("profileBtn");
-
     let currentUser = null;
     let currentSubject = "physics";
     let currentYear = 2025;
@@ -559,54 +290,42 @@ tr:hover { background: #f0f8ff; }
     const subjects = ["physics", "chemistry", "maths"];
     const years = [2025, 2024, 2023, 2022];
 
-    function safeInnerText(el, text) { el.textContent = text ?? ""; }
-
     loginBtn.addEventListener("click", async () => {
+      const email = document.getElementById("emailInput").value.trim();
+      const password = document.getElementById("passInput").value.trim();
+      if (!email || !password) { alert("Enter email & password"); return; }
+
       try {
-        const email = document.getElementById("emailInput").value.trim();
-        const password = document.getElementById("passInput").value.trim();
-        if (!email || !password) { alert("Enter email & password"); return; }
-
-        const q = query(collection(db, "users"), where("email", "==", email));
+        const q = query(collection(db, "users"), where("email","==",email));
         const snapshot = await getDocs(q);
-
-        if (snapshot.empty) { alert("User not found"); return; }
+        if(snapshot.empty) { alert("User not found"); return; }
 
         let found = false;
         snapshot.forEach(docSnap => {
           const data = docSnap.data();
-          if (data.password === password) { found = true; currentUser = { id: docSnap.id, ...data }; }
+          if(data.password === password) { found = true; currentUser = { id: docSnap.id, ...data }; }
         });
-
-        if (!found) { alert("Incorrect password"); return; }
+        if(!found){ alert("Incorrect password"); return; }
         onLoginSuccess();
-      } catch (err) { console.error(err); alert("Login failed."); }
+      } catch(err){ console.error(err); alert("Login failed"); }
     });
 
     function onLoginSuccess() {
       loginSection.style.display = "none";
       mainApp.style.display = "block";
       document.getElementById("welcomeMsg").innerText = `Welcome, ${currentUser.name}!😊`;
-      document.getElementById("profileName").value = currentUser.name || "";
-      document.getElementById("profileClass").value = currentUser.class || "";
       generateButtons();
       loadPYQs();
       lucide.createIcons();
     }
 
-    document.getElementById("logoutBtn").addEventListener("click", () => {
-      currentUser = null;
-      loginSection.style.display = "flex";
-      mainApp.style.display = "none";
-    });
-
     function generateButtons() {
       subjectButtons.innerHTML = "";
       subjects.forEach(s => {
         const btn = document.createElement("button");
-        btn.innerText = s.charAt(0).toUpperCase() + s.slice(1);
-        if (s === currentSubject) btn.classList.add("tab-active");
-        btn.addEventListener("click", () => { currentSubject = s; subjectButtons.querySelectorAll("button").forEach(b => b.classList.remove("tab-active")); btn.classList.add("tab-active"); loadPYQs(); });
+        btn.innerText = s.charAt(0).toUpperCase()+s.slice(1);
+        if(s===currentSubject) btn.classList.add("tab-active");
+        btn.addEventListener("click", ()=>{currentSubject=s; subjectButtons.querySelectorAll("button").forEach(b=>b.classList.remove("tab-active")); btn.classList.add("tab-active"); loadPYQs();});
         subjectButtons.appendChild(btn);
       });
 
@@ -614,115 +333,58 @@ tr:hover { background: #f0f8ff; }
       years.forEach(y => {
         const btn = document.createElement("button");
         btn.innerText = y;
-        if (y === currentYear) btn.classList.add("tab-active");
-        btn.addEventListener("click", () => { currentYear = y; yearButtons.querySelectorAll("button").forEach(b => b.classList.remove("tab-active")); btn.classList.add("tab-active"); loadPYQs(); });
+        if(y===currentYear) btn.classList.add("tab-active");
+        btn.addEventListener("click", ()=>{currentYear=y; yearButtons.querySelectorAll("button").forEach(b=>b.classList.remove("tab-active")); btn.classList.add("tab-active"); loadPYQs();});
         yearButtons.appendChild(btn);
       });
     }
 
     async function loadPYQs() {
-  try {
-    pyqTableBody.innerHTML = "<tr><td colspan='4' class='text-center p-4'>Loading...</td></tr>";
-    const q = query(collection(db, "pyqs"), where("subject", "==", currentSubject), where("year", "==", currentYear));
-    const snapshot = await getDocs(q);
-    pyqTableBody.innerHTML = "";
+      try {
+        pyqTableBody.innerHTML = "<tr><td colspan='3' class='text-center p-4'>Loading...</td></tr>";
+        const q = query(collection(db, "pyqs"), where("subject","==",currentSubject), where("year","==",currentYear));
+        const snapshot = await getDocs(q);
+        pyqTableBody.innerHTML = "";
 
-    if (snapshot.empty) {
-      pyqTableBody.innerHTML = "<tr><td colspan='4' class='text-center p-4'>No questions found</td></tr>";
-      return;
+        if(snapshot.empty){
+          pyqTableBody.innerHTML="<tr><td colspan='3' class='text-center p-4'>No questions found</td></tr>";
+          return;
+        }
+
+        let items = [];
+        snapshot.forEach(docSnap => items.push(docSnap.data()));
+        items.sort((a,b) => (a.qno ?? Infinity)-(b.qno ?? Infinity));
+
+        items.forEach(item => {
+          const tr = document.createElement("tr");
+
+          tr.innerHTML = `
+            <td class="text-center">${item.qno ?? '-'}</td>
+            <td class="text-center"><img src="${item.img ?? ''}" alt="Question ${item.qno}" onclick="openImageModal('${item.img ?? ''}')" class="cursor-pointer" /></td>
+            <td class="text-center">${item.sol ? `<a href="${item.sol}" target="_blank" class="bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700 transition">Solution</a>` : '-'}</td>
+          `;
+
+          pyqTableBody.appendChild(tr);
+        });
+
+        lucide.createIcons();
+      } catch(err){ console.error(err); pyqTableBody.innerHTML="<tr><td colspan='3'>Failed to load questions</td></tr>"; }
     }
 
-    let items = [];
-    snapshot.forEach(docSnap => items.push(docSnap.data()));
-    items.sort((a, b) => (a.qno ?? Infinity) - (b.qno ?? Infinity));
-
-    items.forEach(item => {
-      const tr = document.createElement("tr");
-
-      const questionHtml = (item.question || "").replace(/\n/g, " ");
-
-      // Eye icon for image view
-const eyeBtn = `<button class="flex-1 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition flex items-center justify-center gap-2" onclick="openImageModal('${item.img ?? ''}')">
-  <i data-lucide="eye"></i> View
-</button>`;
-
-const solBtn = item.sol ? `<a href="${item.sol}" target="_blank" class="flex-1 text-center py-2 bg-green-600 text-white rounded hover:bg-green-700 transition inline-flex items-center justify-center">Solution</a>` : "";
-
-tr.innerHTML = `
-<td class="text-center">${item.qno ?? '-'}</td>
-<td class="pyq-question">
-  ${questionHtml}
-  <div class="mt-3 flex gap-2">
-    ${eyeBtn}
-    ${solBtn}
-  </div>
-</td>
-`;
-
-      pyqTableBody.appendChild(tr);
-    });
-
-    lucide.createIcons();
-    if (window.MathJax) MathJax.typesetPromise().catch(err => console.error(err));
-  } catch (err) {
-    console.error(err);
-    pyqTableBody.innerHTML = "<tr><td colspan='4'>Failed to load questions</td></tr>";
-  }
-}
-
-    function escapeForOnclick(str) { return String(str).replace(/\\/g, "\\\\").replace(/'/g, "\\'").replace(/`/g, "\\`").replace(/\n/g, "\\n"); }
-
-    window.openViewModal = function(q, qno = "") {
-      const viewQ = document.getElementById("viewQuestion");
-      const normalized = q.replace(/\\n/g, "\n");
-      viewQ.innerHTML = normalized.replace(/\n/g, "<br>");
-      document.getElementById("viewModal").style.display = "flex";
-      if (window.MathJax) MathJax.typesetPromise([viewQ]).catch(err => console.error(err));
-    };
-    function closeViewModal() { document.getElementById("viewModal").style.display = "none"; }
-
-    profileBtn.addEventListener("click", () => { if (currentUser) profileModal.style.display = "flex"; else alert("Please login first."); });
-    closeProfileBtn.addEventListener("click", () => profileModal.style.display = "none");
-    profileModal.addEventListener("click", () => profileModal.style.display = "none");
-    profileModal.querySelector(".modal-content").addEventListener("click", (e) => e.stopPropagation());
-
-    window.openImageModal = function(imgUrl) {
-      if (!imgUrl) { alert("No image available."); return; }
-      const modal = document.getElementById("imageModal");
+    window.openImageModal = function(imgUrl){
+      if(!imgUrl){ alert("No image available."); return; }
       document.getElementById("pyqImage").src = imgUrl;
-      modal.style.display = "flex";
+      document.getElementById("imageModal").style.display="flex";
     };
-    function closeImageModal() { document.getElementById("imageModal").style.display = "none"; }
 
-    document.getElementById("saveProfileBtn").addEventListener("click", async () => {
-      try {
-        const newName = document.getElementById("profileName").value.trim();
-        const newClass = document.getElementById("profileClass").value.trim();
-        const oldPass = document.getElementById("oldPassword").value;
-        const newPass = document.getElementById("newPassword").value;
+    function closeImageModal(){ document.getElementById("imageModal").style.display="none"; }
 
-        if (!currentUser) { alert("No user logged in"); return; }
-        if (oldPass && oldPass !== currentUser.password) { alert("Old password incorrect"); return; }
-
-        const userRef = doc(db, "users", currentUser.id);
-        const updateData = { name: newName, class: newClass };
-        if (newPass) updateData.password = newPass;
-
-        await updateDoc(userRef, updateData);
-        currentUser = { ...currentUser, ...updateData };
-        alert("Profile updated successfully!");
-        profileModal.style.display = "none";
-      } catch (err) { console.error(err); alert("Failed to update profile."); }
+    document.getElementById("logoutBtn").addEventListener("click", ()=>{
+      currentUser = null;
+      loginSection.style.display = "flex";
+      mainApp.style.display = "none";
     });
 
-    document.addEventListener("keydown", (e) => {
-      if (e.key === "Escape") { closeViewModal(); profileModal.style.display = "none"; document.getElementById("imageModal").style.display = "none"; }
-    });
-
-    lucide.createIcons();
-    if (window.MathJax) MathJax.typesetPromise().catch(err => console.warn(err));
   </script>
 </body>
-
 </html>
-
