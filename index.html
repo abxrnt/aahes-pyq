@@ -621,34 +621,53 @@ tr:hover { background: #f0f8ff; }
     }
 
     async function loadPYQs() {
-      try {
-        pyqTableBody.innerHTML = "<tr><td colspan='4' class='text-center p-4'>Loading...</td></tr>";
-        const q = query(collection(db, "pyqs"), where("subject", "==", currentSubject), where("year", "==", currentYear));
-        const snapshot = await getDocs(q);
-        pyqTableBody.innerHTML = "";
+  try {
+    pyqTableBody.innerHTML = "<tr><td colspan='4' class='text-center p-4'>Loading...</td></tr>";
+    const q = query(collection(db, "pyqs"), where("subject", "==", currentSubject), where("year", "==", currentYear));
+    const snapshot = await getDocs(q);
+    pyqTableBody.innerHTML = "";
 
-        if (snapshot.empty) { pyqTableBody.innerHTML = "<tr><td colspan='4' class='text-center p-4'>No questions found</td></tr>"; return; }
-
-        let items = [];
-        snapshot.forEach(docSnap => items.push(docSnap.data()));
-        items.sort((a, b) => (a.qno ?? Infinity) - (b.qno ?? Infinity));
-
-        items.forEach(item => {
-          const tr = document.createElement("tr");
-          const questionHtml = (item.question || "").replace(/\n/g, "<br>");
-          const solutionLink = item.solution ? `<a href="${item.solution}" target="_blank" class="text-blue-600 hover:underline">Open</a>` : "-";
-          tr.innerHTML = `
-  <td>${item.qno ?? '-'}</td>
-  <td class="pyq-question">${questionHtml}</td>
-`;
-
-          pyqTableBody.appendChild(tr);
-        });
-
-        lucide.createIcons();
-        if (window.MathJax) MathJax.typesetPromise().catch(err => console.error(err));
-      } catch (err) { console.error(err); pyqTableBody.innerHTML = "<tr><td colspan='4'>Failed to load questions</td></tr>"; }
+    if (snapshot.empty) {
+      pyqTableBody.innerHTML = "<tr><td colspan='4' class='text-center p-4'>No questions found</td></tr>";
+      return;
     }
+
+    let items = [];
+    snapshot.forEach(docSnap => items.push(docSnap.data()));
+    items.sort((a, b) => (a.qno ?? Infinity) - (b.qno ?? Infinity));
+
+    items.forEach(item => {
+      const tr = document.createElement("tr");
+
+      const questionHtml = (item.question || "").replace(/\n/g, "<br>");
+
+      // Eye icon for image view
+      const eyeIcon = `<div class="mt-1 cursor-pointer text-blue-600 hover:text-blue-800" onclick="openImageModal('${item.img ?? ''}')">
+        <i data-lucide="eye"></i>
+      </div>`;
+
+      // Solution button
+      const solBtn = item.sol ? `<a href="${item.sol}" target="_blank" class="inline-block px-2 py-1 text-sm bg-green-500 text-white rounded hover:bg-green-600 transition">Solution</a>` : "-";
+
+      tr.innerHTML = `
+        <td class="text-center">
+          ${item.qno ?? '-'}<br/>
+          ${eyeIcon}
+        </td>
+        <td class="pyq-question">${questionHtml}</td>
+        <td class="text-center">${solBtn}</td>
+      `;
+
+      pyqTableBody.appendChild(tr);
+    });
+
+    lucide.createIcons();
+    if (window.MathJax) MathJax.typesetPromise().catch(err => console.error(err));
+  } catch (err) {
+    console.error(err);
+    pyqTableBody.innerHTML = "<tr><td colspan='4'>Failed to load questions</td></tr>";
+  }
+}
 
     function escapeForOnclick(str) { return String(str).replace(/\\/g, "\\\\").replace(/'/g, "\\'").replace(/`/g, "\\`").replace(/\n/g, "\\n"); }
 
@@ -710,3 +729,4 @@ tr:hover { background: #f0f8ff; }
 
 
 remove solution and view buttons. 
+
