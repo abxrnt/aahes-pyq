@@ -393,9 +393,33 @@
       mainApp.style.display = "none";
     });
 
+    // Modal elements
+const imageModal = document.getElementById("imageModal");
+const pyqImage = document.getElementById("pyqImage");
+const closeBtn = imageModal.querySelector(".close-btn");
+const modalContent = imageModal.querySelector(".modal-content");
+
+// Open modal
+window.openImageModal = function(imgUrl){
+  if(!imgUrl){ alert("No image available."); return; }
+  pyqImage.src = imgUrl;
+  imageModal.style.display = "flex";
+}
+
+// Close modal when clicking outside content
+imageModal.addEventListener("click", () => imageModal.style.display = "none");
+
+// Close modal when clicking close button
+closeBtn.addEventListener("click", () => imageModal.style.display = "none");
+
+// Prevent closing when clicking inside modal content
+modalContent.addEventListener("click", (e) => e.stopPropagation());
+
+
   </script>
 </body>
 </html>
+
 
 
 
