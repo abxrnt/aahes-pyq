@@ -312,7 +312,7 @@
         }
 
         tr:hover {
-            background: #f0f8ff;
+            background: #ffffff;
         }
 
         .view-btn {
@@ -452,7 +452,13 @@
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
-        import { getFirestore, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
+        import {
+            getFirestore, collection, query, where, getDocs, doc, updateDoc
+        } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
+
+        import {
+            getAuth, updatePassword
+        } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyBOVl1hdmprJXpgdN_sNTO3FsNePD_zNZY",
@@ -466,6 +472,8 @@
 
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
+        const auth = getAuth(app);
+
 
         const loginBtn = document.getElementById("loginBtn");
         const loginSection = document.getElementById("loginSection");
@@ -533,7 +541,13 @@
         async function loadPYQs() {
             try {
                 pyqTableBody.innerHTML = "<tr><td colspan='3' class='text-center p-4'>Loading...</td></tr>";
-                const q = query(collection(db, "pyqs"), where("subject", "==", currentSubject), where("year", "==", currentYear));
+
+                const q = query(
+                    collection(db, "pyqs"),
+                    where("subject", "==", currentSubject),
+                    where("year", "==", currentYear)
+                );
+
                 const snapshot = await getDocs(q);
                 pyqTableBody.innerHTML = "";
 
@@ -550,19 +564,37 @@
                     const tr = document.createElement("tr");
 
                     tr.innerHTML = `
-            <td class="text-center">${item.qno ?? '-'}</td>
-<td class="text-center">
-  <img src="${item.img ?? ''}" alt="Question ${item.qno}" onclick="openImageModal('${item.img ?? ''}')" class="pyq-img" />
-</td>
-            <td class="text-center">${item.sol ? `<a href="${item.sol}" target="_blank" class="bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700 transition">Solution</a>` : '-'}</td>
-          `;
+                <td class="text-center font-medium">${item.qno ?? '-'}</td>
+
+                <!-- QUESTION IMAGE -->
+                <td class="text-center">
+                    ${item.img
+                            ? `<img src="${item.img}" alt="Question ${item.qno}"
+                                onclick="openImageModal('${item.img}')"
+                                class="pyq-img" />`
+                            : '-'}
+                </td>
+
+                <!-- SOLUTION IMAGE -->
+                <td class="text-center">
+                    ${item.sol
+                            ? `<img src="${item.sol}" alt="Solution ${item.qno}"
+                                onclick="openImageModal('${item.sol}')"
+                                class="pyq-img" />`
+                            : '-'}
+                </td>
+            `;
 
                     pyqTableBody.appendChild(tr);
                 });
 
                 lucide.createIcons();
-            } catch (err) { console.error(err); pyqTableBody.innerHTML = "<tr><td colspan='3'>Failed to load questions</td></tr>"; }
+            } catch (err) {
+                console.error(err);
+                pyqTableBody.innerHTML = "<tr><td colspan='3'>Failed to load questions</td></tr>";
+            }
         }
+
 
         window.openImageModal = function (imgUrl) {
             if (!imgUrl) { alert("No image available."); return; }
@@ -599,9 +631,144 @@
 
         // Prevent closing when clicking inside modal content
         modalContent.addEventListener("click", (e) => e.stopPropagation());
+        // ---------------- PROFILE MODAL ----------------
+        // ---------- PROFILE MODAL LOGIC ----------
+        const profileModal = document.getElementById("profileModal");
+        const profileCard = document.getElementById("profileCard");
+        const closeProfileModal = document.getElementById("closeProfileModal");
+        const profileBtn = document.getElementById("profileBtn");
+        const saveProfileBtn = document.getElementById("saveProfileBtn");
 
+        const nameField = document.getElementById("profileName");
+        const classField = document.getElementById("profileClass");
+        const passwordField = document.getElementById("newPassword");
+        const togglePassword = document.getElementById("togglePassword");
+
+        // Open modal
+        profileBtn.addEventListener("click", () => {
+            if (!currentUser) return alert("User not found!");
+            nameField.value = currentUser.name ?? "";
+            classField.value = currentUser.class ?? "";
+            passwordField.value = "";
+            profileModal.classList.remove("hidden");
+            setTimeout(() => profileCard.classList.replace("scale-95", "scale-100"), 50);
+        });
+
+        // Close modal
+        function closeProfile() {
+            profileCard.classList.replace("scale-100", "scale-95");
+            setTimeout(() => profileModal.classList.add("hidden"), 200);
+        }
+        closeProfileModal.addEventListener("click", closeProfile);
+        profileModal.addEventListener("click", e => { if (e.target === profileModal) closeProfile(); });
+
+        // Password visibility toggle
+        togglePassword.addEventListener("click", () => {
+            const type = passwordField.type === "password" ? "text" : "password";
+            passwordField.type = type;
+        });
+
+        // Save changes
+        document.getElementById("profileForm").addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const newName = nameField.value.trim();
+            const newClass = classField.value.trim();
+            const newPass = passwordField.value.trim();
+
+            if (!currentUser || !currentUser.id) return alert("User not found in session!");
+
+            try {
+                // Firestore document reference
+                const userRef = doc(db, "users", currentUser.id);
+
+                // Update name and class
+                await updateDoc(userRef, { name: newName, class: newClass });
+
+                // Update local user
+                currentUser.name = newName;
+                currentUser.class = newClass;
+
+                // Update password if entered
+                if (newPass) {
+                    const user = auth.currentUser;
+                    if (user) {
+                        await updatePassword(user, newPass);
+                        alert("✅ Password updated successfully!");
+                    } else {
+                        alert("⚠️ Password can't be updated (no Auth user).");
+                    }
+                }
+
+                alert("✅ Profile updated successfully!");
+
+                const welcomeMsg = document.getElementById("welcomeMsg");
+                if (welcomeMsg) {
+                    welcomeMsg.innerText = `Welcome, ${currentUser.name}! 😊`;
+                }
+                closeProfile();
+            } catch (err) {
+                console.error("Update failed:", err);
+                alert("❌ Failed to update profile. Please check console.");
+            }
+        });
 
     </script>
+    <!-- PROFILE MODAL -->
+    <!-- PROFILE MODAL -->
+    <div id="profileModal"
+        class="fixed inset-0 hidden items-center justify-center bg-black bg-opacity-60 backdrop-blur-sm z-50">
+        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md p-6 relative transform scale-95 transition-all duration-300"
+            id="profileCard">
+            <button id="closeProfileModal"
+                class="absolute top-3 right-3 text-gray-400 hover:text-gray-600 text-2xl">&times;</button>
+
+            <h2 class="text-2xl font-semibold text-center text-gray-800 mb-4">👤 Profile Settings</h2>
+            <p class="text-center text-gray-500 mb-6">Manage your profile information</p>
+
+            <form id="profileForm" class="space-y-4">
+                <div>
+                    <label class="block text-gray-700 font-medium mb-1">Full Name</label>
+                    <input id="profileName" type="text"
+                        class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-400 outline-none"
+                        placeholder="Enter your name">
+                </div>
+
+                <div>
+                    <label class="block text-gray-700 font-medium mb-1">Class</label>
+                    <input id="profileClass" type="text"
+                        class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-400 outline-none"
+                        placeholder="Enter your class">
+                </div>
+
+                <hr class="my-4">
+
+                <div>
+                    <label class="block text-gray-700 font-medium mb-1">Change Password</label>
+                    <div class="relative">
+                        <input id="newPassword" type="password"
+                            class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-400 outline-none pr-10"
+                            placeholder="New password">
+                        <button type="button" id="togglePassword"
+                            class="absolute right-3 top-2 text-gray-500 hover:text-gray-700">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0 8.268 2.943 9.542 7-1.274 4.057-5.065 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                <button id="saveProfileBtn" type="submit"
+                    class="w-full bg-blue-600 text-white py-2 rounded-lg font-medium hover:bg-blue-700 transition">Save
+                    Changes</button>
+            </form>
+        </div>
+    </div>
+
+
 </body>
 
 </html>
