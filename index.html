@@ -511,7 +511,7 @@
       <div class="modal-content" onclick="event.stopPropagation()">
         <span class="close-btn" onclick="closeViewModal()">&times;</span>
         <!-- VIEW QUESTION -->
-        <p id="viewQuestion"></p>
+<p id="viewQuestion" class="break-words max-w-full"></p>
       </div>
     </div>
 
@@ -779,7 +779,7 @@
           // compose the row
           tr.innerHTML = `
             <td>${item.qno ?? '-'}</td>
-            <td class="pyq-question">${questionHtml}</td>
+<td class="pyq-question break-words max-w-[500px]">${questionHtml}</td>
             <td class="text-center">
               <i data-lucide="eye" class="view-btn cursor-pointer" onclick="openViewModal('${escapeForOnclick(item.question || '')}', ${item.qno ? `'${item.qno}'` : "''"})"></i>
             </td>
@@ -1110,3 +1110,4 @@
 </body>
 
 </html>
+
