@@ -6,29 +6,23 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>AAHES PYQ Portal</title>
 
-  <!-- Tailwind CSS -->
+  <!-- Tailwind CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
 
   <!-- Favicon -->
   <link rel="icon" type="image/x-icon" href="favicon.png">
 
-  <!-- Google Font -->
+  <!-- Quicksand font -->
   <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600&display=swap" rel="stylesheet">
 
-  <!-- Lucide Icons -->
+  <!-- Lucide icons -->
   <script src="https://unpkg.com/lucide@latest"></script>
 
-  <!-- MathJax -->
-  <script>
-    window.MathJax = {
-      tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] },
-      svg: { fontCache: 'global' }
-    };
-  </script>
-  <script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
-
+  <!-- ======================================================================
+       STYLES
+       ====================================================================== -->
   <style>
-    /* -------------------- GLOBAL -------------------- */
+    /* GLOBAL */
     body,
     html {
       margin: 0;
@@ -37,7 +31,7 @@
       height: 100%;
     }
 
-    /* -------------------- LOGIN SECTION -------------------- */
+    /* LOGIN SECTION */
     .login-bg {
       display: flex;
       height: 100vh;
@@ -160,6 +154,7 @@
       text-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
     }
 
+    /* ANIMATIONS */
     @keyframes fadeSlide {
       0% {
         opacity: 0;
@@ -184,20 +179,19 @@
       }
     }
 
-    /* -------------------- MAIN APP -------------------- */
+    /* MAIN APP */
     #mainApp {
       display: none;
       padding: 1rem 2rem;
-      max-width: 100%;
+      max-width: 1200px;
       margin: auto;
     }
 
     #welcomeMsg {
       color: #0c2b4e;
-      font-weight: 500;
     }
 
-    /* -------------------- NAVBAR -------------------- */
+    /* NAVBAR */
     .navbar {
       display: flex;
       justify-content: space-between;
@@ -298,34 +292,35 @@
       box-shadow: 0 8px 16px rgba(0, 0, 0, 0.35);
     }
 
-    /* -------------------- TABLE -------------------- */
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      table-layout: fixed;
-      font-size: 0.875rem;
-      margin-top: 0.5rem;
-    }
+    /* TABLE */
+    /* TABLE */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed; /* keeps columns from stretching */
+  font-size: 0.875rem; /* smaller text */
+}
 
-    th,
-    td {
-      padding: 0.5rem 0.6rem;
-      border-bottom: 1px solid #e2e8f0;
-      text-align: left;
-    }
+th, td {
+  padding: 0.4rem 0.6rem; /* smaller padding */
+  border-bottom: 1px solid #e2e8f0;
+  text-align: left;
+}
 
-    th:nth-child(1),
-    td:nth-child(1) {
-      width: 8%;
-    }
+th:nth-child(1), td:nth-child(1) { width: 8%; }
+th:nth-child(2), td:nth-child(2) {
+  width: 64%;
+  white-space: normal;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+th:nth-child(3), td:nth-child(3),
+th:nth-child(4), td:nth-child(4) { width: 14%; text-align: center; }
 
-    th:nth-child(2),
-    td:nth-child(2) {
-      width: 92%;
-      white-space: normal;
-      word-wrap: break-word;
-      overflow-wrap: break-word;
-    }
+tr:hover { background: #f0f8ff; }
+
+.pyq-question { display: block; }
+
 
     th {
       background: #0c2b4e;
@@ -336,11 +331,18 @@
       background: #f0f8f5;
     }
 
-    .pyq-question {
-      display: block;
+    .view-btn {
+      color: #0c2b4e;
+      cursor: pointer;
+      transition: all 0.2s;
     }
 
-    /* -------------------- MODALS -------------------- */
+    .view-btn:hover {
+      transform: scale(1.1);
+      color: #0c2b4e;
+    }
+
+    /* MODALS */
     .modal {
       display: none;
       position: fixed;
@@ -401,21 +403,36 @@
       transform: translateY(-2px) scale(1.03);
     }
 
-    /* -------------------- UTILITY -------------------- */
+    #imageModal .modal-content {
+      max-width: 350px;
+      padding: 1rem;
+      border-radius: 1rem;
+      text-align: center;
+    }
+
+    #pyqImage {
+      max-width: 100%;
+      border-radius: 0.8rem;
+    }
+
+    /* UTILITY */
     .spacer {
       height: 12px;
     }
-
-    .w-full-scroll {
-      width: 100%;
-      overflow-x: auto;
-    }
-
   </style>
+
+  <!-- MathJax -->
+  <script>
+    window.MathJax = {
+      tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] },
+      svg: { fontCache: 'global' }
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
 </head>
 
 <body>
-  <!-- ===================== LOGIN ===================== -->
+  <!-- LOGIN -->
   <div class="login-bg" id="loginSection">
     <div class="login-left">
       <h1>Welcome Back</h1>
@@ -435,7 +452,7 @@
     </div>
   </div>
 
-  <!-- ===================== MAIN APP ===================== -->
+  <!-- MAIN APP -->
   <section id="mainApp">
     <!-- NAVBAR -->
     <div class="navbar">
@@ -453,27 +470,36 @@
     <h2 id="welcomeMsg" class="text-2xl font-semibold mb-4"></h2>
 
     <!-- PYQ TABLE -->
-    <div class="w-full-scroll">
-      <table class="w-full text-sm border-collapse">
-        <thead class="bg-gray-800 text-white">
-          <tr>
-            <th>QNo</th>
-            <th>Question</th>
-          </tr>
-        </thead>
-        <tbody id="pyqTableBody">
-          <tr>
-            <td colspan="2" class="text-center p-4">Select a subject and year</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+    <div class="w-full overflow-x-auto mt-2">
+  <table class="w-full text-sm border-collapse">
+    <thead class="bg-gray-800 text-white">
+  <tr>
+    <th class="px-2 py-1">QNo</th>
+    <th class="px-2 py-1">Question</th>
+  </tr>
+</thead>
+
+    <tbody id="pyqTableBody">
+      <tr>
+        <td colspan="4" class="text-center p-2">Select a subject and year</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
 
     <!-- VIEW MODAL -->
     <div id="viewModal" class="modal" onclick="closeViewModal()">
       <div class="modal-content" onclick="event.stopPropagation()">
         <span class="close-btn" onclick="closeViewModal()">&times;</span>
         <p id="viewQuestion" class="break-words max-w-full"></p>
+      </div>
+    </div>
+
+    <!-- IMAGE MODAL -->
+    <div id="imageModal" class="modal" onclick="closeImageModal()">
+      <div class="modal-content" onclick="event.stopPropagation()">
+        <span class="close-btn" onclick="closeImageModal()">&times;</span>
+        <img id="pyqImage" src="" alt="PYQ Image" />
       </div>
     </div>
 
@@ -495,7 +521,9 @@
     </div>
   </section>
 
-  <!-- ===================== SCRIPT ===================== -->
+  <!-- ======================================================================
+       SCRIPT: Firebase + Logic
+       ====================================================================== -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
     import { getFirestore, collection, query, where, getDocs, doc, updateDoc } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
@@ -514,84 +542,171 @@
     const db = getFirestore(app);
 
     const loginBtn = document.getElementById("loginBtn");
-    const emailInput = document.getElementById("emailInput");
-    const passInput = document.getElementById("passInput");
     const loginSection = document.getElementById("loginSection");
     const mainApp = document.getElementById("mainApp");
-    const welcomeMsg = document.getElementById("welcomeMsg");
+    const pyqTableBody = document.getElementById("pyqTableBody");
+    const subjectButtons = document.getElementById("subjectButtons");
+    const yearButtons = document.getElementById("yearButtons");
 
-    let currentUser = null;
-
-    loginBtn.addEventListener("click", async () => {
-      const email = emailInput.value.trim();
-      const password = passInput.value.trim();
-      if (!email || !password) return alert("Enter credentials");
-
-      const q = query(collection(db, "users"), where("email", "==", email), where("password", "==", password));
-      const snapshot = await getDocs(q);
-      if (snapshot.empty) return alert("Invalid credentials");
-
-      currentUser = snapshot.docs[0].data();
-      welcomeMsg.textContent = `Welcome, ${currentUser.name} (${currentUser.class})`;
-
-      loginSection.style.display = "none";
-      mainApp.style.display = "block";
-      renderSubjects();
-    });
-
-    function renderSubjects() {
-      const subjects = ["Physics", "Chemistry", "Mathematics"];
-      const subjectButtons = document.getElementById("subjectButtons");
-      subjectButtons.innerHTML = "";
-      subjects.forEach(sub => {
-        const btn = document.createElement("button");
-        btn.textContent = sub;
-        btn.onclick = () => { loadPYQs(sub, "2025"); };
-        subjectButtons.appendChild(btn);
-      });
-    }
-
-    async function loadPYQs(subject, year) {
-      const pyqBody = document.getElementById("pyqTableBody");
-      pyqBody.innerHTML = `<tr><td colspan="2" class="text-center p-4">Loading...</td></tr>`;
-
-      const q = query(collection(db, "pyqs"), where("subject", "==", subject), where("year", "==", year));
-      const snapshot = await getDocs(q);
-      if (snapshot.empty) {
-        pyqBody.innerHTML = `<tr><td colspan="2" class="text-center p-4">No questions found</td></tr>`;
-        return;
-      }
-
-      pyqBody.innerHTML = "";
-      snapshot.forEach(docSnap => {
-        const data = docSnap.data();
-        const tr = document.createElement("tr");
-        tr.innerHTML = `
-          <td>${data.qno ?? '-'}</td>
-          <td class="pyq-question">${data.question ?? ''}</td>
-        `;
-        pyqBody.appendChild(tr);
-      });
-
-      MathJax.typeset();
-    }
-
-    // -------------------- PROFILE MODAL --------------------
-    const profileBtn = document.getElementById("profileBtn");
     const profileModal = document.getElementById("profileModal");
     const closeProfileBtn = document.getElementById("closeProfileBtn");
+    const profileBtn = document.getElementById("profileBtn");
 
-    profileBtn.onclick = () => profileModal.style.display = "flex";
-    closeProfileBtn.onclick = () => profileModal.style.display = "none";
+    let currentUser = null;
+    let currentSubject = "physics";
+    let currentYear = 2025;
 
-    window.onclick = e => {
-      if (e.target == profileModal) profileModal.style.display = "none";
+    const subjects = ["physics", "chemistry", "maths"];
+    const years = [2025, 2024, 2023, 2022];
+
+    function safeInnerText(el, text) { el.textContent = text ?? ""; }
+
+    loginBtn.addEventListener("click", async () => {
+      try {
+        const email = document.getElementById("emailInput").value.trim();
+        const password = document.getElementById("passInput").value.trim();
+        if (!email || !password) { alert("Enter email & password"); return; }
+
+        const q = query(collection(db, "users"), where("email", "==", email));
+        const snapshot = await getDocs(q);
+
+        if (snapshot.empty) { alert("User not found"); return; }
+
+        let found = false;
+        snapshot.forEach(docSnap => {
+          const data = docSnap.data();
+          if (data.password === password) { found = true; currentUser = { id: docSnap.id, ...data }; }
+        });
+
+        if (!found) { alert("Incorrect password"); return; }
+        onLoginSuccess();
+      } catch (err) { console.error(err); alert("Login failed."); }
+    });
+
+    function onLoginSuccess() {
+      loginSection.style.display = "none";
+      mainApp.style.display = "block";
+      document.getElementById("welcomeMsg").innerText = `Welcome, ${currentUser.name}!😊`;
+      document.getElementById("profileName").value = currentUser.name || "";
+      document.getElementById("profileClass").value = currentUser.class || "";
+      generateButtons();
+      loadPYQs();
+      lucide.createIcons();
+    }
+
+    document.getElementById("logoutBtn").addEventListener("click", () => {
+      currentUser = null;
+      loginSection.style.display = "flex";
+      mainApp.style.display = "none";
+    });
+
+    function generateButtons() {
+      subjectButtons.innerHTML = "";
+      subjects.forEach(s => {
+        const btn = document.createElement("button");
+        btn.innerText = s.charAt(0).toUpperCase() + s.slice(1);
+        if (s === currentSubject) btn.classList.add("tab-active");
+        btn.addEventListener("click", () => { currentSubject = s; subjectButtons.querySelectorAll("button").forEach(b => b.classList.remove("tab-active")); btn.classList.add("tab-active"); loadPYQs(); });
+        subjectButtons.appendChild(btn);
+      });
+
+      yearButtons.innerHTML = "";
+      years.forEach(y => {
+        const btn = document.createElement("button");
+        btn.innerText = y;
+        if (y === currentYear) btn.classList.add("tab-active");
+        btn.addEventListener("click", () => { currentYear = y; yearButtons.querySelectorAll("button").forEach(b => b.classList.remove("tab-active")); btn.classList.add("tab-active"); loadPYQs(); });
+        yearButtons.appendChild(btn);
+      });
+    }
+
+    async function loadPYQs() {
+      try {
+        pyqTableBody.innerHTML = "<tr><td colspan='4' class='text-center p-4'>Loading...</td></tr>";
+        const q = query(collection(db, "pyqs"), where("subject", "==", currentSubject), where("year", "==", currentYear));
+        const snapshot = await getDocs(q);
+        pyqTableBody.innerHTML = "";
+
+        if (snapshot.empty) { pyqTableBody.innerHTML = "<tr><td colspan='4' class='text-center p-4'>No questions found</td></tr>"; return; }
+
+        let items = [];
+        snapshot.forEach(docSnap => items.push(docSnap.data()));
+        items.sort((a, b) => (a.qno ?? Infinity) - (b.qno ?? Infinity));
+
+        items.forEach(item => {
+          const tr = document.createElement("tr");
+          const questionHtml = (item.question || "").replace(/\n/g, "<br>");
+          const solutionLink = item.solution ? `<a href="${item.solution}" target="_blank" class="text-blue-600 hover:underline">Open</a>` : "-";
+          tr.innerHTML = `
+  <td>${item.qno ?? '-'}</td>
+  <td class="pyq-question">${questionHtml}</td>
+`;
+
+          pyqTableBody.appendChild(tr);
+        });
+
+        lucide.createIcons();
+        if (window.MathJax) MathJax.typesetPromise().catch(err => console.error(err));
+      } catch (err) { console.error(err); pyqTableBody.innerHTML = "<tr><td colspan='4'>Failed to load questions</td></tr>"; }
+    }
+
+    function escapeForOnclick(str) { return String(str).replace(/\\/g, "\\\\").replace(/'/g, "\\'").replace(/`/g, "\\`").replace(/\n/g, "\\n"); }
+
+    window.openViewModal = function(q, qno = "") {
+      const viewQ = document.getElementById("viewQuestion");
+      const normalized = q.replace(/\\n/g, "\n");
+      viewQ.innerHTML = normalized.replace(/\n/g, "<br>");
+      document.getElementById("viewModal").style.display = "flex";
+      if (window.MathJax) MathJax.typesetPromise([viewQ]).catch(err => console.error(err));
     };
+    function closeViewModal() { document.getElementById("viewModal").style.display = "none"; }
 
-    const logoutBtn = document.getElementById("logoutBtn");
-    logoutBtn.onclick = () => location.reload();
+    profileBtn.addEventListener("click", () => { if (currentUser) profileModal.style.display = "flex"; else alert("Please login first."); });
+    closeProfileBtn.addEventListener("click", () => profileModal.style.display = "none");
+    profileModal.addEventListener("click", () => profileModal.style.display = "none");
+    profileModal.querySelector(".modal-content").addEventListener("click", (e) => e.stopPropagation());
 
+    window.openImageModal = function(imgUrl) {
+      if (!imgUrl) { alert("No image available."); return; }
+      const modal = document.getElementById("imageModal");
+      document.getElementById("pyqImage").src = imgUrl;
+      modal.style.display = "flex";
+    };
+    function closeImageModal() { document.getElementById("imageModal").style.display = "none"; }
+
+    document.getElementById("saveProfileBtn").addEventListener("click", async () => {
+      try {
+        const newName = document.getElementById("profileName").value.trim();
+        const newClass = document.getElementById("profileClass").value.trim();
+        const oldPass = document.getElementById("oldPassword").value;
+        const newPass = document.getElementById("newPassword").value;
+
+        if (!currentUser) { alert("No user logged in"); return; }
+        if (oldPass && oldPass !== currentUser.password) { alert("Old password incorrect"); return; }
+
+        const userRef = doc(db, "users", currentUser.id);
+        const updateData = { name: newName, class: newClass };
+        if (newPass) updateData.password = newPass;
+
+        await updateDoc(userRef, updateData);
+        currentUser = { ...currentUser, ...updateData };
+        alert("Profile updated successfully!");
+        profileModal.style.display = "none";
+      } catch (err) { console.error(err); alert("Failed to update profile."); }
+    });
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") { closeViewModal(); profileModal.style.display = "none"; document.getElementById("imageModal").style.display = "none"; }
+    });
+
+    lucide.createIcons();
+    if (window.MathJax) MathJax.typesetPromise().catch(err => console.warn(err));
   </script>
-
 </body>
+
 </html>
+
+
+
+
+remove solution and view buttons. 
