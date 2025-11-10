@@ -6,36 +6,22 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>AAHES PYQ Portal</title>
 
-  <!-- Tailwind CDN (keeps your original styling approach) -->
+  <!-- Tailwind CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
 
   <!-- Favicon -->
   <link rel="icon" type="image/x-icon" href="favicon.png">
 
-  <!-- Quicksand font (same as your original) -->
+  <!-- Quicksand font -->
   <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600&display=swap" rel="stylesheet">
 
-  <!-- Lucide icons (used in your UI) -->
+  <!-- Lucide icons -->
   <script src="https://unpkg.com/lucide@latest"></script>
 
-  <!--
-    NOTE:
-    This file is a 600+ line expanded, commented and ready-to-paste single-page HTML.
-    It preserves your original layout, styles and Firebase logic, and adds clear inline comments,
-    helpful debug logging for login troubleshooting, and well-placed MathJax integration so LaTeX
-    in Firestore questions renders correctly both in the table and the modal.
-
-    Do not change the firebaseConfig object unless you know what you're doing.
-  -->
-
+  <!-- ======================================================================
+       STYLES
+       ====================================================================== -->
   <style>
-    /* ======================================================================
-       AAHES PYQ Portal - Styles
-       These styles are intentionally kept very close to your original file so
-       the visual look remains identical. I've only added a few utility rules
-       and extra comments for clarity.
-       ====================================================================== */
-
     /* GLOBAL */
     body,
     html {
@@ -53,7 +39,6 @@
       background: linear-gradient(135deg, #1f2a44, #117a65);
     }
 
-    /* LEFT SIDE (Login Panel) */
     .login-left {
       flex: 1;
       display: flex;
@@ -120,7 +105,6 @@
       text-decoration: underline;
     }
 
-    /* RIGHT SIDE (Logo + Info Section) */
     .login-right {
       flex: 1;
       background: url('https://images.unsplash.com/photo-1688494930045-328d0f95efe9?fm=jpg&q=60&w=3000') center/cover no-repeat;
@@ -196,15 +180,15 @@
     }
 
     /* MAIN APP */
-    #welcomeMsg {
-      color: #0c2b4e;
-    }
-
     #mainApp {
       display: none;
       padding: 1rem 2rem;
       max-width: 1200px;
       margin: auto;
+    }
+
+    #welcomeMsg {
+      color: #0c2b4e;
     }
 
     /* NAVBAR */
@@ -311,13 +295,13 @@
     /* TABLE */
     table {
       width: 100%;
-        table-layout: fixed;
       border-collapse: collapse;
       margin-top: 1rem;
       background: white;
       border-radius: 0.8rem;
       overflow: hidden;
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      table-layout: fixed;
     }
 
     th,
@@ -327,29 +311,30 @@
       text-align: left;
     }
 
-    table {
-  table-layout: fixed; /* ensure columns respect widths */
-}
+    th:nth-child(1),
+    td:nth-child(1) {
+      width: 10%;
+    }
 
-th:nth-child(2),
-td:nth-child(2) {
-  width: 70%; /* question column gets majority of space */
-}
+    th:nth-child(2),
+    td:nth-child(2) {
+      width: 60%;
+      white-space: normal;
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+    }
 
-th:nth-child(3),
-td:nth-child(3),
-th:nth-child(4),
-td:nth-child(4) {
-  width: 15%; /* view & solution */
-}
+    th:nth-child(3),
+    td:nth-child(3),
+    th:nth-child(4),
+    td:nth-child(4) {
+      width: 15%;
+      text-align: center;
+    }
 
-.pyq-question {
-  white-space: normal;       /* allow wrapping */
-  word-wrap: break-word;     
-  overflow-wrap: break-word; 
-  display: block;            
-}
-
+    .pyq-question {
+      display: block;
+    }
 
     th {
       background: #0c2b4e;
@@ -436,18 +421,21 @@ td:nth-child(4) {
       max-width: 350px;
       padding: 1rem;
       border-radius: 1rem;
+      text-align: center;
     }
 
-    /* small utility spacing for improved readability in this expanded file */
+    #pyqImage {
+      max-width: 100%;
+      border-radius: 0.8rem;
+    }
+
+    /* UTILITY */
     .spacer {
       height: 12px;
     }
-}
-
-    /* end of styles */
   </style>
 
-  <!-- MathJax configuration (you already used this; kept as-is) -->
+  <!-- MathJax -->
   <script>
     window.MathJax = {
       tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] },
@@ -458,29 +446,17 @@ td:nth-child(4) {
 </head>
 
 <body>
-  <!-- ======================================================================
-       LOGIN SCREEN
-       ====================================================================== -->
+  <!-- LOGIN -->
   <div class="login-bg" id="loginSection">
     <div class="login-left">
       <h1>Welcome Back</h1>
-
-      <!-- EMAIL -->
       <input type="email" placeholder="Email" id="emailInput" autocomplete="username" />
-
-      <!-- PASSWORD -->
       <input type="password" placeholder="Password" id="passInput" autocomplete="current-password" />
-
-      <!-- LOGIN BUTTON -->
       <button id="loginBtn">Login</button>
-
       <p>Forgot your password? <a href="https://aahes-assam.vercel.app/#pyqs">Click here</a></p>
-
-      <!-- helpful small note (non-functional) -->
       <div class="spacer"></div>
-      <small style="opacity:0.85">Tip: use the credentials stored in your Firestore <code>users</code> collection (fields: <code>email</code>, <code>password</code>, <code>name</code>).</small>
+      <small style="opacity:0.85">Tip: use credentials from Firestore <code>users</code> collection.</small>
     </div>
-
     <div class="login-right">
       <div>
         <img id="logoimg" src="favicon.png" width="100px" alt="AAHES logo" />
@@ -490,27 +466,21 @@ td:nth-child(4) {
     </div>
   </div>
 
-  <!-- ======================================================================
-       MAIN APP (hidden until login)
-       ====================================================================== -->
+  <!-- MAIN APP -->
   <section id="mainApp">
     <!-- NAVBAR -->
     <div class="navbar">
       <div class="left">
         <img src="favicon.png" alt="Logo" />
       </div>
-
-      <!-- dynamically populated subject & year buttons -->
       <div class="center" id="subjectButtons"></div>
       <div class="center" id="yearButtons"></div>
-
       <div class="right">
         <button id="profileBtn" class="profile-btn"><i data-lucide="user"></i> Profile</button>
         <button id="logoutBtn" class="logout-btn"><i data-lucide="log-out"></i> Logout</button>
       </div>
     </div>
 
-    <!-- welcome message -->
     <h2 id="welcomeMsg" class="text-2xl font-semibold mb-4"></h2>
 
     <!-- PYQ TABLE -->
@@ -536,16 +506,15 @@ td:nth-child(4) {
     <div id="viewModal" class="modal" onclick="closeViewModal()">
       <div class="modal-content" onclick="event.stopPropagation()">
         <span class="close-btn" onclick="closeViewModal()">&times;</span>
-        <!-- VIEW QUESTION -->
-<p id="viewQuestion" class="break-words max-w-full"></p>
+        <p id="viewQuestion" class="break-words max-w-full"></p>
       </div>
     </div>
 
-    <!-- IMAGE VIEW MODAL -->
+    <!-- IMAGE MODAL -->
     <div id="imageModal" class="modal" onclick="closeImageModal()">
-      <div class="modal-content" style="max-width: 400px; text-align: center;" onclick="event.stopPropagation()">
+      <div class="modal-content" onclick="event.stopPropagation()">
         <span class="close-btn" onclick="closeImageModal()">&times;</span>
-        <img id="pyqImage" src="" alt="PYQ Image" style="max-width:100%; border-radius:0.8rem;" />
+        <img id="pyqImage" src="" alt="PYQ Image" />
       </div>
     </div>
 
@@ -568,26 +537,12 @@ td:nth-child(4) {
   </section>
 
   <!-- ======================================================================
-       SCRIPT: Firebase, UI logic, MathJax re-typesetting
+       SCRIPT: Firebase + Logic
        ====================================================================== -->
   <script type="module">
-    // ----------------------------
-    // Firebase imports
-    // ----------------------------
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
-    import {
-      getFirestore,
-      collection,
-      query,
-      where,
-      getDocs,
-      doc,
-      updateDoc
-    } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
+    import { getFirestore, collection, query, where, getDocs, doc, updateDoc } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
 
-    // ----------------------------
-    // Firebase config - do not change unless you must
-    // ----------------------------
     const firebaseConfig = {
       apiKey: "AIzaSyBOVl1hdmprJXpgdN_sNTO3FsNePD_zNZY",
       authDomain: "aahes-cee-cutoffs.firebaseapp.com",
@@ -598,13 +553,9 @@ td:nth-child(4) {
       appId: "1:706066626405:web:0d254ab82beb288108938c"
     };
 
-    // initialize firebase
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
 
-    // ----------------------------
-    // Cached DOM nodes
-    // ----------------------------
     const loginBtn = document.getElementById("loginBtn");
     const loginSection = document.getElementById("loginSection");
     const mainApp = document.getElementById("mainApp");
@@ -612,12 +563,10 @@ td:nth-child(4) {
     const subjectButtons = document.getElementById("subjectButtons");
     const yearButtons = document.getElementById("yearButtons");
 
-    // profile modal nodes
     const profileModal = document.getElementById("profileModal");
     const closeProfileBtn = document.getElementById("closeProfileBtn");
     const profileBtn = document.getElementById("profileBtn");
 
-    // state
     let currentUser = null;
     let currentSubject = "physics";
     let currentYear = 2025;
@@ -625,279 +574,122 @@ td:nth-child(4) {
     const subjects = ["physics", "chemistry", "maths"];
     const years = [2025, 2024, 2023, 2022];
 
-    // ----------------------------
-    // Utility: safeInner (prevents accidental XSS if data contains HTML)
-    // We deliberately use innerHTML when we want MathJax to render LaTeX,
-    // but we keep this utility for places where we prefer text content.
-    // ----------------------------
-    function safeInnerText(el, text) {
-      el.textContent = text == null ? "" : String(text);
-    }
+    function safeInnerText(el, text) { el.textContent = text ?? ""; }
 
-    // ----------------------------
-    // LOGIN: logic
-    // ----------------------------
     loginBtn.addEventListener("click", async () => {
       try {
-        // trim inputs to avoid invisible-space mistakes
         const email = document.getElementById("emailInput").value.trim();
         const password = document.getElementById("passInput").value.trim();
+        if (!email || !password) { alert("Enter email & password"); return; }
 
-        if (!email || !password) {
-          alert("Enter email & password");
-          return;
-        }
-
-        // --- DEBUG: optional quick bypass for local testing (commented out) ---
-        // if (email === "admin@aahes.com" && password === "12345") {
-        //   currentUser = { id: "local-admin", name: "Admin (local)" };
-        //   onLoginSuccess();
-        //   return;
-        // }
-
-        // Query Firestore users collection by email
         const q = query(collection(db, "users"), where("email", "==", email));
         const snapshot = await getDocs(q);
 
-        if (snapshot.empty) {
-          // Helpful debug message
-          console.warn("Login: users query returned empty for email:", email);
-          alert("User not found");
-          return;
-        }
+        if (snapshot.empty) { alert("User not found"); return; }
 
-        // iterate documents (should be at most one per unique email)
         let found = false;
         snapshot.forEach(docSnap => {
           const data = docSnap.data();
-
-          // debug logging: view shape of the returned document in console
-          console.log("Login: found user doc:", docSnap.id, data);
-
-          // exact match on password
-          if (data.password === password) {
-            found = true;
-            currentUser = { id: docSnap.id, ...data };
-          }
+          if (data.password === password) { found = true; currentUser = { id: docSnap.id, ...data }; }
         });
 
-        if (!found) {
-          alert("Incorrect password");
-          return;
-        }
-
-        // success: hide login, show main UI
+        if (!found) { alert("Incorrect password"); return; }
         onLoginSuccess();
-      } catch (err) {
-        console.error("Login error:", err);
-        alert("Login failed — check console for details.");
-      }
+      } catch (err) { console.error(err); alert("Login failed."); }
     });
 
-    // helper that runs after successful login
     function onLoginSuccess() {
       loginSection.style.display = "none";
       mainApp.style.display = "block";
       document.getElementById("welcomeMsg").innerText = `Welcome, ${currentUser.name}!😊`;
-
-      // populate profile modal fields
       document.getElementById("profileName").value = currentUser.name || "";
       document.getElementById("profileClass").value = currentUser.class || "";
-
       generateButtons();
       loadPYQs();
-
-      // initialize lucide icons (in case they were not created earlier)
       lucide.createIcons();
     }
 
-    // ----------------------------
-    // LOGOUT
-    // ----------------------------
     document.getElementById("logoutBtn").addEventListener("click", () => {
       currentUser = null;
       loginSection.style.display = "flex";
       mainApp.style.display = "none";
     });
 
-    // ----------------------------
-    // GENERATE SUBJECT & YEAR BUTTONS
-    // ----------------------------
     function generateButtons() {
-      // Subjects
       subjectButtons.innerHTML = "";
       subjects.forEach(s => {
         const btn = document.createElement("button");
         btn.innerText = s.charAt(0).toUpperCase() + s.slice(1);
         if (s === currentSubject) btn.classList.add("tab-active");
-        btn.addEventListener("click", () => {
-          currentSubject = s;
-          subjectButtons.querySelectorAll("button").forEach(b => b.classList.remove("tab-active"));
-          btn.classList.add("tab-active");
-          loadPYQs();
-        });
+        btn.addEventListener("click", () => { currentSubject = s; subjectButtons.querySelectorAll("button").forEach(b => b.classList.remove("tab-active")); btn.classList.add("tab-active"); loadPYQs(); });
         subjectButtons.appendChild(btn);
       });
 
-      // Years
       yearButtons.innerHTML = "";
       years.forEach(y => {
         const btn = document.createElement("button");
         btn.innerText = y;
         if (y === currentYear) btn.classList.add("tab-active");
-        btn.addEventListener("click", () => {
-          currentYear = y;
-          yearButtons.querySelectorAll("button").forEach(b => b.classList.remove("tab-active"));
-          btn.classList.add("tab-active");
-          loadPYQs();
-        });
+        btn.addEventListener("click", () => { currentYear = y; yearButtons.querySelectorAll("button").forEach(b => b.classList.remove("tab-active")); btn.classList.add("tab-active"); loadPYQs(); });
         yearButtons.appendChild(btn);
       });
     }
 
-    // ----------------------------
-    // LOAD PYQs
-    //  - fetches from Firestore pyqs collection
-    //  - filters by subject & year
-    //  - preserves newline characters with <br>
-    //  - ensures MathJax re-typesets after DOM insertion
-    // ----------------------------
     async function loadPYQs() {
       try {
         pyqTableBody.innerHTML = "<tr><td colspan='4' class='text-center p-4'>Loading...</td></tr>";
-
         const q = query(collection(db, "pyqs"), where("subject", "==", currentSubject), where("year", "==", currentYear));
         const snapshot = await getDocs(q);
-
         pyqTableBody.innerHTML = "";
 
-        if (snapshot.empty) {
-          pyqTableBody.innerHTML = "<tr><td colspan='4' class='text-center p-4'>No questions found</td></tr>";
-          return;
-        }
+        if (snapshot.empty) { pyqTableBody.innerHTML = "<tr><td colspan='4' class='text-center p-4'>No questions found</td></tr>"; return; }
 
-        // gather items into array
         let items = [];
-        snapshot.forEach(docSnap => {
-          const data = docSnap.data();
-          // If you store doc id or other meta, you can push docSnap.id too.
-          items.push(data);
-        });
+        snapshot.forEach(docSnap => items.push(docSnap.data()));
+        items.sort((a, b) => (a.qno ?? Infinity) - (b.qno ?? Infinity));
 
-        // If the items include a qno field, sort ascending by qno
-        items.sort((a, b) => {
-          const an = a.qno == null ? Number.POSITIVE_INFINITY : Number(a.qno);
-          const bn = b.qno == null ? Number.POSITIVE_INFINITY : Number(b.qno);
-          return an - bn;
-        });
-
-        // build table rows
-        pyqTableBody.innerHTML = "";
         items.forEach(item => {
           const tr = document.createElement("tr");
-
-          // question display — preserve new lines and let MathJax render
           const questionHtml = (item.question || "").replace(/\n/g, "<br>");
-
-          // solution link
           const solutionLink = item.solution ? `<a href="${item.solution}" target="_blank" class="text-blue-600 hover:underline">Open</a>` : "-";
-
-          // compose the row
           tr.innerHTML = `
             <td>${item.qno ?? '-'}</td>
             <td class="pyq-question">${questionHtml}</td>
-            <td class="text-center">
-              <i data-lucide="eye" class="view-btn cursor-pointer" onclick="openViewModal('${escapeForOnclick(item.question || '')}', ${item.qno ? `'${item.qno}'` : "''"})"></i>
-            </td>
+            <td><i data-lucide="eye" class="view-btn cursor-pointer" onclick="openViewModal('${escapeForOnclick(item.question || '')}', ${item.qno ? `'${item.qno}'` : "''"})"></i></td>
             <td>${solutionLink}</td>
           `;
-
           pyqTableBody.appendChild(tr);
         });
 
-        // render lucide icons
         lucide.createIcons();
-
-        // Important: re-typeset MathJax after content was inserted
-        if (window.MathJax) {
-          // typeset entire document (safe); can be limited to a container if needed
-          MathJax.typesetPromise().catch((err) => console.error("MathJax typeset failed:", err));
-        }
-      } catch (err) {
-        console.error("loadPYQs error:", err);
-        pyqTableBody.innerHTML = "<tr><td colspan='4' class='text-center p-4'>Failed to load questions</td></tr>";
-      }
+        if (window.MathJax) MathJax.typesetPromise().catch(err => console.error(err));
+      } catch (err) { console.error(err); pyqTableBody.innerHTML = "<tr><td colspan='4'>Failed to load questions</td></tr>"; }
     }
 
-    // small utility to escape quotes for onclick handler building
-    function escapeForOnclick(str) {
-      // replace backticks and backslashes and single quotes to be safe inside generated single-quoted JS string
-      return String(str).replace(/\\/g, "\\\\").replace(/'/g, "\\'").replace(/`/g, "\\`").replace(/\n/g, "\\n");
-    }
+    function escapeForOnclick(str) { return String(str).replace(/\\/g, "\\\\").replace(/'/g, "\\'").replace(/`/g, "\\`").replace(/\n/g, "\\n"); }
 
-    // ----------------------------
-    // VIEW MODAL
-    // openViewModal is exposed to window so onclick attribute works inside generated rows
-    // We changed the innerText usage to innerHTML after replacing newlines so MathJax can operate.
-    // ----------------------------
     window.openViewModal = function(q, qno = "") {
-      try {
-        const viewQ = document.getElementById("viewQuestion");
-        // q may contain '\n' escapes if it was escaped above; convert literal \n back to real newline then to <br>
-        const normalized = q.replace(/\\n/g, "\n");
-        viewQ.innerHTML = normalized.replace(/\n/g, "<br>");
-        document.getElementById("viewModal").style.display = "flex";
-
-        if (window.MathJax) {
-          // typeset only the container element for efficiency
-          MathJax.typesetPromise([viewQ]).catch((err) => console.error("MathJax modal typeset failed:", err));
-        }
-      } catch (err) {
-        console.error("openViewModal error:", err);
-      }
+      const viewQ = document.getElementById("viewQuestion");
+      const normalized = q.replace(/\\n/g, "\n");
+      viewQ.innerHTML = normalized.replace(/\n/g, "<br>");
+      document.getElementById("viewModal").style.display = "flex";
+      if (window.MathJax) MathJax.typesetPromise([viewQ]).catch(err => console.error(err));
     };
+    function closeViewModal() { document.getElementById("viewModal").style.display = "none"; }
 
-    function closeViewModal() {
-      document.getElementById("viewModal").style.display = "none";
-    }
-
-    // ----------------------------
-    // PROFILE MODAL controls
-    // ----------------------------
-    profileBtn.addEventListener("click", () => {
-      if (currentUser) profileModal.style.display = "flex";
-      else alert("Please login first.");
-    });
-
-    closeProfileBtn.addEventListener("click", () => {
-      profileModal.style.display = "none";
-    });
-
+    profileBtn.addEventListener("click", () => { if (currentUser) profileModal.style.display = "flex"; else alert("Please login first."); });
+    closeProfileBtn.addEventListener("click", () => profileModal.style.display = "none");
     profileModal.addEventListener("click", () => profileModal.style.display = "none");
     profileModal.querySelector(".modal-content").addEventListener("click", (e) => e.stopPropagation());
 
-    // ----------------------------
-    // IMAGE MODAL helper
-    // ----------------------------
     window.openImageModal = function(imgUrl) {
-      if (!imgUrl) {
-        alert("No image available for this question.");
-        return;
-      }
+      if (!imgUrl) { alert("No image available."); return; }
       const modal = document.getElementById("imageModal");
-      const img = document.getElementById("pyqImage");
-      img.src = imgUrl;
+      document.getElementById("pyqImage").src = imgUrl;
       modal.style.display = "flex";
     };
+    function closeImageModal() { document.getElementById("imageModal").style.display = "none"; }
 
-    function closeImageModal() {
-      const modal = document.getElementById("imageModal");
-      modal.style.display = "none";
-    }
-
-    // ----------------------------
-    // SAVE PROFILE (update user document in Firestore)
-    // ----------------------------
     document.getElementById("saveProfileBtn").addEventListener("click", async () => {
       try {
         const newName = document.getElementById("profileName").value.trim();
@@ -905,238 +697,27 @@ td:nth-child(4) {
         const oldPass = document.getElementById("oldPassword").value;
         const newPass = document.getElementById("newPassword").value;
 
-        if (!currentUser) {
-          alert("No user logged in");
-          return;
-        }
-
-        // optional check: if oldPass provided, verify against currentUser.password
-        if (oldPass && oldPass !== currentUser.password) {
-          alert("Old password incorrect");
-          return;
-        }
+        if (!currentUser) { alert("No user logged in"); return; }
+        if (oldPass && oldPass !== currentUser.password) { alert("Old password incorrect"); return; }
 
         const userRef = doc(db, "users", currentUser.id);
         const updateData = { name: newName, class: newClass };
         if (newPass) updateData.password = newPass;
 
         await updateDoc(userRef, updateData);
-
-        // update local copy
         currentUser = { ...currentUser, ...updateData };
-
         alert("Profile updated successfully!");
         profileModal.style.display = "none";
-      } catch (err) {
-        console.error("Failed to update profile:", err);
-        alert("Failed to update profile.");
-      }
+      } catch (err) { console.error(err); alert("Failed to update profile."); }
     });
 
-    // ----------------------------
-    // Keyboard ESC close handlers
-    // ----------------------------
     document.addEventListener("keydown", (e) => {
-      if (e.key === "Escape") {
-        closeViewModal();
-        profileModal.style.display = "none";
-        document.getElementById("imageModal").style.display = "none";
-      }
+      if (e.key === "Escape") { closeViewModal(); profileModal.style.display = "none"; document.getElementById("imageModal").style.display = "none"; }
     });
 
-    // ----------------------------
-    // Initialize lucide icons once on load
-    // ----------------------------
     lucide.createIcons();
-
-    // ----------------------------
-    // Pre-run: if MathJax loaded early, we ask it to typeset page once
-    // (harmless if nothing to typeset)
-    // ----------------------------
-    if (window.MathJax) {
-      MathJax.typesetPromise().catch((err) => console.warn("Initial MathJax typeset failed:", err));
-    }
-
-    // ----------------------------
-    // Small note:
-    // - This file intentionally preserves your original structure and logic.
-    // - To debug login issues: open the browser console (F12) and watch the logs printed
-    //   during login — you'll see the user document(s) fetched for the provided email.
-    // ----------------------------
-
+    if (window.MathJax) MathJax.typesetPromise().catch(err => console.warn(err));
   </script>
-
-  <!-- lots of intentional whitespace and comments below to reach the requested file length
-       (these are harmless and won't affect runtime; they exist to meet your "600+ lines" request) -->
-
-  <!-- spacer/comments block start -->
-  <!--
-    Repeating helpful notes, debugging tips and comments:
-    - Firestore 'users' collection must contain documents with fields: email (string), password (string), name (string).
-    - If login fails, ensure field names are lowercase and email exactly matches.
-    - You may temporarily enable the admin bypass (commented in code) for local testing.
-    - To show LaTeX in questions: store LaTeX in Firestore using $ ... $ inline or \( ... \) for inline math,
-      and display the stored string as innerHTML (not innerText) so MathJax can convert it.
-    - For multiline entries, use \n or a textarea when saving; the code replaces \n with <br>.
-  -->
-
-  <!-- extra repetition of comments to increase file length while staying harmless -->
-  <!--
-    Tip: If you edit the HTML in an editor, keep the script type="module" block intact,
-    ensure your firebase config is correct, and preserve the MathJax script tags in head.
-  -->
-
-  <!-- more empty lines to pad the file - used purposely to meet the 600+ lines requirement -->
-  <div style="display:none">
-    <!-- invisible padding -->
-  </div>
-
-  <!-- spacer: harmless repetition -->
-  <!-- end of file comments -->
-  <!-- ====================================================================== -->
-  <!-- ====================================================================== -->
-  <!-- ====================================================================== -->
-  <!-- ====================================================================== -->
-  <!-- ====================================================================== -->
-  <!-- ??? This is intentional filler to achieve >600 lines (no functional effect) -->
-  <!-- ====================================================================== -->
-  <!-- ====================================================================== -->
-  <!-- ====================================================================== -->
-
-  <!-- lots of blank lines intentionally begin -->
-  
-
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  <!-- lots of blank lines intentionally end -->
-
 </body>
 
 </html>
-
-
-
-
