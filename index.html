@@ -293,48 +293,34 @@
     }
 
     /* TABLE */
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 1rem;
-      background: white;
-      border-radius: 0.8rem;
-      overflow: hidden;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-      table-layout: fixed;
-    }
+    /* TABLE */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed; /* keeps columns from stretching */
+  font-size: 0.875rem; /* smaller text */
+}
 
-    th,
-    td {
-      padding: 0.7rem;
-      border-bottom: 1px solid #e2e8f0;
-      text-align: left;
-    }
+th, td {
+  padding: 0.4rem 0.6rem; /* smaller padding */
+  border-bottom: 1px solid #e2e8f0;
+  text-align: left;
+}
 
-    th:nth-child(1),
-    td:nth-child(1) {
-      width: 10%;
-    }
+th:nth-child(1), td:nth-child(1) { width: 8%; }
+th:nth-child(2), td:nth-child(2) {
+  width: 64%;
+  white-space: normal;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+th:nth-child(3), td:nth-child(3),
+th:nth-child(4), td:nth-child(4) { width: 14%; text-align: center; }
 
-    th:nth-child(2),
-    td:nth-child(2) {
-      width: 60%;
-      white-space: normal;
-      word-wrap: break-word;
-      overflow-wrap: break-word;
-    }
+tr:hover { background: #f0f8ff; }
 
-    th:nth-child(3),
-    td:nth-child(3),
-    th:nth-child(4),
-    td:nth-child(4) {
-      width: 15%;
-      text-align: center;
-    }
+.pyq-question { display: block; }
 
-    .pyq-question {
-      display: block;
-    }
 
     th {
       background: #0c2b4e;
@@ -484,23 +470,23 @@
     <h2 id="welcomeMsg" class="text-2xl font-semibold mb-4"></h2>
 
     <!-- PYQ TABLE -->
-    <div class="overflow-x-auto bg-white rounded-xl shadow-lg">
-      <table>
-        <thead>
-          <tr>
-            <th>QNo</th>
-            <th>Question</th>
-            <th>View</th>
-            <th>Solution</th>
-          </tr>
-        </thead>
-        <tbody id="pyqTableBody">
-          <tr>
-            <td colspan="4" class="text-center p-4">Select a subject and year</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+    <div class="w-full overflow-x-auto mt-2">
+  <table class="w-full text-sm border-collapse">
+    <thead class="bg-gray-800 text-white">
+      <tr>
+        <th class="px-2 py-1">QNo</th>
+        <th class="px-2 py-1">Question</th>
+        <th class="px-2 py-1">View</th>
+        <th class="px-2 py-1">Solution</th>
+      </tr>
+    </thead>
+    <tbody id="pyqTableBody">
+      <tr>
+        <td colspan="4" class="text-center p-2">Select a subject and year</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
 
     <!-- VIEW MODAL -->
     <div id="viewModal" class="modal" onclick="closeViewModal()">
@@ -721,3 +707,4 @@
 </body>
 
 </html>
+
