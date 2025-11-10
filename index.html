@@ -311,6 +311,7 @@
     /* TABLE */
     table {
       width: 100%;
+        table-layout: fixed;
       border-collapse: collapse;
       margin-top: 1rem;
       background: white;
@@ -325,6 +326,30 @@
       border-bottom: 1px solid #e2e8f0;
       text-align: left;
     }
+
+    table {
+  table-layout: fixed; /* ensure columns respect widths */
+}
+
+th:nth-child(2),
+td:nth-child(2) {
+  width: 70%; /* question column gets majority of space */
+}
+
+th:nth-child(3),
+td:nth-child(3),
+th:nth-child(4),
+td:nth-child(4) {
+  width: 15%; /* view & solution */
+}
+
+.pyq-question {
+  white-space: normal;       /* allow wrapping */
+  word-wrap: break-word;     
+  overflow-wrap: break-word; 
+  display: block;            
+}
+
 
     th {
       background: #0c2b4e;
@@ -417,12 +442,6 @@
     .spacer {
       height: 12px;
     }
-
-.pyq-question {
-  overflow-wrap: break-word;  /* allow breaking long words */
-  word-wrap: break-word;
-  max-width: 500px;           /* restrict question column width */
-  white-space: normal;        /* allow text to wrap to multiple lines */
 }
 
     /* end of styles */
@@ -1117,6 +1136,7 @@
 </body>
 
 </html>
+
 
 
 
