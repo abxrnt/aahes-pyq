@@ -418,10 +418,11 @@
       height: 12px;
     }
 
-    .pyq-question, #viewQuestion {
-  overflow-wrap: break-word;  /* allows breaking long words */
-  word-wrap: break-word;      /* fallback for older browsers */
-  max-width: 100%;            /* ensures it does not overflow container */
+.pyq-question {
+  overflow-wrap: break-word;  /* allow breaking long words */
+  word-wrap: break-word;
+  max-width: 500px;           /* restrict question column width */
+  white-space: normal;        /* allow text to wrap to multiple lines */
 }
 
     /* end of styles */
@@ -785,7 +786,7 @@
           // compose the row
           tr.innerHTML = `
             <td>${item.qno ?? '-'}</td>
-<td class="pyq-question break-words max-w-[500px]">${questionHtml}</td>
+            <td class="pyq-question">${questionHtml}</td>
             <td class="text-center">
               <i data-lucide="eye" class="view-btn cursor-pointer" onclick="openViewModal('${escapeForOnclick(item.question || '')}', ${item.qno ? `'${item.qno}'` : "''"})"></i>
             </td>
@@ -1116,5 +1117,6 @@
 </body>
 
 </html>
+
 
 
