@@ -582,16 +582,6 @@ tr:hover { background: #f0f8ff; }
         onLoginSuccess();
       } catch (err) { console.error(err); alert("Login failed."); }
     });
-function setQuestionHtml(container, question) {
-  if (!question) { container.innerHTML = ""; return; }
-
-  // Split lines only outside LaTeX (safe for MathJax)
-  const lines = question.split(/\n/);
-  const html = lines.map(line => line.trim()).join("<br>");
-  container.innerHTML = html;
-
-  if (window.MathJax) MathJax.typesetPromise([container]).catch(err => console.error(err));
-}
 
     function onLoginSuccess() {
       loginSection.style.display = "none";
@@ -649,7 +639,7 @@ function setQuestionHtml(container, question) {
     items.forEach(item => {
       const tr = document.createElement("tr");
 
-const questionHtml = item.question || "";
+      const questionHtml = (item.question || "").replace(/\n/g, "<br>");
 
       // Eye icon for image view
 const eyeBtn = `<button class="flex-1 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition flex items-center justify-center gap-2" onclick="openImageModal('${item.img ?? ''}')">
@@ -669,9 +659,6 @@ tr.innerHTML = `
 </td>
 `;
 
-      const questionTd = tr.querySelector(".pyq-question");
-setQuestionHtml(questionTd, questionHtml);
-
       pyqTableBody.appendChild(tr);
     });
 
@@ -686,11 +673,12 @@ setQuestionHtml(questionTd, questionHtml);
     function escapeForOnclick(str) { return String(str).replace(/\\/g, "\\\\").replace(/'/g, "\\'").replace(/`/g, "\\`").replace(/\n/g, "\\n"); }
 
     window.openViewModal = function(q, qno = "") {
-  const viewQ = document.getElementById("viewQuestion");
-  setQuestionHtml(viewQ, q);
-  document.getElementById("viewModal").style.display = "flex";
-};
-
+      const viewQ = document.getElementById("viewQuestion");
+      const normalized = q.replace(/\\n/g, "\n");
+      viewQ.innerHTML = normalized.replace(/\n/g, "<br>");
+      document.getElementById("viewModal").style.display = "flex";
+      if (window.MathJax) MathJax.typesetPromise([viewQ]).catch(err => console.error(err));
+    };
     function closeViewModal() { document.getElementById("viewModal").style.display = "none"; }
 
     profileBtn.addEventListener("click", () => { if (currentUser) profileModal.style.display = "flex"; else alert("Please login first."); });
@@ -737,8 +725,3 @@ setQuestionHtml(questionTd, questionHtml);
 </body>
 
 </html>
-
-
-
-
-check
