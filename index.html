@@ -642,24 +642,22 @@ tr:hover { background: #f0f8ff; }
       const questionHtml = (item.question || "").replace(/\n/g, "<br>");
 
       // Eye icon for image view
-      const eyeBtn = `<button class="w-full py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition flex items-center justify-center gap-2" onclick="openImageModal('${item.img ?? ''}')">
+const eyeBtn = `<button class="flex-1 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition flex items-center justify-center gap-2" onclick="openImageModal('${item.img ?? ''}')">
   <i data-lucide="eye"></i> View
 </button>`;
 
-const solBtn = item.sol ? `<a href="${item.sol}" target="_blank" class="w-full block text-center py-2 bg-green-600 text-white rounded hover:bg-green-700 transition">Solution</a>` : "";
+const solBtn = item.sol ? `<a href="${item.sol}" target="_blank" class="flex-1 text-center py-2 bg-green-600 text-white rounded hover:bg-green-700 transition inline-flex items-center justify-center">Solution</a>` : "";
 
 tr.innerHTML = `
 <td class="text-center">${item.qno ?? '-'}</td>
 <td class="pyq-question">
   ${questionHtml}
-  <div class="mt-3 flex flex-col gap-2">
+  <div class="mt-3 flex gap-2">
     ${eyeBtn}
     ${solBtn}
   </div>
 </td>
 `;
-
-
 
       pyqTableBody.appendChild(tr);
     });
@@ -727,4 +725,5 @@ tr.innerHTML = `
 </body>
 
 </html>
+
 
