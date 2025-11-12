@@ -446,15 +446,16 @@
         <!-- MAIN CONTENT -->
         <div class="main-content flex-1 flex flex-col overflow-y-auto bg-white p-4">
             <!-- Table at the top -->
-            <div class="overflow-x-auto mb-4">
-                <table class="w-full border-collapse">
-                    <thead>
-                        <tr>
-                            <th>QNo</th>
-                            <th>Question Image</th>
-                            <th>Solution</th>
-                        </tr>
-                    </thead>
+            <div class="overflow-x-auto mb-0 -mt-2">
+  <table class="w-full border-collapse align-top">
+    <thead class="align-top">
+      <tr class="align-top">
+        <th class="py-2">QNo</th>
+        <th class="py-2">Question Image</th>
+        <th class="py-2">Solution</th>
+      </tr>
+    </thead>
+
                     <tbody id="pyqTableBody">
                         <tr>
                             <td colspan="3" class="text-center p-2">Select a subject and year</td>
@@ -742,6 +743,7 @@ document.getElementById("profileForm").addEventListener("submit", async (e) => {
 </body>
 
 </html>
+
 
 
 
