@@ -632,11 +632,30 @@
                     const tr = document.createElement("tr");
                     tr.innerHTML = `
                     <td class="text-center font-medium">${item.qno ?? '-'}</td>
-                    <td class="text-center">${item.img ? `<img src="${item.img}" class="pyq-img" onclick="openImageModal('${item.img}')">` : '-'}</td>
+<td class="text-center">
+  ${item.img ? `<img data-src="${item.img}" class="pyq-img" alt="Question">` : '-'}
+</td>
                     <td class="text-center">${item.sol ? `<img src="${item.sol}" class="pyq-img" onclick="openImageModal('${item.sol}')">` : '-'}</td>
                     `;
                     pyqTableBody.appendChild(tr);
                 });
+
+                // Apply watermark to all question images
+const allImgs = pyqTableBody.querySelectorAll(".pyq-img");
+for (const img of allImgs) {
+  const src = img.getAttribute("data-src");
+  if (src) {
+    try {
+      const watermarked = await addWatermarkToImage(src, "AAHES");
+      img.src = watermarked;
+      img.addEventListener("click", () => openImageModal(watermarked));
+    } catch (err) {
+      console.warn("Failed to watermark image:", err);
+      img.src = src; // fallback
+    }
+  }
+}
+
 
                 lucide.createIcons();
             } catch (err) {
@@ -644,6 +663,49 @@
                 pyqTableBody.innerHTML = "<tr><td colspan='3'>Failed to load questions</td></tr>";
             }
         }
+
+        // WATERMARK HELPER — repeats "AAHES" diagonally across the image
+async function addWatermarkToImage(imgUrl, watermarkText = "AAHES") {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.crossOrigin = "anonymous"; // allow Firebase-hosted images
+    img.onload = () => {
+      const canvas = document.createElement("canvas");
+      const ctx = canvas.getContext("2d");
+      canvas.width = img.width;
+      canvas.height = img.height;
+
+      // Draw original image
+      ctx.drawImage(img, 0, 0);
+
+      // Watermark style
+      const fontSize = Math.floor(canvas.width / 25);
+      ctx.font = `bold ${fontSize}px Quicksand`;
+      ctx.fillStyle = "rgba(255, 255, 255, 0.15)";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+
+      // Rotate and repeat text
+      ctx.save();
+      ctx.translate(canvas.width / 2, canvas.height / 2);
+      ctx.rotate(-Math.PI / 6); // diagonal
+      const stepX = fontSize * 8;
+      const stepY = fontSize * 5;
+
+      for (let x = -canvas.width; x < canvas.width * 2; x += stepX) {
+        for (let y = -canvas.height; y < canvas.height * 2; y += stepY) {
+          ctx.fillText(watermarkText, x - canvas.width / 2, y - canvas.height / 2);
+        }
+      }
+
+      ctx.restore();
+      resolve(canvas.toDataURL("image/png"));
+    };
+    img.onerror = reject;
+    img.src = imgUrl;
+  });
+}
+
 
         // IMAGE MODAL
         const imageModal = document.getElementById("imageModal");
@@ -752,6 +814,7 @@ document.getElementById("profileForm").addEventListener("submit", async (e) => {
 </body>
 
 </html>
+
 
 
 
