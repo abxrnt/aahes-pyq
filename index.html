@@ -390,6 +390,15 @@
   background-color: #f9fafb; /* soft hover effect */
   transition: background 0.2s ease;
 }
+
+        .main-content table {
+  margin-top: 0;
+  border-spacing: 0;
+}
+.main-content thead th {
+  padding-top: 0.4rem !important;
+}
+
     </style>
 </head>
 
@@ -451,7 +460,7 @@
     <thead class="align-top">
       <tr class="align-top">
         <th class="py-2">QNo</th>
-        <th class="py-2">Question Image</th>
+        <th class="py-2">Question</th>
         <th class="py-2">Solution</th>
       </tr>
     </thead>
@@ -743,6 +752,7 @@ document.getElementById("profileForm").addEventListener("submit", async (e) => {
 </body>
 
 </html>
+
 
 
 
