@@ -674,9 +674,74 @@ profileModal.addEventListener("click", (e) => {
   if (e.target === profileModal) profileModal.style.display = "none"; // close if clicking outside
 });
 
+        // SAVE PROFILE CHANGES
+const saveProfileBtn = document.getElementById("saveProfileBtn");
+const profileName = document.getElementById("profileName");
+const profileClass = document.getElementById("profileClass");
+const newPassword = document.getElementById("newPassword");
+const togglePassword = document.getElementById("togglePassword");
+
+togglePassword.addEventListener("click", () => {
+  newPassword.type = newPassword.type === "password" ? "text" : "password";
+});
+
+// When modal opens, show current data
+profileBtn.addEventListener("click", () => {
+  profileName.value = currentUser?.name || "";
+  profileClass.value = currentUser?.class || "";
+  newPassword.value = "";
+});
+
+// Save button handler
+document.getElementById("profileForm").addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  const name = profileName.value.trim();
+  const className = profileClass.value.trim();
+  const password = newPassword.value.trim();
+
+  if (!currentUser?.id) {
+    alert("User not logged in.");
+    return;
+  }
+
+  try {
+    const userRef = doc(db, "users", currentUser.id);
+    const updates = {};
+
+    if (name) updates.name = name;
+    if (className) updates.class = className;
+    if (password) updates.password = password;
+
+    // Update Firestore document
+    await updateDoc(userRef, updates);
+
+    // Update local memory
+    currentUser = { ...currentUser, ...updates };
+
+    // Update password in Firebase Auth if changed
+    if (password && auth.currentUser) {
+      try {
+        await updatePassword(auth.currentUser, password);
+      } catch (authErr) {
+        console.warn("Password not updated in Auth (email/password login only).", authErr);
+      }
+    }
+
+    alert("Profile updated successfully ✅");
+    profileModal.style.display = "none";
+    document.getElementById("welcomeMsg").innerText = `Welcome, ${currentUser.name}! 😊`;
+  } catch (err) {
+    console.error("Profile update failed:", err);
+    alert("Error updating profile.");
+  }
+});
+
+
     </script>
 </body>
 
 </html>
+
 
 
