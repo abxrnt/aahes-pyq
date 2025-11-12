@@ -377,6 +377,19 @@
                 font-size: 0.9rem;
             }
         }
+        #pyqTableBody tr:not(:last-child) {
+  border-bottom: 2px solid #e5e7eb; /* subtle gray line between Q–A pairs */
+}
+
+#pyqTableBody td {
+  padding-top: 0.8rem;
+  padding-bottom: 0.8rem;
+}
+
+#pyqTableBody tr:hover {
+  background-color: #f9fafb; /* soft hover effect */
+  transition: background 0.2s ease;
+}
     </style>
 </head>
 
@@ -647,3 +660,4 @@
 </body>
 
 </html>
+
