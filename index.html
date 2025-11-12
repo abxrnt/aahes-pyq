@@ -656,8 +656,27 @@
             loginSection.style.display = "flex";
             mainApp.style.display = "none";
         });
+
+        // PROFILE MODAL
+const profileModal = document.getElementById("profileModal");
+const profileBtn = document.getElementById("profileBtn");
+const closeProfileModal = document.getElementById("closeProfileModal");
+
+profileBtn.addEventListener("click", () => {
+  profileModal.style.display = "flex"; // show modal
+});
+
+closeProfileModal.addEventListener("click", () => {
+  profileModal.style.display = "none"; // hide modal
+});
+
+profileModal.addEventListener("click", (e) => {
+  if (e.target === profileModal) profileModal.style.display = "none"; // close if clicking outside
+});
+
     </script>
 </body>
 
 </html>
+
 
