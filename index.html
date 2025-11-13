@@ -18,68 +18,168 @@
   <script src="https://unpkg.com/lucide@latest"></script>
 
   <style>
-    :root{ --sidebar-w:260px; --primary:#2563eb; --accent:#0ea5a4; --muted:#64748b; }
-    html,body{height:100%;margin:0;font-family:'Quicksand',sans-serif;background:#f6f9fb;color:#0f172a}
+    /* -------------------------
+       Base
+       ------------------------- */
+    :root {
+      --sidebar-w: 260px;
+    }
+    html, body {
+      margin: 0;
+      height: 100%;
+      font-family: 'Quicksand', sans-serif;
+      background: #ffffff;
+    }
 
-    /* ===== LOGIN ===== */
-    .login-bg{display:flex;height:100vh;background:linear-gradient(135deg,#081033,#06223a);}
-    .login-left{flex:1;padding:4.5rem 3rem;color:#eef2ff;display:flex;flex-direction:column;justify-content:center;backdrop-filter:blur(8px)}
-    .login-left h1{font-size:2.1rem;margin-bottom:1.25rem}
-    .login-left input{width:100%;padding:.9rem;border-radius:.9rem;border:none;background:rgba(255,255,255,0.06);color:inherit;font-size:.95rem;outline:none;margin-bottom:1rem;transition:all .18s}
-    .login-left input:focus{background:rgba(255,255,255,0.12);box-shadow:0 6px 20px rgba(8,24,48,0.5)}
-    .login-left button{width:100%;padding:.9rem;border-radius:1rem;border:none;background:linear-gradient(90deg,var(--accent),var(--primary));color:white;font-weight:700;cursor:pointer;box-shadow:0 8px 30px rgba(13,76,86,0.12);transition:transform .18s,box-shadow .18s}
-    .login-left button:hover{transform:translateY(-4px);box-shadow:0 20px 50px rgba(13,76,86,0.18)}
-    .login-left p{margin-top:.6rem}
+    /* ---------- LOGIN (left/right) ---------- */
+    .login-bg {
+      display: flex;
+      height: 100vh;
+      width: 100%;
+      background: linear-gradient(135deg, #1f2a44, #117a65);
+    }
+    .login-left {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 5rem 3rem;
+      color: #f0f0f0;
+      backdrop-filter: blur(10px);
+      background: rgba(0,0,0,0.25);
+      animation: fadeSlide 0.8s ease forwards;
+      border-radius: 0 2rem 2rem 0;
+    }
+    .login-left h1 { font-size: 2rem; margin-bottom: 1.5rem; }
+    .login-left input {
+      width: 100%;
+      padding: 0.9rem;
+      margin-bottom: 1.2rem;
+      border-radius: 1rem;
+      border: none;
+      background: rgba(255,255,255,0.1);
+      color: #f0f0f0;
+      font-size: .95rem;
+      outline: none;
+      transition: all .25s;
+    }
+    .login-left input:focus { background: rgba(255,255,255,0.18); box-shadow: 0 0 12px rgba(255,255,255,0.18); }
+    .login-left button {
+      width: 100%;
+      padding: .9rem;
+      border-radius: 1rem;
+      border: none;
+      background: #14b8a6;
+      color: white;
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+      transition: all .2s;
+    }
+    .login-left button:hover { transform: translateY(-3px) scale(1.02); background: #0d9488; }
 
-    .login-right{flex:1;background:url('https://images.unsplash.com/photo-1688494930045-328d0f95efe9?fm=jpg&q=60&w=3000') center/cover no-repeat;display:flex;align-items:center;justify-content:center;padding:3rem;border-radius:1rem;position:relative}
-    .login-right::before{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(2,6,23,0.45),rgba(2,6,23,0.65));}
-    .login-right > div{position:relative;z-index:1;text-align:center;color:white}
-    #logoimg{width:96px;margin-bottom:1rem;filter:drop-shadow(0 8px 30px rgba(0,0,0,0.6))}
-    .login-right h2{font-size:2.2rem;margin-bottom:.5rem}
-    .login-right p{opacity:.95}
+    .login-right {
+      flex: 1;
+      background: url('https://images.unsplash.com/photo-1688494930045-328d0f95efe9?fm=jpg&q=60&w=3000') center/cover no-repeat;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      color: white;
+      position: relative;
+      padding: 3rem;
+      border-radius: 2rem 0 0 2rem;
+      overflow: hidden;
+    }
+    .login-right::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.35);
+      border-radius: 2rem 0 0 2rem;
+      z-index: 0;
+    }
+    .login-right > div { position: relative; z-index: 1; animation: fadeInUp 1s ease forwards; }
+    #logoimg { width: 110px; margin-bottom: 1rem; filter: drop-shadow(0 0 12px rgba(255,255,255,0.4)); }
+    .login-right h2 { font-size: 2.6rem; font-weight: 600; margin-bottom: 1rem; text-shadow: 0 3px 10px rgba(0,0,0,0.6); }
+    .login-right p { font-size: 1.05rem; line-height: 1.6; opacity: .95; text-shadow: 0 2px 6px rgba(0,0,0,0.5); }
 
-    /* ===== MAIN APP ===== */
-    #mainApp{display:none;height:100vh;width:100%;flex-direction:row;overflow:hidden}
+    @keyframes fadeSlide { 0%{opacity:0;transform:translateX(-40px)}100%{opacity:1;transform:translateX(0)} }
+    @keyframes fadeInUp  { 0%{opacity:0;transform:translateY(30px)}100%{opacity:1;transform:translateY(0)} }
+
+    /* ---------- MAIN APP ---------- */
+    #mainApp { display: none; height: 100vh; width: 100%; flex-direction: row; overflow: hidden; }
 
     /* Sidebar */
-    #sidebar{width:var(--sidebar-w);min-width:var(--sidebar-w);background:#ffffff;padding:1.5rem 1.25rem;color:#0f172a;height:100vh;display:flex;flex-direction:column;justify-content:space-between;gap:.75rem;border-right:1px solid #e6eef5}
-    #sidebar .logo-block{text-align:center;margin-bottom:.5rem}
-    #sidebar .logo-block img{width:64px;margin:0 auto .35rem}
-    #sidebar p#welcomeMsg{font-size:.95rem;margin-top:.3rem;color:var(--primary);text-align:center}
-    #sidebar h3{margin-bottom:.25rem;font-size:.85rem;color:var(--muted)}
-    #sidebar button{padding:.5rem .7rem;border-radius:.6rem;font-weight:600;font-size:.9rem;color:#0f172a;border:1px solid transparent;display:flex;gap:.5rem;align-items:center;cursor:pointer;transition:all .18s}
-    #sidebar button:hover{transform:translateX(6px);box-shadow:0 8px 24px rgba(15,23,42,0.06)}
-    .profile-btn{background:linear-gradient(90deg,var(--primary),#1d4ed8);color:white;padding:.5rem .9rem;border-radius:.7rem;box-shadow:0 8px 30px rgba(37,99,235,0.08)}
-    .logout-btn{background:#ef4444;color:white;padding:.45rem .85rem;border-radius:.7rem}
-    .tab-active{background:linear-gradient(90deg,#2563eb,#1e3a8a);color:white;font-weight:700;box-shadow:0 10px 30px rgba(30,58,138,0.12);transform:translateY(-2px)}
+    #sidebar {
+      width: var(--sidebar-w);
+      min-width: var(--sidebar-w);
+      background: #1f2937;
+      padding: 1.5rem 1rem;
+      color: white;
+      height: 100vh;
+      display:flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: .5rem;
+    }
+    #sidebar .logo-block { text-align:center; margin-bottom: .5rem; }
+    #sidebar .logo-block img { width: 64px; margin: 0 auto .35rem; }
+    #sidebar p#welcomeMsg { font-size: .95rem; margin-top: .3rem; color: #facc15; text-align:center; }
 
-    /* Main content */
-    .main-content{flex:1;overflow-y:auto;padding:2rem;background:linear-gradient(180deg,#f6f9fb, #f3f7fb)}
+    #sidebar h3 { margin-bottom: .25rem; font-size: .85rem; color: #cbd5e1; }
+    #sidebar button { padding: .4rem .6rem; border-radius: .5rem; font-weight:500; font-size:.85rem; color: white; border:none; display:flex; gap:.5rem; align-items:center; cursor:pointer; transition:all .2s; }
+    #sidebar button:hover { transform: translateX(3px); }
+
+    .profile-btn { background: #070e6b; color: #e6eef5; padding:.45rem .85rem; border-radius:.7rem; box-shadow: 0 4px 8px rgba(0,0,0,0.18); }
+    .profile-btn:hover { background:#166cb3; transform: translateY(-2px); }
+    .logout-btn { background:#f43f5e; padding:.45rem .85rem; border-radius:.7rem; }
+    .logout-btn:hover { background:#e11d48; transform: translateY(-2px); }
+
+    .tab-active { background: linear-gradient(135deg,#2563eb,#1e40af); color:#f8fafc; font-weight:600; box-shadow:0 6px 18px rgba(30,64,175,0.15); transform: translateY(-2px); }
+
+    /* ---------- MAIN CONTENT ---------- */
+    .main-content {
+      flex: 1;
+      overflow-y: auto;
+      padding: 2rem;
+      background: #ffffff;
+      min-height: 100vh;
+    }
 
     /* Table */
-    .table-wrap{overflow-x:auto;margin-bottom:0;margin-top:0}
-    table{width:100%;border-collapse:collapse;font-size:.95rem;background:white;border-radius:12px;overflow:hidden;box-shadow:0 8px 40px rgba(2,6,23,0.04)}
-    thead th{background:linear-gradient(90deg,var(--primary),var(--primary));color:white;padding:.9rem 1rem;text-align:left}
-    tbody td{padding:.9rem 1rem;vertical-align:top;border-bottom:1px solid #f1f5f9}
-    tbody tr:hover{background:#fbfdff}
-    .pyq-img{max-width:420px;height:auto;border-radius:10px;cursor:pointer;display:block;margin:0 auto;box-shadow:0 6px 30px rgba(2,6,23,0.06);transition:transform .16s}
-    .pyq-img:hover{transform:scale(1.03)}
+    .table-wrap { overflow-x:auto; margin-bottom: 0; margin-top: 0; }
+    table { width: 100%; border-collapse: collapse; font-size: .95rem; }
+    thead th { background: #0c2b4e; color: white; padding: .6rem .75rem; text-align:left; vertical-align: middle; }
+    tbody td { padding: .6rem .75rem; vertical-align: top; }
+    tbody tr:not(:last-child) { border-bottom: 2px solid #e5e7eb; } /* separator between rows */
+    tbody tr:hover { background: #ffffff; transition: background .18s; }
+    .pyq-img { max-width: 350px; height: auto; border-radius: .6rem; cursor:pointer; display:block; margin: 0 auto; }
 
     /* Modal */
-    .modal{display:none;position:fixed;inset:0;background:rgba(2,6,23,0.6);justify-content:center;align-items:center;z-index:50}
-    .modal.show{display:flex}
-    .modal-content{background:white;padding:1.8rem;border-radius:12px;max-width:920px;width:92%;max-height:90vh;overflow:auto;position:relative;box-shadow:0 20px 60px rgba(2,6,23,0.18)}
-    .close-btn{position:absolute;top:1rem;right:1rem;font-size:1.3rem;font-weight:bold;cursor:pointer;transition:all .15s}
-    .close-btn:hover{color:#f39c12;transform:scale(1.08)}
+    .modal { display:none; position:fixed; inset:0; background: rgba(0,0,0,0.6); justify-content:center; align-items:center; z-index:50; }
+    .modal.show { display:flex; }
+    .modal-content { background:white; padding:2rem; border-radius:1.2rem; max-width:900px; width:92%; max-height:90vh; overflow:auto; position:relative; box-shadow:0 15px 30px rgba(0,0,0,0.35); }
+    .close-btn { position:absolute; top:1rem; right:1rem; font-size:1.3rem; font-weight:bold; cursor:pointer; transition:all .15s; }
+    .close-btn:hover { color:#f39c12; transform:scale(1.1); }
 
     /* Profile modal smaller form */
-    #profileCard{max-width:520px;width:100%}
-    #profileCard input{width:100%;padding:.6rem;border:1px solid #e6eef5;border-radius:.6rem}
+    #profileCard { max-width:500px; width:100%; }
+
+    /* fine tuning header/top gap fix */
+    .main-content .table-wrap { margin-top: 0; }
+    .main-content thead th { padding-top: .4rem !important; }
 
     /* Responsive */
-    @media (max-width:900px){ #sidebar{display:none} #mainApp{padding:0} .pyq-img{max-width:220px} }
+    @media (max-width: 900px) {
+      #sidebar { display:none; }
+      #mainApp { padding: 0; }
+      .pyq-img { max-width: 220px; }
+    }
   </style>
 </head>
+
 <body>
   <!-- LOGIN -->
   <div class="login-bg" id="loginSection">
@@ -88,7 +188,7 @@
       <input type="email" placeholder="Email" id="emailInput" autocomplete="username" />
       <input type="password" placeholder="Password" id="passInput" autocomplete="current-password" />
       <button id="loginBtn">Login</button>
-      <p class="mt-2 text-sm">Forgot your password? <a href="#" class="underline text-white">Click here</a></p>
+      <p class="mt-2">Forgot your password? <a href="#" class="text-yellow-400 underline">Click here</a></p>
     </div>
 
     <div class="login-right">
@@ -108,8 +208,8 @@
         <div class="logo-block">
           <img src="favicon.png" alt="Logo">
           <div class="font-semibold text-lg">AAHES PYQ</div>
-          <p id="welcomeMsg" class="mt-2 text-sm text-primary font-medium">Welcome, User! 😊</p>
-          <p class="text-sm text-muted">Best of Luck!</p>
+          <p id="welcomeMsg" class="mt-2 text-sm text-yellow-400 font-medium">Welcome, User! 😊</p>
+          <p>Best of Luck!</p>
         </div>
 
         <div id="sidebarTop" class="mb-4 text-center">
@@ -148,7 +248,7 @@
           </thead>
           <tbody id="pyqTableBody">
             <tr>
-              <td colspan="3" class="text-center p-6 text-gray-500">Select a subject and year</td>
+              <td colspan="3" class="text-center p-4">Select a subject and year</td>
             </tr>
           </tbody>
         </table>
@@ -212,7 +312,7 @@
       authDomain: "aahes-cee-cutoffs.firebaseapp.com",
       databaseURL: "https://aahes-cee-cutoffs-default-rtdb.asia-southeast1.firebasedatabase.app",
       projectId: "aahes-cee-cutoffs",
-      storageBucket: "aahes-cee-cutoffs.firebasedatabase.app",
+      storageBucket: "aahes-cee-cutoffs.firebasestorage.app",
       messagingSenderId: "706066626405",
       appId: "1:706066626405:web:0d254ab82beb288108938c"
     };
