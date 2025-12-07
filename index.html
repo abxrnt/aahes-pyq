@@ -5,314 +5,170 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>PROYAX PYQ Portal</title>
 
-  <!-- Tailwind CDN -->
+  <!-- Tailwind CDN (optional, we still include custom CSS below) -->
   <script src="https://cdn.tailwindcss.com"></script>
 
-  <!-- Favicon -->
-  <link rel="icon" type="image/x-icon" href="favicon.png">
-
-  <!-- Quicksand font -->
+  <!-- Quicksand font + Merriweather for headings -->
   <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600&family=Merriweather:ital@0;1&display=swap" rel="stylesheet">
 
   <!-- Lucide icons -->
   <script src="https://unpkg.com/lucide@latest"></script>
 
   <style>
-  :root {
-    --sidebar-w: 260px;
-    --qno-w: 60px; /* fixed width for QNo column */
-    --accent-1: #18a0ff;
-    --accent-2: #1aa3ff;
-  }
+    :root{
+      --sidebar-w:260px;
+      --accent-a: #06b6d4;
+      --accent-b: #06a3ff;
+      --card-radius: 18px;
+      --qno-w: 60px;
+    }
+    html,body{height:100%;margin:0;font-family:'Quicksand',sans-serif;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;background:#ffffff;}
 
-  html, body {
-    margin: 0;
-    height: 100%;
-    font-family: 'Quicksand', sans-serif;
-    background: #ffffff;
-    -webkit-font-smoothing:antialiased;
-    -moz-osx-font-smoothing:grayscale;
-  }
+    /* ===========================
+       SPLIT LOGIN / REGISTER CARD
+       =========================== */
+    .auth-overlay {
+      position: fixed; inset: 0; z-index: 60;
+      background: rgba(8,10,25,0.45);
+      backdrop-filter: blur(6px) saturate(1.02);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .auth-card {
+      width: min(1140px, 96vw);
+      border-radius: var(--card-radius);
+      display: flex;
+      overflow: hidden;
+      box-shadow: 0 30px 70px rgba(2,6,23,0.5);
+      background: linear-gradient(180deg, rgba(255,255,255,0.97), rgba(250,250,252,0.98));
+      border: 1px solid rgba(255,255,255,0.4);
+      min-height: 64vh;
+      max-height: 92vh;
+    }
 
-  /* -------------------------
-     AUTH MODAL (split card)
-     ------------------------- */
-  body.modal-open::before{
-    content:"";
-    position:fixed; inset:0; z-index:40;
-    background: rgba(8,10,20,0.45);
-    backdrop-filter: blur(6px) saturate(1.05);
-  }
-  .auth-modal {
-    position: fixed;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%,-50%);
-    width: min(1100px, 94vw);
-    max-height: 88vh;
-    z-index: 45;
-    border-radius: 20px;
-    display: flex;
-    box-shadow: 0 30px 60px rgba(2,6,23,0.45);
-    overflow: hidden;
-    background: linear-gradient(90deg, rgba(255,255,255,0.96) 0%, rgba(250,250,252,0.98) 100%);
-    border: 1px solid rgba(255,255,255,0.45);
-  }
-  .auth-left {
-    width: 48%;
-    min-width: 300px;
-    padding: 34px;
-    background: linear-gradient(180deg, rgba(240,249,255,0.9), rgba(246,251,255,0.86));
-    display:flex; flex-direction: column; gap: 18px; justify-content: center; box-sizing: border-box;
-  }
-  .brand { display:flex; gap: 14px; align-items:center; }
-  .brand img { width:56px; height:56px; border-radius:12px; object-fit:cover; box-shadow: 0 8px 20px rgba(10,30,70,0.12); }
-  .brand h3 { margin:0; font-family: "Merriweather", serif; font-weight:700; letter-spacing:-0.6px; color:#0f172a; font-size:20px; }
-  .brand small { color:#6b7280; display:block; margin-top:4px; font-weight:500; }
-  .promo-h { font-family: "Merriweather", serif; font-size: 34px; margin:0; color:#04263a; }
-  .promo-sub { color:#6b7280; line-height:1.6; margin-top:6px; font-size:15px; }
-  .promo-list { margin-top:14px; color:#6b7280; display:block; padding-left:14px; line-height:1.9; }
-  .left-actions { margin-top: 16px; display:flex; gap:14px; align-items:center; }
-  .btn-ghost { background: white; border-radius: 12px; padding: 12px 26px; font-weight:700; border: 1px solid rgba(15,23,42,0.06); box-shadow: 0 6px 18px rgba(10,20,40,0.04); cursor:pointer; }
+    /* left = form panel */
+    .auth-left{
+      flex: 1 1 46%;
+      padding: 44px 42px;
+      display:flex; flex-direction:column; justify-content:center;
+      background: linear-gradient(135deg, rgba(6,24,31,0.85), rgba(14,60,58,0.85));
+      color: #f8fafc;
+      gap:14px;
+      box-sizing:border-box;
+      position:relative;
+    }
+    .auth-left h1{font-family:'Merriweather',serif;font-size:38px;margin:0 0 6px;color:#ecfeff;letter-spacing:-0.6px}
+    .auth-sub{color: rgba(255,255,255,0.82); margin-bottom:12px}
+    .auth-form { width:100%; max-width:520px; display:flex; flex-direction:column; gap:14px; }
+    .input-lg { padding:16px 18px; border-radius:14px; border:none; font-size:16px; background: rgba(255,255,255,0.06); color: #fff; outline:none; box-sizing:border-box; }
+    .input-lg::placeholder{ color: rgba(255,255,255,0.65); }
+    .btn-primary-lg { margin-top:8px; background: linear-gradient(90deg,var(--accent-a),var(--accent-b)); color:#fff; padding:14px 18px; border-radius:14px; border:none; font-weight:700; cursor:pointer; box-shadow: 0 12px 30px rgba(6,167,255,0.14); }
+    .small-link { color: #fde047; text-decoration:underline; cursor:pointer; font-weight:600; }
+    .auth-left .cta-row { display:flex; gap:12px; margin-top:8px; align-items:center; }
+    .ghost-btn { background: rgba(255,255,255,0.06); color:#fff; padding:10px 14px; border-radius:10px; border:1px solid rgba(255,255,255,0.06); cursor:pointer; font-weight:600; }
 
-  .auth-right { width: 52%; padding: 34px; box-sizing: border-box; display:flex; align-items:center; justify-content:center; background: linear-gradient(90deg, rgba(255,255,255,0.92), rgba(255,255,255,0.97)); }
-  .form-wrap { width: 100%; max-width: 420px; }
-  label.small { display:block; margin-bottom:8px; color:#0f172a; font-weight:600; font-size:14px; }
-  .input { width:100%; padding: 14px 16px; border-radius: 12px; border: 1px solid rgba(15,23,42,0.06); background: #fff; box-sizing:border-box; font-size:15px; outline:none; transition: box-shadow .15s, border-color .15s; margin-bottom:14px; }
-  .input:focus{ box-shadow: 0 8px 24px rgba(12,74,180,0.08); border-color: rgba(12,74,180,0.25); }
-  .cta-row { display:flex; gap:12px; align-items:center; margin-top:12px; }
-  .btn-primary { flex:1; background: linear-gradient(90deg,var(--accent-1),var(--accent-2)); border:none; color:white; font-weight:700; padding: 12px 18px; border-radius: 12px; cursor:pointer; box-shadow: 0 10px 30px rgba(26,162,255,0.14); }
-  .btn-outline { padding: 10px 14px; background: white; border-radius: 12px; border: 1px solid rgba(15,23,42,0.08); cursor:pointer; }
+    /* right = visual panel */
+    .auth-right {
+      flex: 1 1 54%;
+      background-image: url('https://images.unsplash.com/photo-1688494930045-328d0f95efe9?auto=format&fit=crop&w=2000&q=60');
+      background-size: cover;
+      background-position: center;
+      display:flex; align-items:center; justify-content:center; padding:36px; position:relative;
+    }
+    .auth-right::before {
+      content:''; position:absolute; inset:0; background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02)); mix-blend-mode: overlay;
+    }
+    .right-inner { position:relative; z-index:1; color:#fff; text-align:center; max-width:520px; }
+    .brand-logo { width:96px; height:96px; margin: 0 auto 12px; display:block; border-radius:14px; box-shadow:0 12px 30px rgba(2,6,23,0.35); background:#fff url('favicon.png') center/60% no-repeat; background-size:contain; }
+    .right-title { font-family:'Merriweather',serif; font-size:36px; margin:8px 0 6px; color:#fff; text-shadow:0 6px 24px rgba(2,6,23,0.4); }
+    .right-desc { color: rgba(255,255,255,0.9); line-height:1.6; font-size:15px; margin-top:8px; }
 
-  .muted { color:#6b7280; font-size:13px; margin-top:6px; }
-  .close-x{ position: absolute; right: 12px; top: 12px; z-index: 99; background: rgba(255,255,255,0.6); border-radius: 10px; width:36px;height:36px; display:flex;align-items:center;justify-content:center; cursor:pointer; border: 1px solid rgba(15,23,42,0.04); }
+    /* small screens */
+    @media (max-width:960px){
+      .auth-card{flex-direction:column; min-height: auto; max-height: 96vh;}
+      .auth-left, .auth-right{flex:1 1 100%; padding:24px;}
+      .auth-left h1{font-size:28px}
+      .right-title{font-size:24px}
+    }
 
-  @media (max-width: 920px){
-    .auth-modal { width: 94vw; height: auto; max-height: 96vh; flex-direction: column; }
-    .auth-left, .auth-right { width: 100%; min-width: auto; padding: 22px; }
-    .promo-h { font-size: 26px; }
-    .form-wrap { max-width: 100%; }
-  }
+    /* ===========================
+       REMAINING APP STYLES (kept)
+       =========================== */
+    #mainApp{display:none;height:100vh;width:100%;flex-direction:row;overflow:hidden;}
+    #sidebar{width:var(--sidebar-w);min-width:var(--sidebar-w);background:#1f2937;padding:1.5rem 1rem;color:white;height:100vh;display:flex;flex-direction:column;justify-content:space-between;gap:.5rem;box-sizing:border-box;}
+    .logo-block img{width:64px;margin:0 auto .35rem;}
+    #sidebar p#welcomeMsg{font-size:.95rem;margin-top:.3rem;color:#facc15;text-align:center;}
+    .profile-btn{background:#070e6b;color:#e6eef5;padding:.45rem .85rem;border-radius:.7rem;}
+    .logout-btn{background:#f43f5e;padding:.45rem .85rem;border-radius:.7rem;}
+    .tab-active{background: linear-gradient(135deg,#2563eb,#1e40af); color:#f8fafc; font-weight:600;}
 
-  /* ---------- original styles (kept) ---------- */
-  /* ---------- LOGIN (old block removed) ---------- */
-
-  /* ---------- MAIN APP ---------- */
-  #mainApp { display:none; height:100vh; width:100%; flex-direction:row; overflow:hidden; }
-
-  /* Sidebar */
-  #sidebar { width:var(--sidebar-w); min-width:var(--sidebar-w); background:#1f2937; padding:1.5rem 1rem; color:white; height:100vh; display:flex; flex-direction:column; justify-content:space-between; gap:.5rem; box-sizing:border-box; }
-  #sidebar .logo-block { text-align:center; margin-bottom:.5rem; }
-  #sidebar .logo-block img { width:64px; margin:0 auto .35rem; }
-  #sidebar p#welcomeMsg { font-size:.95rem; margin-top:.3rem; color:#facc15; text-align:center; }
-  #sidebar h3 { margin-bottom:.25rem; font-size:.85rem; color:#cbd5e1; }
-  #sidebar button { padding:.4rem .6rem; border-radius:.5rem; font-weight:500; font-size:.85rem; color:white; border:none; display:flex; gap:.5rem; align-items:center; cursor:pointer; transition:all .2s; }
-  #sidebar button:hover { transform: translateX(3px); }
-  .profile-btn { background:#070e6b; color:#e6eef5; padding:.45rem .85rem; border-radius:.7rem; box-shadow: 0 4px 8px rgba(0,0,0,0.18); }
-  .profile-btn:hover { background:#166cb3; transform: translateY(-2px); }
-  .logout-btn { background:#f43f5e; padding:.45rem .85rem; border-radius:.7rem; }
-  .logout-btn:hover { background:#e11d48; transform: translateY(-2px); }
-  .tab-active { background: linear-gradient(135deg,#2563eb,#1e40af); color:#f8fafc; font-weight:600; box-shadow:0 6px 18px rgba(30,64,175,0.15); transform: translateY(-2px); }
-
-  /* ---------- MAIN CONTENT ---------- */
-  .main-content { flex:1; overflow-y:auto; padding:0; background:#ffffff; min-height:100vh; box-sizing:border-box; }
-
-  /* Table area */
-  .table-wrap { overflow-x:auto; margin:0; width:100%; }
-  table { width:100% !important; border-collapse:collapse; font-size:.95rem; table-layout: fixed; } /* fixed layout helps with column sizing */
-  thead th { background:#0c2b4e; color:white; padding:.6rem .75rem; text-align:left; vertical-align: middle; }
-
-  /* Force QNo column narrow */
-  table thead th:nth-child(1),
-  table tbody td:nth-child(1) {
-    width: var(--qno-w);
-    min-width: var(--qno-w);
-    max-width: var(--qno-w);
-    text-align: center;
-    padding: .5rem .5rem;
-    box-sizing: border-box;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
-  /* make question column allow overflow of images */
-  table thead th:nth-child(2),
-  table tbody td:nth-child(2) {
-    width: auto;
-    text-align: left;
-    padding: .9rem .9rem;
-  }
-
-  /* solution column center */
-  table thead th:nth-child(3),
-  table tbody td:nth-child(3) {
-    text-align: center;
-    vertical-align: middle;
-    padding: .9rem .75rem;
-    width: 36%;
-  }
-
-  tbody td { padding:.6rem .75rem; vertical-align: top; }
-  tbody tr:not(:last-child) { border-bottom: 2px solid #e5e7eb; }
-  tbody tr:hover { background:#ffffff; transition: background .18s; }
-
-  /* Larger images for desktop */
-  .pyq-img {
-    max-width: 520px;     /* increased from 350 */
-    width: 100%;
-    height: auto;
-    border-radius:.6rem;
-    cursor:pointer;
-    display:block;
-    margin: 0.35rem auto;
-    object-fit: contain;
-  }
-
-  /* ensure images inside the table keep max width and center */
-  table tbody td:nth-child(2) img,
-  table tbody td:nth-child(3) img {
-    display:block;
-    margin: 0.35rem auto;
-    max-width: 100%;
-    height:auto;
-  }
-
-  /* ensure inline solution text is centered */
-  table tbody td:nth-child(3) p,
-  table tbody td:nth-child(3) .solution-text {
-    margin: 0 auto;
-    display:inline-block;
-    text-align:center;
-    line-height:1.45;
-  }
-
-  /* small adjustments for QNo label font */
-  table tbody td:nth-child(1) { font-weight:600; font-size:0.95rem; }
-
-  /* Modal (image/profile) */
-  .modal { display:none; position:fixed; inset:0; background: rgba(0,0,0,0.6); justify-content:center; align-items:center; z-index:50; }
-  .modal.show { display:flex; }
-  .modal-content { background:white; padding:2rem; border-radius:1.2rem; max-width:900px; width:92%; max-height:90vh; overflow:auto; position:relative; box-shadow:0 15px 30px rgba(0,0,0,0.35); }
-  .close-btn { position:absolute; top:1rem; right:1rem; font-size:1.3rem; font-weight:bold; cursor:pointer; transition:all .15s; }
-  .close-btn:hover { color:#f39c12; transform:scale(1.1); }
-  #profileCard { max-width:500px; width:100%; }
-
-  /* small device adjustments */
-  @media (max-width: 900px) {
-    #sidebar { display:none; }
-    #mainApp { padding:0; }
-    .pyq-img { max-width:420px; }
-  }
-
-  @media (max-width: 700px) {
-    /* Hide solution column on small phones */
-    table thead th:nth-child(3),
-    table tbody td:nth-child(3) { display:none; }
-    table thead th:nth-child(2), table tbody td:nth-child(2) { width:80%; }
-    table thead th:nth-child(1), table tbody td:nth-child(1) { width:20%; min-width:48px; max-width:80px; }
-    .pyq-img { max-width: 320px; }
-  }
-
-  /* MOBILE hamburger and sidebar overlay */
-  .mobile-hamburger {
-    position: fixed; left:14px; top:14px; z-index:80; width:44px; height:44px; display:none;
-    background: rgba(0,0,0,0.45); border:none; border-radius:8px; padding:8px; box-sizing:border-box;
-    align-items:center; justify-content:center; cursor:pointer; backdrop-filter: blur(6px);
-    transition: transform .18s ease, background .18s ease;
-  }
-  .mobile-hamburger:hover { transform: translateY(-2px); background: rgba(0,0,0,0.55); }
-  .mobile-hamburger span { display:block; height:2px; width:20px; background:#fff; margin:4px 0; border-radius:2px; transition: transform .18s cubic-bezier(.2,.9,.2,1), opacity .12s; }
-
-  #sidebar.overlay { position: fixed; left:0; top:0; height:100vh; width: min(320px, 84vw); transform: translateX(-110%); transition: transform .28s cubic-bezier(.2,.9,.2,1); z-index:85; box-shadow: 0 20px 40px rgba(2,6,23,0.45); }
-  #sidebar.overlay.open { transform: translateX(0); }
-  #sidebarBackdrop { display:none; position:fixed; inset:0; background: rgba(0,0,0,0.45); z-index:82; opacity:0; transition: opacity .22s ease; }
-  #sidebarBackdrop.show { display:block; opacity:1; }
-
-  @media (max-width: 900px) { .mobile-hamburger { display:flex; } #sidebar { display:block; } #mainApp { padding-left:0; } }
+    .main-content{flex:1;overflow-y:auto;padding:0;background:#ffffff;min-height:100vh;box-sizing:border-box;}
+    .table-wrap{overflow-x:auto;margin:0;width:100%;}
+    table{width:100% !important;border-collapse:collapse;font-size:.95rem;table-layout:fixed;}
+    thead th{background:#0c2b4e;color:white;padding:.6rem .75rem;text-align:left;vertical-align:middle;}
+    table thead th:nth-child(1), table tbody td:nth-child(1){width:var(--qno-w);min-width:var(--qno-w);max-width:var(--qno-w);text-align:center;padding:.5rem .5rem;box-sizing:border-box;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+    table thead th:nth-child(2), table tbody td:nth-child(2){width:auto;text-align:left;padding:.9rem .9rem;}
+    table thead th:nth-child(3), table tbody td:nth-child(3){text-align:center;vertical-align:middle;padding:.9rem .75rem;width:36%;}
+    tbody td{padding:.6rem .75rem;vertical-align:top;}
+    tbody tr:not(:last-child){border-bottom:2px solid #e5e7eb;}
+    .pyq-img{max-width:520px;width:100%;height:auto;border-radius:.6rem;cursor:pointer;display:block;margin:0.35rem auto;object-fit:contain;}
+    .modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);justify-content:center;align-items:center;z-index:70;}
+    .modal.show{display:flex;}
+    .modal-content{background:white;padding:2rem;border-radius:1.2rem;max-width:900px;width:92%;max-height:90vh;overflow:auto;position:relative;box-shadow:0 15px 30px rgba(0,0,0,0.35);}
+    .close-btn{position:absolute;top:1rem;right:1rem;font-size:1.3rem;font-weight:bold;cursor:pointer;transition:all .15s;}
+    @media (max-width:900px){#sidebar{display:none;} .pyq-img{max-width:420px}}
+    @media (max-width:700px){table thead th:nth-child(3),table tbody td:nth-child(3){display:none;} table thead th:nth-child(2),table tbody td:nth-child(2){width:80%;} table thead th:nth-child(1),table tbody td:nth-child(1){width:20%;min-width:48px;max-width:80px;} .pyq-img{max-width:320px}}
   </style>
 </head>
 <body>
 
-  <!-- AUTH MODAL (show on page load) -->
-  <div id="authModal" class="auth-modal" role="dialog" aria-modal="true" aria-labelledby="authTitle">
-    <div class="close-x" id="closeAuth" title="Close">&times;</div>
+  <!-- ===== Split Login/Register Card (shows on load) ===== -->
+  <div id="authOverlay" class="auth-overlay" aria-hidden="false">
+    <div class="auth-card" role="dialog" aria-modal="true" aria-labelledby="loginHeading">
+      <!-- LEFT: Form -->
+      <div class="auth-left">
+        <h1 id="loginHeading">Welcome Back</h1>
+        <div class="auth-sub" id="authSub">Access previous year questions as images easily. Prepare smarter and faster for your exams.</div>
 
-    <div class="auth-left">
-      <div class="brand">
-        <img src="favicon.png" alt="logo">
-        <div>
-          <h3>PROYAX PYQ</h3>
-          <small>Access PYQs & exam resources</small>
+        <div class="auth-form" id="loginPanel">
+          <input id="loginEmail" class="input-lg" placeholder="Email" autocomplete="username" />
+          <input id="loginPass" type="password" class="input-lg" placeholder="Password" autocomplete="current-password" />
+          <button id="loginBtn" class="btn-primary-lg">Login</button>
+
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-top:8px;">
+            <div>Forgot your password? <span id="forgotLink" class="small-link">Click here</span></div>
+            <div style="display:flex; gap:8px;">
+              <button id="showRegisterBtn" class="ghost-btn">Register</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Register panel (hidden by default) -->
+        <div class="auth-form" id="registerPanel" style="display:none;">
+          <input id="regUsername" class="input-lg" placeholder="Username" />
+          <input id="regName" class="input-lg" placeholder="Full name" />
+          <input id="regEmail" class="input-lg" placeholder="Email" />
+          <input id="regPass" class="input-lg" type="password" placeholder="Password (6+ chars)" />
+          <div style="display:flex; gap:12px;">
+            <button id="registerBtn" class="btn-primary-lg" style="flex:1">Register</button>
+            <button id="cancelRegister" class="ghost-btn">Cancel</button>
+          </div>
         </div>
       </div>
 
-      <h2 class="promo-h">Learn. Practice. Conquer.</h2>
-
-      <p class="promo-sub">
-        Clear conceptual lessons, concise notes, and specially designed study materials to help you ace your exams & entrance tests.
-      </p>
-
-      <ul class="promo-list">
-        <li>• Fast revision notes</li>
-        <li>• PYQ-based practice</li>
-        <li>• Campus & placements data</li>
-      </ul>
-
-      <div class="left-actions">
-        <button id="leftLoginBtn" class="btn-ghost">Login</button>
-        <button id="leftRegisterBtn" class="btn-ghost" style="background:linear-gradient(90deg,var(--accent-1),var(--accent-2)); color:white; border:none;">Register</button>
-      </div>
-    </div>
-
-    <div class="auth-right">
-      <div class="form-wrap" id="formWrap">
-        <h4 id="authTitle" style="margin:0 0 10px; font-size:18px; color:#0f172a;">Welcome</h4>
-        <p class="muted" id="authSubtitle">Log in to access PYQs and personalized study resources.</p>
-
-        <!-- Login form -->
-        <form id="loginForm" style="margin-top:14px;">
-          <label class="small">Email</label>
-          <input id="loginEmail" class="input" placeholder="your email" autocomplete="username">
-          <label class="small">Password</label>
-          <input id="loginPass" type="password" class="input" placeholder="••••••" autocomplete="current-password">
-
-          <div class="cta-row">
-            <button type="button" id="loginPrimaryBtn" class="btn-primary">Login</button>
-            <button type="button" id="needHelp" class="btn-outline">Need help?</button>
-          </div>
-
-          <div class="auth-footer" style="margin-top:12px;">Don't have an account? <a href="#" id="showRegister">Register</a></div>
-        </form>
-
-        <!-- Register form (hidden by default) -->
-        <form id="registerForm" style="display:none; margin-top:14px;">
-          <label class="small">Username</label>
-          <input id="regUsername" class="input" placeholder="choose a username" autocomplete="username">
-          <label class="small">Full name</label>
-          <input id="regFullname" class="input" placeholder="Your full name">
-          <label class="small">Password</label>
-          <input id="regPass" type="password" class="input" placeholder="Minimum 6 characters" autocomplete="new-password">
-          <label class="small">Phone</label>
-          <input id="regPhone" class="input" placeholder="+91 98765 43210">
-          <label class="small">Email</label>
-          <input id="regEmail" class="input" placeholder="name@example.com" autocomplete="email">
-
-          <div class="cta-row">
-            <button type="button" id="registerPrimaryBtn" class="btn-primary">Register</button>
-            <button type="button" id="cancelReg" class="btn-outline">Cancel</button>
-          </div>
-
-          <div class="auth-footer" style="margin-top:12px;">Already have an account? <a href="#" id="showLogin">Login</a></div>
-        </form>
-
+      <!-- RIGHT: Visual -->
+      <div class="auth-right">
+        <div class="right-inner">
+          <div class="brand-logo" aria-hidden="true"></div>
+          <div class="right-title">PROYAX PYQ Portal</div>
+          <div class="right-desc">Access previous year questions as images easily. Prepare smarter and faster for your exams.</div>
+        </div>
       </div>
     </div>
   </div>
 
-  <!-- MAIN APP (kept intact) -->
-  <section id="mainApp" class="flex h-screen">
-    <!-- SIDEBAR -->
+  <!-- ===== Main App (hidden until login) ===== -->
+  <section id="mainApp" class="flex h-screen" aria-hidden="true">
+    <!-- Sidebar -->
     <div id="sidebar">
       <div>
         <div class="logo-block">
@@ -345,7 +201,7 @@
       </div>
     </div>
 
-    <!-- MAIN CONTENT -->
+    <!-- Main content -->
     <div class="main-content">
       <div class="table-wrap mb-4 -mt-2">
         <table>
@@ -357,63 +213,46 @@
             </tr>
           </thead>
           <tbody id="pyqTableBody">
-            <tr>
-              <td colspan="3" class="text-center p-4">Select a subject and year</td>
-            </tr>
+            <tr><td colspan="3" class="text-center p-4">Select a subject and year</td></tr>
           </tbody>
         </table>
-      </div>
-
-      <!-- Extra area for notes -->
-      <div class="mt-4 text-gray-600">
-        <!-- placeholder -->
       </div>
     </div>
   </section>
 
-  <!-- IMAGE MODAL -->
+  <!-- Image modal -->
   <div id="imageModal" class="modal" aria-hidden="true">
-    <div class="modal-content relative text-center" id="imageModalContent">
-      <span class="close-btn" id="imageModalClose">&times;</span>
-      <img id="pyqImage" src="" alt="Question preview" style="max-width:100%; height:auto; border-radius:.6rem;">
+    <div class="modal-content">
+      <span id="imageModalClose" class="close-btn">&times;</span>
+      <img id="pyqImage" src="" alt="Preview" style="max-width:100%;height:auto;border-radius:.6rem;">
     </div>
   </div>
 
-  <!-- PROFILE MODAL -->
+  <!-- Profile modal -->
   <div id="profileModal" class="modal" aria-hidden="true">
     <div class="modal-content" id="profileCard">
       <button id="closeProfileModal" class="close-btn">&times;</button>
-      <h2 class="text-2xl font-semibold text-center mb-4">👤 Profile Settings</h2>
-      <form id="profileForm" class="space-y-4">
-        <div>
-          <label class="block font-medium mb-1">Full Name</label>
-          <input id="profileName" type="text" class="w-full border px-3 py-2 rounded-lg outline-none" placeholder="Enter your name">
-        </div>
-        <div>
-          <label class="block font-medium mb-1">Class</label>
-          <input id="profileClass" type="text" class="w-full border px-3 py-2 rounded-lg outline-none" placeholder="Enter your class">
-        </div>
-        <div>
-          <label class="block font-medium mb-1">Change Password</label>
-          <div class="relative">
-            <input id="newPassword" type="password" class="w-full border px-3 py-2 rounded-lg pr-10 outline-none" placeholder="New password">
-            <button type="button" id="togglePassword" class="absolute right-3 top-2 text-gray-500">👁</button>
-          </div>
-        </div>
-        <button type="submit" id="saveProfileBtn" class="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition">Save Changes</button>
+      <h2 style="text-align:center;margin:0 0 12px;">👤 Profile Settings</h2>
+      <form id="profileForm" style="display:flex;flex-direction:column;gap:10px;">
+        <input id="profileName" class="input-lg" placeholder="Full name" />
+        <input id="profileClass" class="input-lg" placeholder="Class" />
+        <input id="newPassword" type="password" class="input-lg" placeholder="New password" />
+        <button type="submit" class="btn-primary-lg">Save Changes</button>
       </form>
     </div>
   </div>
 
+  <!-- Sidebar backdrop for mobile -->
   <div id="sidebarBackdrop"></div>
 
-  <!-- JS (module) -->
+  <!-- Firebase + App JS -->
   <script type="module">
+    // Firebase imports
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
     import { getFirestore, collection, query, where, getDocs, doc, updateDoc, addDoc } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
-    import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, updatePassword } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+    import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
 
-    // ---------- FIREBASE CONFIG ----------
+    // ---------- CONFIG ----------
     const firebaseConfig = {
       apiKey: "AIzaSyBOVl1hdmprJXpgdN_sNTO3FsNePD_zNZY",
       authDomain: "aahes-cee-cutoffs.firebaseapp.com",
@@ -423,445 +262,272 @@
       messagingSenderId: "706066626405",
       appId: "1:706066626405:web:0d254ab82beb288108938c"
     };
-
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
     const auth = getAuth(app);
 
-    // ---------- DOM REFS ----------
-    const authModal = document.getElementById('authModal');
-    const closeAuth = document.getElementById('closeAuth');
-    const leftLoginBtn = document.getElementById('leftLoginBtn');
-    const leftRegisterBtn = document.getElementById('leftRegisterBtn');
-    const showRegister = document.getElementById('showRegister');
-    const showLogin = document.getElementById('showLogin');
-    const loginForm = document.getElementById('loginForm');
-    const registerForm = document.getElementById('registerForm');
-    const loginPrimaryBtn = document.getElementById('loginPrimaryBtn');
-    const registerPrimaryBtn = document.getElementById('registerPrimaryBtn');
-    const cancelReg = document.getElementById('cancelReg');
+    // ---------- DOM refs ----------
+    const authOverlay = document.getElementById('authOverlay');
+    const loginPanel = document.getElementById('loginPanel');
+    const registerPanel = document.getElementById('registerPanel');
+    const showRegisterBtn = document.getElementById('showRegisterBtn');
+    const cancelRegister = document.getElementById('cancelRegister');
+    const loginBtn = document.getElementById('loginBtn');
+    const registerBtn = document.getElementById('registerBtn');
 
     const loginEmail = document.getElementById('loginEmail');
     const loginPass = document.getElementById('loginPass');
     const regUsername = document.getElementById('regUsername');
-    const regFullname = document.getElementById('regFullname');
-    const regPass = document.getElementById('regPass');
-    const regPhone = document.getElementById('regPhone');
+    const regName = document.getElementById('regName');
     const regEmail = document.getElementById('regEmail');
+    const regPass = document.getElementById('regPass');
 
-    // other refs (from your original app)
-    const mainApp = document.getElementById("mainApp");
-    const pyqTableBody = document.getElementById("pyqTableBody");
-    const subjectButtons = document.getElementById("subjectButtons");
-    const yearButtons = document.getElementById("yearButtons");
+    const mainApp = document.getElementById('mainApp');
+    const pyqTableBody = document.getElementById('pyqTableBody');
+    const subjectButtons = document.getElementById('subjectButtons');
+    const yearButtons = document.getElementById('yearButtons');
 
-    const profileModal = document.getElementById("profileModal");
-    const profileBtn = document.getElementById("profileBtn");
-    const closeProfileModal = document.getElementById("closeProfileModal");
-    const profileName = document.getElementById("profileName");
-    const profileClass = document.getElementById("profileClass");
-    const newPassword = document.getElementById("newPassword");
-    const togglePassword = document.getElementById("togglePassword");
-    const profileForm = document.getElementById("profileForm");
+    const imageModal = document.getElementById('imageModal');
+    const imageModalClose = document.getElementById('imageModalClose');
+    const pyqImage = document.getElementById('pyqImage');
 
-    const imageModal = document.getElementById("imageModal");
-    const pyqImage = document.getElementById("pyqImage");
-    const imageModalClose = document.getElementById("imageModalClose");
+    const profileModal = document.getElementById('profileModal');
+    const profileBtn = document.getElementById('profileBtn');
+    const closeProfileModal = document.getElementById('closeProfileModal');
+    const profileName = document.getElementById('profileName');
+    const profileClass = document.getElementById('profileClass');
+    const newPassword = document.getElementById('newPassword');
+    const profileForm = document.getElementById('profileForm');
 
-    // mobile sidebar
-    const hamburger = document.getElementById('mobileHamburger');
     const sidebar = document.getElementById('sidebar');
-    const backdrop = document.getElementById('sidebarBackdrop');
+    const sidebarBackdrop = document.getElementById('sidebarBackdrop');
 
+    // state
     let currentUser = null;
     let currentSubject = "physics";
     let currentYear = 2025;
     const subjects = ["physics","chemistry","maths"];
     const years = [2025,2024,2023,2022];
 
-    // ---------- AUTH MODAL VISIBILITY ----------
-    function openAuthModal() {
-      document.body.classList.add('modal-open');
-      authModal.style.display = 'flex';
-    }
-    function closeAuthModal() {
-      document.body.classList.remove('modal-open');
-      authModal.style.display = 'none';
-    }
+    // Show login overlay on load
+    function showAuth(){ authOverlay.style.display = 'flex'; authOverlay.setAttribute('aria-hidden','false'); mainApp.style.display = 'none'; }
+    function hideAuth(){ authOverlay.style.display = 'none'; authOverlay.setAttribute('aria-hidden','true'); mainApp.style.display = 'flex'; }
+    showAuth();
 
-    // initial state: show modal
-    openAuthModal();
+    // toggle forms
+    showRegisterBtn.addEventListener('click', ()=>{ loginPanel.style.display='none'; registerPanel.style.display='flex'; });
+    cancelRegister.addEventListener('click', ()=>{ registerPanel.style.display='none'; loginPanel.style.display='flex'; });
 
-    // toggle login/register views
-    function showLoginForm() {
-      loginForm.style.display = 'block';
-      registerForm.style.display = 'none';
-      document.getElementById('authTitle').innerText = 'Welcome';
-      document.getElementById('authSubtitle').innerText = 'Log in to access PYQs and personalized study resources.';
-    }
-    function showRegisterForm() {
-      loginForm.style.display = 'none';
-      registerForm.style.display = 'block';
-      document.getElementById('authTitle').innerText = 'Create account';
-      document.getElementById('authSubtitle').innerText = 'Register to save your progress and access exclusive materials.';
-    }
-
-    leftLoginBtn.addEventListener('click', showLoginForm);
-    leftRegisterBtn.addEventListener('click', showRegisterForm);
-    showRegister?.addEventListener('click', (e)=>{ e.preventDefault(); showRegisterForm(); });
-    showLogin?.addEventListener('click', (e)=>{ e.preventDefault(); showLoginForm(); });
-    closeAuth.addEventListener('click', closeAuthModal);
-    cancelReg.addEventListener('click', (e)=>{ e.preventDefault(); showLoginForm(); });
-
-    // ---------- LOGIN & REGISTER HANDLERS ----------
-    // Login: uses Firestore users collection (like your previous approach). If you also use Firebase Auth, you can enable auth call.
-    loginPrimaryBtn.addEventListener('click', async () => {
+    // ------ LOGIN (simple Firestore check like before) ------
+    loginBtn.addEventListener('click', async () => {
       const email = loginEmail.value.trim();
-      const password = loginPass.value.trim();
-      if (!email || !password) { alert("Enter email & password"); return; }
+      const pass = loginPass.value.trim();
+      if(!email||!pass){ alert('Enter email & password'); return; }
 
-      try {
-        const q = query(collection(db, "users"), where("email", "==", email));
-        const snapshot = await getDocs(q);
-
-        if (snapshot.empty) { alert("User not found"); return; }
-
-        let found = false;
-        snapshot.forEach(docSnap => {
+      try{
+        const q = query(collection(db,'users'), where('email','==',email));
+        const snap = await getDocs(q);
+        if(snap.empty){ alert('User not found'); return; }
+        let found=false;
+        snap.forEach(docSnap => {
           const data = docSnap.data();
-          if (data.password === password) {
-            found = true;
+          if(data.password === pass){
+            found=true;
             currentUser = { id: docSnap.id, ...data };
           }
         });
-
-        if (!found) { alert("Incorrect password"); return; }
-
+        if(!found){ alert('Incorrect password'); return; }
         // success
-        onLoginSuccess();
-      } catch (err) {
-        console.error(err);
-        alert("Login failed");
-      }
+        hideAuth();
+        document.getElementById('welcomeMsg').innerText = `Welcome, ${currentUser.name || currentUser.username || 'User'}! 😊`;
+        generateButtons();
+        loadPYQs().catch(e=>console.error(e));
+        if(window.lucide) window.lucide.createIcons();
+      }catch(err){ console.error(err); alert('Login failed'); }
     });
 
-    // Register: adds a doc to Firestore 'users' collection and attempts to create Firebase Auth user (optional)
-    registerPrimaryBtn.addEventListener('click', async () => {
+    // ------ REGISTER (Firestore + optional Firebase Auth) ------
+    registerBtn.addEventListener('click', async () => {
       const username = regUsername.value.trim();
-      const fullname = regFullname.value.trim();
-      const pass = regPass.value.trim();
-      const phone = regPhone.value.trim();
+      const name = regName.value.trim();
       const email = regEmail.value.trim();
+      const pass = regPass.value.trim();
+      if(!username||!email||!pass){ alert('Enter username, email and password'); return; }
+      if(pass.length < 6){ alert('Password must be 6+ characters'); return; }
 
-      if (!username || !pass || !email) { alert('Please enter username, password and email'); return; }
-      if (pass.length < 6) { alert('Use a password with at least 6 characters'); return; }
-
-      try {
+      try{
         // add to Firestore
-        await addDoc(collection(db, 'users'), { username, name: fullname, password: pass, phone, email, createdAt: new Date(), class: '' });
-        // optionally create firebase auth user
-        try { await createUserWithEmailAndPassword(auth, email, pass); } catch(e){ console.warn('Auth create failed (optional):', e); }
-
-        alert('Registered successfully. You can now log in.');
-        showLoginForm();
-      } catch (err) {
-        console.error('Register failed', err);
-        alert('Registration failed — check console.');
-      }
+        await addDoc(collection(db,'users'), { username, name, email, password: pass, createdAt: new Date(), class: '' });
+        // optionally create Firebase Auth user (non-blocking)
+        try{ await createUserWithEmailAndPassword(auth, email, pass); }catch(e){ console.warn('Auth create skipped:', e); }
+        alert('Registered — you can now login.');
+        registerPanel.style.display='none'; loginPanel.style.display='flex';
+      }catch(err){ console.error('Register failed', err); alert('Registration failed'); }
     });
 
-    // on successful login
-    function onLoginSuccess() {
-      closeAuthModal();
-      mainApp.style.display = 'flex';
-      document.getElementById("welcomeMsg").innerText = `Welcome, ${currentUser.name || currentUser.username || 'User'}! 😊`;
-      generateButtons();
-      loadPYQs().catch(e => console.error(e));
-      if (window.lucide) window.lucide.createIcons();
-    }
-
-    // ---------- BUTTON GENERATION ----------
-    function generateButtons() {
-      // subjects
-      subjectButtons.innerHTML = "";
+    // ---------- Table buttons ----------
+    function generateButtons(){
+      subjectButtons.innerHTML = '';
       subjects.forEach(s => {
-        const btn = document.createElement("button");
-        btn.innerText = s.charAt(0).toUpperCase() + s.slice(1);
-        if (s === currentSubject) btn.classList.add("tab-active");
-        btn.addEventListener("click", () => {
-          currentSubject = s;
-          subjectButtons.querySelectorAll("button").forEach(b => b.classList.remove("tab-active"));
-          btn.classList.add("tab-active");
-          loadPYQs();
-        });
+        const btn = document.createElement('button');
+        btn.innerText = s.charAt(0).toUpperCase()+s.slice(1);
+        if(s===currentSubject) btn.classList.add('tab-active');
+        btn.addEventListener('click', ()=>{ currentSubject=s; subjectButtons.querySelectorAll('button').forEach(b=>b.classList.remove('tab-active')); btn.classList.add('tab-active'); loadPYQs(); });
         subjectButtons.appendChild(btn);
       });
-
-      // years
-      yearButtons.innerHTML = "";
-      years.forEach(y => {
-        const btn = document.createElement("button");
+      yearButtons.innerHTML='';
+      years.forEach(y=>{
+        const btn = document.createElement('button');
         btn.innerText = y;
-        btn.classList.add("py-1","rounded");
-        if (y === currentYear) btn.classList.add("tab-active");
-        btn.addEventListener("click", () => {
-          currentYear = y;
-          yearButtons.querySelectorAll("button").forEach(b => b.classList.remove("tab-active"));
-          btn.classList.add("tab-active");
-          loadPYQs();
-        });
+        if(y===currentYear) btn.classList.add('tab-active');
+        btn.addEventListener('click', ()=>{ currentYear=y; yearButtons.querySelectorAll('button').forEach(b=>b.classList.remove('tab-active')); btn.classList.add('tab-active'); loadPYQs(); });
         yearButtons.appendChild(btn);
       });
     }
 
-    // ---------- LOAD PYQS ----------
-    async function loadPYQs() {
-      try {
+    // ---------- Load PYQs ----------
+    async function loadPYQs(){
+      try{
         pyqTableBody.innerHTML = "<tr><td colspan='3' class='text-center p-4'>Loading...</td></tr>";
-        const q = query(collection(db, "pyqs"), where("subject","==",currentSubject), where("year","==",currentYear));
+        const q = query(collection(db,'pyqs'), where('subject','==',currentSubject), where('year','==',currentYear));
         const snapshot = await getDocs(q);
         pyqTableBody.innerHTML = "";
-
-        if (snapshot.empty) {
-          pyqTableBody.innerHTML = "<tr><td colspan='3' class='text-center p-4'>No questions found</td></tr>";
-          return;
-        }
-
-        const items = [];
+        if(snapshot.empty){ pyqTableBody.innerHTML = "<tr><td colspan='3' class='text-center p-4'>No questions found</td></tr>"; return; }
+        const items=[];
         snapshot.forEach(docSnap => items.push({ id: docSnap.id, ...docSnap.data() }));
-        items.sort((a,b) => (a.qno ?? Infinity) - (b.qno ?? Infinity));
-
-        items.forEach(item => {
-          const tr = document.createElement("tr");
+        items.sort((a,b)=> (a.qno ?? Infinity) - (b.qno ?? Infinity));
+        items.forEach(item=>{
+          const tr = document.createElement('tr');
           tr.innerHTML = `
             <td class="text-center font-medium align-top">${item.qno ?? '-'}</td>
-            <td class="text-left align-top">
-              ${item.img ? `<img data-src="${item.img}" class="pyq-img" alt="Question ${item.qno ?? ''}">` : '-'}
-            </td>
-            <td class="text-center align-top">
-              ${item.sol ? `<img src="${item.sol}" class="pyq-img" alt="Solution ${item.qno ?? ''}" onclick="openImageModal('${item.sol}')">` : '-'}
-            </td>
+            <td class="text-left align-top">${item.img ? `<img data-src="${item.img}" class="pyq-img" alt="Q ${item.qno ?? ''}">` : '-'}</td>
+            <td class="text-center align-top">${item.sol ? `<img src="${item.sol}" class="pyq-img" alt="Sol ${item.qno ?? ''}" onclick="openImageModal('${item.sol}')">` : '-'}</td>
           `;
           pyqTableBody.appendChild(tr);
         });
 
-        // watermark question images (only those with data-src)
-        const allImgs = pyqTableBody.querySelectorAll(".pyq-img");
-        for (const img of allImgs) {
-          const src = img.getAttribute("data-src");
-          if (!src) continue; // skip solution previews (they already have src)
-          try {
-            const watermarked = await addWatermarkToImage(src, "AAHES");
-            img.src = watermarked;
-            img.addEventListener("click", () => openImageModal(watermarked));
-          } catch (err) {
-            console.warn("Watermark failed, using original src", err);
+        // watermark question images (those with data-src)
+        const allImgs = pyqTableBody.querySelectorAll('.pyq-img');
+        for(const img of allImgs){
+          const src = img.getAttribute('data-src');
+          if(!src) continue;
+          try{
+            const wm = await addWatermarkToImage(src,'AAHES');
+            img.src = wm;
+            img.addEventListener('click', ()=>openImageModal(wm));
+          }catch(e){
+            console.warn('Watermark failed', e);
             img.src = src;
-            img.addEventListener("click", () => openImageModal(src));
+            img.addEventListener('click', ()=>openImageModal(src));
           }
         }
-
-        if (window.lucide) window.lucide.createIcons();
-      } catch (err) {
+      }catch(err){
         console.error(err);
         pyqTableBody.innerHTML = "<tr><td colspan='3' class='text-center p-4'>Failed to load questions</td></tr>";
       }
     }
 
-    // ---------- WATERMARK HELPER ----------
-    async function addWatermarkToImage(imgUrl, watermarkText = "AAHES") {
-      return new Promise((resolve, reject) => {
+    // ---------- Watermark helper ----------
+    async function addWatermarkToImage(imgUrl, watermarkText='AAHES'){
+      return new Promise((resolve,reject)=>{
         const img = new Image();
-        img.crossOrigin = "anonymous";
-        img.onload = () => {
-          try {
-            const canvas = document.createElement("canvas");
-            const ctx = canvas.getContext("2d");
+        img.crossOrigin = 'anonymous';
+        img.onload = ()=>{
+          try{
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
             canvas.width = img.naturalWidth || img.width;
             canvas.height = img.naturalHeight || img.height;
-
             const MAX_DIM = 2400;
             let scale = 1;
-            if (canvas.width > MAX_DIM || canvas.height > MAX_DIM) {
+            if(canvas.width > MAX_DIM || canvas.height > MAX_DIM){
               scale = Math.min(MAX_DIM / canvas.width, MAX_DIM / canvas.height);
               canvas.width = Math.floor(canvas.width * scale);
               canvas.height = Math.floor(canvas.height * scale);
             }
-
-            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-
-            const fontSize = Math.max(10, Math.floor(canvas.width / 25));
+            ctx.drawImage(img,0,0,canvas.width,canvas.height);
+            const fontSize = Math.max(10, Math.floor(canvas.width/25));
             ctx.font = `bold ${fontSize}px Quicksand, sans-serif`;
-            ctx.fillStyle = "rgba(255,255,255,0.10)";
-            ctx.textAlign = "center";
-            ctx.textBaseline = "middle";
-
+            ctx.fillStyle = 'rgba(255,255,255,0.10)';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
             ctx.save();
-            ctx.translate(canvas.width / 2, canvas.height / 2);
-            ctx.rotate(-Math.PI / 6);
-
+            ctx.translate(canvas.width/2, canvas.height/2);
+            ctx.rotate(-Math.PI/6);
             const stepX = fontSize * 6;
             const stepY = fontSize * 4;
             const startX = -canvas.width;
             const endX = canvas.width * 2;
             const startY = -canvas.height;
             const endY = canvas.height * 2;
-
-            for (let x = startX; x < endX; x += stepX) {
-              for (let y = startY; y < endY; y += stepY) {
-                ctx.fillText(watermarkText, x - canvas.width / 2, y - canvas.height / 2);
+            for(let x = startX; x < endX; x += stepX){
+              for(let y = startY; y < endY; y += stepY){
+                ctx.fillText(watermarkText, x - canvas.width/2, y - canvas.height/2);
               }
             }
             ctx.restore();
-
-            const dataUrl = canvas.toDataURL("image/png");
-            resolve(dataUrl);
-          } catch (err) {
-            reject(err);
-          }
+            resolve(canvas.toDataURL('image/png'));
+          }catch(e){ reject(e); }
         };
-        img.onerror = (e) => reject(new Error("Image load failed: " + (e?.message || 'error')));
+        img.onerror = (e)=> reject(new Error('Image load failed'));
         img.src = imgUrl;
       });
     }
 
-    // ---------- IMAGE MODAL HANDLERS ----------
-    window.openImageModal = function (imgUrl) {
-      if (!imgUrl) { alert("No image available."); return; }
+    // ---------- Image modal handlers ----------
+    window.openImageModal = function(imgUrl){
+      if(!imgUrl){ alert('No image'); return; }
       pyqImage.src = imgUrl;
-      imageModal.classList.add("show");
-      imageModal.setAttribute("aria-hidden", "false");
+      imageModal.classList.add('show');
+      imageModal.setAttribute('aria-hidden','false');
     };
+    imageModalClose.addEventListener('click', ()=>{ imageModal.classList.remove('show'); imageModal.setAttribute('aria-hidden','true'); pyqImage.src=''; });
+    imageModal.addEventListener('click', (e)=>{ if(e.target === imageModal){ imageModal.classList.remove('show'); imageModal.setAttribute('aria-hidden','true'); pyqImage.src=''; }});
+    pyqImage.addEventListener('click', e=> e.stopPropagation());
 
-    imageModalClose.addEventListener("click", () => {
-      imageModal.classList.remove("show");
-      imageModal.setAttribute("aria-hidden", "true");
-      pyqImage.src = "";
+    // ---------- Profile modal ----------
+    profileBtn?.addEventListener('click', ()=> {
+      profileName.value = currentUser?.name || '';
+      profileClass.value = currentUser?.class || '';
+      profileModal.classList.add('show');
+      profileModal.setAttribute('aria-hidden','false');
     });
-    imageModal.addEventListener("click", (e) => { if (e.target === imageModal) { imageModal.classList.remove("show"); imageModal.setAttribute("aria-hidden", "true"); pyqImage.src = ""; } });
-    pyqImage.addEventListener("click", (e) => e.stopPropagation());
+    closeProfileModal.addEventListener('click', ()=>{ profileModal.classList.remove('show'); profileModal.setAttribute('aria-hidden','true'); });
 
-    // ---------- LOGOUT ----------
-    document.getElementById("logoutBtn").addEventListener("click", () => {
-      currentUser = null;
-      // show auth modal again
-      openAuthModal();
-      mainApp.style.display = 'none';
-    });
-
-    // ---------- PROFILE MODAL ----------
-    profileBtn.addEventListener("click", () => {
-      profileName.value = currentUser?.name || "";
-      profileClass.value = currentUser?.class || "";
-      newPassword.value = "";
-      profileModal.classList.add("show");
-      profileModal.setAttribute("aria-hidden", "false");
-    });
-
-    closeProfileModal.addEventListener("click", () => {
-      profileModal.classList.remove("show");
-      profileModal.setAttribute("aria-hidden", "true");
-    });
-
-    profileModal.addEventListener("click", (e) => {
-      if (e.target === profileModal) {
-        profileModal.classList.remove("show");
-        profileModal.setAttribute("aria-hidden", "true");
-      }
-    });
-
-    togglePassword.addEventListener("click", () => {
-      newPassword.type = newPassword.type === "password" ? "text" : "password";
-      togglePassword.innerText = newPassword.type === "password" ? "👁" : "🙈";
-    });
-
-    // ---------- SAVE PROFILE CHANGES ----------
-    profileForm.addEventListener("submit", async (e) => {
+    profileForm?.addEventListener('submit', async (e)=>{
       e.preventDefault();
-
-      const name = profileName.value.trim();
-      const className = profileClass.value.trim();
-      const password = newPassword.value.trim();
-
-      if (!currentUser?.id) {
-        alert("User not logged in.");
-        return;
-      }
-
-      try {
-        const userRef = doc(db, "users", currentUser.id);
-        const updates = {};
-        if (name) updates.name = name;
-        if (className) updates.class = className;
-        if (password) updates.password = password;
-
+      if(!currentUser?.id){ alert('Not logged in'); return; }
+      const updates = {};
+      if(profileName.value.trim()) updates.name = profileName.value.trim();
+      if(profileClass.value.trim()) updates.class = profileClass.value.trim();
+      if(newPassword.value.trim()) updates.password = newPassword.value.trim();
+      try{
+        const userRef = doc(db, 'users', currentUser.id);
         await updateDoc(userRef, updates);
-        currentUser = { ...currentUser, ...updates };
-
-        if (password && auth.currentUser) {
-          try { await updatePassword(auth.currentUser, password); }
-          catch (authErr) { console.warn("Password not updated in Auth (requires recent signin).", authErr); }
-        }
-
-        alert("Profile updated successfully ✅");
-        document.getElementById("welcomeMsg").innerText = `Welcome, ${currentUser.name || 'User'}! 😊`;
-        profileModal.classList.remove("show");
-        profileModal.setAttribute("aria-hidden", "true");
-      } catch (err) {
-        console.error("Profile update failed:", err);
-        alert("Error updating profile. Check console for details.");
-      }
+        currentUser = {...currentUser, ...updates};
+        alert('Profile updated ✅');
+        profileModal.classList.remove('show');
+      }catch(err){ console.error('Profile update', err); alert('Failed to update'); }
     });
 
-    // ---------- INIT LUCIDE ICONS ----------
-    if (window.lucide) window.lucide.createIcons();
+    // ---------- Logout button ----------
+    document.getElementById('logoutBtn').addEventListener('click', ()=>{
+      currentUser = null;
+      showAuth();
+    });
 
-    // ------------------------
-    // MOBILE SIDEBAR TOGGLE + SWIPE
-    // ------------------------
-    (function () {
-      function enableOverlayMode() { sidebar.classList.add('overlay'); }
-      function openSidebar() { enableOverlayMode(); sidebar.classList.add('open'); backdrop.classList.add('show'); document.body.style.overflow = 'hidden'; }
-      function closeSidebar() { sidebar.classList.remove('open'); backdrop.classList.remove('show'); setTimeout(()=>{ document.body.style.overflow = ''; }, 300); }
+    // ---------- Mobile sidebar overlay (kept minimal) ----------
+    function enableOverlay(){ sidebar.classList.add('overlay'); }
+    function openSidebar(){ enableOverlay(); sidebar.classList.add('open'); sidebarBackdrop.classList.add('show'); document.body.style.overflow='hidden'; }
+    function closeSidebar(){ sidebar.classList.remove('open'); sidebarBackdrop.classList.remove('show'); setTimeout(()=>document.body.style.overflow='',300); }
+    sidebarBackdrop.addEventListener('click', closeSidebar);
+    window.addEventListener('resize', ()=>{ if(window.innerWidth <= 900) enableOverlay(); else { sidebar.classList.remove('overlay','open'); sidebarBackdrop.classList.remove('show'); document.body.style.overflow=''; } });
 
-      hamburger?.addEventListener('click', () => {
-        if (!sidebar.classList.contains('open')) openSidebar(); else closeSidebar();
-      });
+    // close auth overlay on ESC
+    window.addEventListener('keydown', (e)=>{ if(e.key==='Escape'){ if(imageModal.classList.contains('show')){ imageModal.classList.remove('show'); } else if(profileModal.classList.contains('show')){ profileModal.classList.remove('show'); } } });
 
-      backdrop.addEventListener('click', closeSidebar);
-
-      function checkAndEnableOverlay() {
-        if (window.innerWidth <= 900) {
-          enableOverlayMode();
-          sidebar.classList.remove('open');
-          backdrop.classList.remove('show');
-        } else {
-          sidebar.classList.remove('overlay', 'open');
-          backdrop.classList.remove('show');
-          document.body.style.overflow = '';
-        }
-      }
-      window.addEventListener('resize', checkAndEnableOverlay);
-      checkAndEnableOverlay();
-
-      // swipe
-      let touchStartX = 0, touchStartY = 0, touchActive = false;
-      document.addEventListener('touchstart', (e) => { if (e.touches && e.touches.length === 1) { touchStartX = e.touches[0].clientX; touchStartY = e.touches[0].clientY; touchActive = true; } }, { passive:true });
-      document.addEventListener('touchend', (e) => {
-        if (!touchActive) return;
-        touchActive = false;
-        const touch = (e.changedTouches && e.changedTouches[0]);
-        if (!touch) return;
-        const dx = touch.clientX - touchStartX;
-        const dy = touch.clientY - touchStartY;
-        if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.5) {
-          if (dx > 0) { if (window.innerWidth <= 900) openSidebar(); } else { if (window.innerWidth <= 900) closeSidebar(); }
-        }
-      }, { passive:true });
-
-      // ESC to close overlay
-      document.addEventListener('keydown', (e) => { if (e.key === 'Escape') { closeSidebar(); /* also allow closing auth modal with ESC */ if (authModal.style.display === 'flex') closeAuthModal(); } });
-    })();
+    // init lucide icons if loaded
+    if(window.lucide) window.lucide.createIcons();
   </script>
 </body>
 </html>
