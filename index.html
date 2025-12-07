@@ -18,7 +18,10 @@
   <script src="https://unpkg.com/lucide@latest"></script>
 
   <style>
-  :root { --sidebar-w: 260px; }
+  :root {
+    --sidebar-w: 260px;
+    --qno-w: 60px; /* fixed width for QNo column */
+  }
 
   html, body {
     margin: 0;
@@ -38,92 +41,18 @@
     overflow: hidden !important;
     z-index: 40;
   }
-  .login-bg {
-    display: flex;
-    height: 100%;
-    width: 100%;
-    background: linear-gradient(135deg, #1f2a44, #117a65);
-    overflow: hidden;
-  }
-  .login-left {
-    flex: 1 1 50%;
-    display:flex;
-    flex-direction:column;
-    justify-content:center;
-    padding:5rem 3rem;
-    color:#f0f0f0;
-    backdrop-filter: blur(10px);
-    background: rgba(0,0,0,0.25);
-    animation: fadeSlide 0.8s ease forwards;
-    border-radius: 0 2rem 2rem 0;
-    min-height:0;
-    box-sizing: border-box;
-  }
+  .login-bg { display:flex; height:100%; width:100%; background: linear-gradient(135deg, #1f2a44, #117a65); overflow:hidden; }
+  .login-left { flex:1 1 50%; display:flex; flex-direction:column; justify-content:center; padding:5rem 3rem; color:#f0f0f0; backdrop-filter:blur(10px); background:rgba(0,0,0,0.25); border-radius:0 2rem 2rem 0; min-height:0; box-sizing:border-box; animation: fadeSlide .8s ease; }
   .login-left h1 { font-size:2rem; margin-bottom:1.5rem; }
-  .login-left input {
-    width:100%;
-    padding:0.9rem;
-    margin-bottom:1.2rem;
-    border-radius:1rem;
-    border:none;
-    background: rgba(255,255,255,0.1);
-    color: #f0f0f0;
-    font-size:.95rem;
-    outline:none;
-    transition: all .25s;
-    box-sizing:border-box;
-  }
+  .login-left input { width:100%; padding:.9rem; margin-bottom:1.2rem; border-radius:1rem; border:none; background: rgba(255,255,255,0.1); color:#f0f0f0; font-size:.95rem; outline:none; transition: all .25s; box-sizing:border-box; }
   .login-left input::placeholder { color: rgba(240,240,240,0.65); }
   .login-left input:focus { background: rgba(255,255,255,0.18); box-shadow: 0 0 12px rgba(255,255,255,0.18); }
-  .login-left button {
-    width:100%;
-    padding:.9rem;
-    border-radius:1rem;
-    border:none;
-    background:#14b8a6;
-    color:white;
-    font-weight:600;
-    font-size:1rem;
-    cursor:pointer;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-    transition: all .2s;
-  }
+  .login-left button { width:100%; padding:.9rem; border-radius:1rem; border:none; background:#14b8a6; color:white; font-weight:600; font-size:1rem; cursor:pointer; box-shadow:0 5px 15px rgba(0,0,0,0.3); transition:all .2s; }
   .login-left button:hover { transform: translateY(-3px) scale(1.02); background:#0d9488; }
 
-  .login-right {
-    flex: 1 1 50%;
-    background: url('https://images.unsplash.com/photo-1688494930045-328d0f95efe9?fm=jpg&q=60&w=3000') center/cover no-repeat;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    text-align:center;
-    color:white;
-    position:relative;
-    padding:3rem;
-    border-radius:2rem 0 0 2rem;
-    overflow:hidden;
-    min-height:0;
-    box-sizing:border-box;
-  }
-  .login-right::before {
-    content: '';
-    position:absolute;
-    inset:0;
-    background: rgba(0,0,0,0.35);
-    border-radius:2rem 0 0 2rem;
-    z-index:0;
-  }
-  .login-right > div {
-    position:relative;
-    z-index:1;
-    animation: fadeInUp 1s ease forwards;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    justify-content:center;
-    gap:0.5rem;
-    text-align:center;
-  }
+  .login-right { flex:1 1 50%; background:url('https://images.unsplash.com/photo-1688494930045-328d0f95efe9?fm=jpg&q=60&w=3000') center/cover no-repeat; display:flex; justify-content:center; align-items:center; text-align:center; color:white; position:relative; padding:3rem; border-radius:2rem 0 0 2rem; overflow:hidden; min-height:0; box-sizing:border-box; }
+  .login-right::before { content:''; position:absolute; inset:0; background: rgba(0,0,0,0.35); border-radius:2rem 0 0 2rem; z-index:0; }
+  .login-right > div { position:relative; z-index:1; animation:fadeInUp 1s ease forwards; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:.5rem; text-align:center; }
   #logoimg { display:block; margin:0 auto 1rem; width:110px; max-width:28%; height:auto; filter: drop-shadow(0 0 12px rgba(255,255,255,0.4)); }
   .login-right h2 { font-size:2.6rem; font-weight:600; margin-bottom:1rem; text-shadow: 0 3px 10px rgba(0,0,0,0.6); }
   .login-right p { font-size:1.05rem; line-height:1.6; opacity:.95; text-shadow: 0 2px 6px rgba(0,0,0,0.5); }
@@ -135,19 +64,7 @@
   #mainApp { display:none; height:100vh; width:100%; flex-direction:row; overflow:hidden; }
 
   /* Sidebar */
-  #sidebar {
-    width: var(--sidebar-w);
-    min-width: var(--sidebar-w);
-    background: #1f2937;
-    padding: 1.5rem 1rem;
-    color:white;
-    height:100vh;
-    display:flex;
-    flex-direction:column;
-    justify-content:space-between;
-    gap:.5rem;
-    box-sizing:border-box;
-  }
+  #sidebar { width:var(--sidebar-w); min-width:var(--sidebar-w); background:#1f2937; padding:1.5rem 1rem; color:white; height:100vh; display:flex; flex-direction:column; justify-content:space-between; gap:.5rem; box-sizing:border-box; }
   #sidebar .logo-block { text-align:center; margin-bottom:.5rem; }
   #sidebar .logo-block img { width:64px; margin:0 auto .35rem; }
   #sidebar p#welcomeMsg { font-size:.95rem; margin-top:.3rem; color:#facc15; text-align:center; }
@@ -161,47 +78,66 @@
   .tab-active { background: linear-gradient(135deg,#2563eb,#1e40af); color:#f8fafc; font-weight:600; box-shadow:0 6px 18px rgba(30,64,175,0.15); transform: translateY(-2px); }
 
   /* ---------- MAIN CONTENT ---------- */
-  .main-content {
-    flex:1;
-    overflow-y:auto;
-    padding:0;              /* <-- no padding so table touches edges */
-    background:#ffffff;
-    min-height:100vh;
-    box-sizing:border-box;
-  }
+  .main-content { flex:1; overflow-y:auto; padding:0; background:#ffffff; min-height:100vh; box-sizing:border-box; }
 
-  /* Table */
+  /* Table area */
   .table-wrap { overflow-x:auto; margin:0; width:100%; }
-  table { width:100% !important; border-collapse: collapse; font-size:.95rem; }
-  thead th {
-    background:#0c2b4e; color:white; padding:.6rem .75rem;
-    text-align:left; vertical-align: middle;
+  table { width:100% !important; border-collapse:collapse; font-size:.95rem; table-layout: fixed; } /* fixed layout helps with column sizing */
+  thead th { background:#0c2b4e; color:white; padding:.6rem .75rem; text-align:left; vertical-align: middle; }
+
+  /* Force QNo column narrow */
+  table thead th:nth-child(1),
+  table tbody td:nth-child(1) {
+    width: var(--qno-w);
+    min-width: var(--qno-w);
+    max-width: var(--qno-w);
+    text-align: center;
+    padding: .5rem .5rem;
+    box-sizing: border-box;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
-  /* default cells */
-  tbody td { padding:.6rem .75rem; vertical-align: top; }
-  tbody tr:not(:last-child) { border-bottom: 2px solid #e5e7eb; }
-  tbody tr:hover { background:#ffffff; transition: background .18s; }
+  /* make question column allow overflow of images */
+  table thead th:nth-child(2),
+  table tbody td:nth-child(2) {
+    width: auto;
+    text-align: left;
+    padding: .9rem .9rem;
+  }
 
-  /* images inside table */
-  .pyq-img { max-width:350px; height:auto; border-radius:.6rem; cursor:pointer; display:block; margin:0 auto; }
-
-  /* ----------------------------
-     CENTER SOLUTION COLUMN (horizontal + vertical)
-     ---------------------------- */
+  /* solution column center */
   table thead th:nth-child(3),
   table tbody td:nth-child(3) {
     text-align: center;
     vertical-align: middle;
     padding: .9rem .75rem;
+    width: 36%;
   }
 
-  /* images in solution column responsive and centered */
-  table tbody td:nth-child(3) img,
-  table tbody td:nth-child(3) .pyq-img {
+  tbody td { padding:.6rem .75rem; vertical-align: top; }
+  tbody tr:not(:last-child) { border-bottom: 2px solid #e5e7eb; }
+  tbody tr:hover { background:#ffffff; transition: background .18s; }
+
+  /* Larger images for desktop */
+  .pyq-img {
+    max-width: 520px;     /* increased from 350 */
+    width: 100%;
+    height: auto;
+    border-radius:.6rem;
+    cursor:pointer;
     display:block;
     margin: 0.35rem auto;
-    max-width: 90%;
+    object-fit: contain;
+  }
+
+  /* ensure images inside the table keep max width and center */
+  table tbody td:nth-child(2) img,
+  table tbody td:nth-child(3) img {
+    display:block;
+    margin: 0.35rem auto;
+    max-width: 100%;
     height:auto;
   }
 
@@ -209,13 +145,13 @@
   table tbody td:nth-child(3) p,
   table tbody td:nth-child(3) .solution-text {
     margin: 0 auto;
-    display: inline-block;
-    text-align: center;
-    line-height: 1.45;
+    display:inline-block;
+    text-align:center;
+    line-height:1.45;
   }
 
-  /* override align-top if present */
-  table tbody td.align-top:nth-child(3) { vertical-align: middle; }
+  /* small adjustments for QNo label font */
+  table tbody td:nth-child(1) { font-weight:600; font-size:0.95rem; }
 
   /* Modal */
   .modal { display:none; position:fixed; inset:0; background: rgba(0,0,0,0.6); justify-content:center; align-items:center; z-index:50; }
@@ -228,9 +164,8 @@
   /* small device adjustments */
   @media (max-width: 900px) {
     #sidebar { display:none; }
-    #mainApp { padding: 0; }
-    .pyq-img { max-width:220px; }
-
+    #mainApp { padding:0; }
+    .pyq-img { max-width:420px; }
     .login-bg { flex-direction: column-reverse; height:100%; align-items:stretch; }
     .login-right, .login-left { width:100%; border-radius:0; padding-left:1.5rem; padding-right:1.5rem; }
     .login-right { min-height:40vh; max-height:60vh; padding-top:1.8rem; padding-bottom:1.8rem; display:flex; justify-content:center; align-items:center; }
@@ -249,7 +184,8 @@
     table thead th:nth-child(3),
     table tbody td:nth-child(3) { display:none; }
     table thead th:nth-child(2), table tbody td:nth-child(2) { width:80%; }
-    table thead th:nth-child(1), table tbody td:nth-child(1) { width:20%; }
+    table thead th:nth-child(1), table tbody td:nth-child(1) { width:20%; min-width:48px; max-width:80px; }
+    .pyq-img { max-width: 320px; }
   }
 
   /* MOBILE hamburger and sidebar overlay */
@@ -267,7 +203,7 @@
   #sidebarBackdrop { display:none; position:fixed; inset:0; background: rgba(0,0,0,0.45); z-index:82; opacity:0; transition: opacity .22s ease; }
   #sidebarBackdrop.show { display:block; opacity:1; }
 
-  @media (max-width: 900px) { .mobile-hamburger { display:flex; } #sidebar { display:block; } #mainApp { padding-left: 0; } }
+  @media (max-width: 900px) { .mobile-hamburger { display:flex; } #sidebar { display:block; } #mainApp { padding-left:0; } }
   </style>
 </head>
 <body>
@@ -337,9 +273,9 @@
         <table>
           <thead>
             <tr>
-              <th style="width:8%">QNo</th>
-              <th style="width:46%">Question</th>
-              <th style="width:46%">Solution</th>
+              <th>QNo</th>
+              <th>Question</th>
+              <th>Solution</th>
             </tr>
           </thead>
           <tbody id="pyqTableBody">
