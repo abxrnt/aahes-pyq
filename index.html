@@ -322,12 +322,103 @@
     width: 20%;
   }
 }
+/* -----------------------
+   Hide solution column on small screens
+   ----------------------- */
+@media (max-width: 900px) {
+  /* hide the 3rd column (Solution) */
+  table thead th:nth-child(3),
+  table tbody td:nth-child(3) {
+    display: none;
+  }
+
+  /* adjust column widths so remaining columns look ok */
+  table thead th:nth-child(1) { width: 10%; }
+  table thead th:nth-child(2) { width: 90%; }
+}
+
+/* -----------------------
+   Mobile hamburger + sidebar overlay styles
+   ----------------------- */
+.mobile-hamburger {
+  position: fixed;
+  left: 14px;
+  top: 14px;
+  z-index: 80;
+  width: 44px;
+  height: 44px;
+  display: none; /* visible only on mobile via media query below */
+  background: rgba(0,0,0,0.45);
+  border: none;
+  border-radius: 8px;
+  padding: 8px;
+  box-sizing: border-box;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  backdrop-filter: blur(6px);
+  transition: transform .18s ease, background .18s ease;
+}
+.mobile-hamburger:hover { transform: translateY(-2px); background: rgba(0,0,0,0.55); }
+.mobile-hamburger span {
+  display: block;
+  height: 2px;
+  width: 20px;
+  background: #fff;
+  margin: 4px 0;
+  border-radius: 2px;
+  transition: transform .18s cubic-bezier(.2,.9,.2,1), opacity .12s;
+}
+
+/* sidebar overlay mode */
+#sidebar.overlay {
+  position: fixed;
+  left: 0;
+  top: 0;
+  height: 100vh;
+  width: min(320px, 84vw);
+  transform: translateX(-110%);
+  transition: transform .28s cubic-bezier(.2,.9,.2,1);
+  z-index: 85;
+  box-shadow: 0 20px 40px rgba(2,6,23,0.45);
+}
+
+/* when open, slide in */
+#sidebar.overlay.open {
+  transform: translateX(0);
+}
+
+/* dim backdrop when overlay open */
+#sidebarBackdrop {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+  z-index: 82;
+  opacity: 0;
+  transition: opacity .22s ease;
+}
+#sidebarBackdrop.show { display: block; opacity: 1; }
+
+/* hamburger visible on small screens only */
+@media (max-width: 900px) {
+  .mobile-hamburger { display: flex; }
+  /* ensure sidebar hidden by default (we still keep #sidebar off-canvas) */
+  #sidebar { display: block; } /* keep it available for JS to convert to overlay */
+  /* when overlay is active, hide original layout's gap */
+  #mainApp { padding-left: 0; }
+}
 
 </style>
 
 </head>
 
 <body>
+  <!-- MOBILE HAMBURGER (visible only on small screens) -->
+<button id="mobileHamburger" aria-label="Open menu" class="mobile-hamburger" title="Open menu">
+  <span></span><span></span><span></span>
+</button>
+
   <!-- LOGIN -->
   <div class="login-bg" id="loginSection">
     <div class="login-left">
@@ -812,9 +903,112 @@
 
     // --------- Init lucide icons if available on first load ----------
     if (window.lucide) window.lucide.createIcons();
+    // ------------------------
+// MOBILE SIDEBAR TOGGLE + SWIPE
+// ------------------------
+(function () {
+  const hamburger = document.getElementById('mobileHamburger');
+  const sidebar = document.getElementById('sidebar');
+  // create a backdrop element to close when clicked
+  let backdrop = document.getElementById('sidebarBackdrop');
+  if (!backdrop) {
+    backdrop = document.createElement('div');
+    backdrop.id = 'sidebarBackdrop';
+    document.body.appendChild(backdrop);
+  }
+
+  // set overlay mode on sidebar (so CSS handles slide in)
+  function enableOverlayMode() {
+    sidebar.classList.add('overlay');
+  }
+  // open / close functions
+  function openSidebar() {
+    enableOverlayMode();
+    sidebar.classList.add('open');
+    backdrop.classList.add('show');
+    // prevent body scroll when sidebar open
+    document.body.style.overflow = 'hidden';
+  }
+  function closeSidebar() {
+    sidebar.classList.remove('open');
+    backdrop.classList.remove('show');
+    // restore body scroll shortly after animation
+    setTimeout(() => { document.body.style.overflow = ''; }, 300);
+  }
+
+  // hamburger click toggles
+  hamburger?.addEventListener('click', () => {
+    if (!sidebar.classList.contains('open')) openSidebar(); else closeSidebar();
+  });
+
+  // click on backdrop closes
+  backdrop.addEventListener('click', closeSidebar);
+
+  // if user resizes to mobile, ensure overlay mode enabled
+  function checkAndEnableOverlay() {
+    if (window.innerWidth <= 900) {
+      enableOverlayMode();
+      // keep sidebar hidden initially
+      sidebar.classList.remove('open');
+      backdrop.classList.remove('show');
+    } else {
+      // on larger screens we remove overlay class so sidebar behaves as normal
+      sidebar.classList.remove('overlay', 'open');
+      backdrop.classList.remove('show');
+      document.body.style.overflow = '';
+    }
+  }
+  window.addEventListener('resize', checkAndEnableOverlay);
+  checkAndEnableOverlay();
+
+  // --------------- swipe handling ---------------
+  // Only active on touch devices (mobile)
+  let touchStartX = 0;
+  let touchStartY = 0;
+  let touchActive = false;
+
+  document.addEventListener('touchstart', (e) => {
+    if (e.touches && e.touches.length === 1) {
+      touchStartX = e.touches[0].clientX;
+      touchStartY = e.touches[0].clientY;
+      touchActive = true;
+    }
+  }, { passive: true });
+
+  document.addEventListener('touchmove', (e) => {
+    // nothing here — we rely on touchend to detect swipe
+  }, { passive: true });
+
+  document.addEventListener('touchend', (e) => {
+    if (!touchActive) return;
+    touchActive = false;
+    const touch = (e.changedTouches && e.changedTouches[0]);
+    if (!touch) return;
+    const dx = touch.clientX - touchStartX;
+    const dy = touch.clientY - touchStartY;
+
+    // require mostly-horizontal swipe and minimum distance
+    if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.5) {
+      if (dx > 0) {
+        // swipe right
+        if (window.innerWidth <= 900) openSidebar();
+      } else {
+        // swipe left
+        if (window.innerWidth <= 900) closeSidebar();
+      }
+    }
+  }, { passive: true });
+
+  // close sidebar on ESC
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeSidebar();
+  });
+})();
+
   </script>
 </body>
 </html>
+
 
 
 
