@@ -178,23 +178,22 @@
       .pyq-img { max-width: 220px; }
     }
 
-    @media (max-width: 900px) {
+   @media (max-width: 900px) {
   .login-bg {
-    flex-direction: column;
+    flex-direction: column-reverse;
     height: auto;
   }
 
-  .login-left {
+  .login-left, .login-right {
     width: 100%;
     border-radius: 0;
-    padding: 3rem 1.5rem;
   }
 
   .login-right {
-    width: 100%;
-    height: 300px;
-    border-radius: 0;
+    height: 300px; /* adjust as you like */
   }
+}
+
 }
 
   </style>
@@ -688,5 +687,6 @@
   </script>
 </body>
 </html>
+
 
 
