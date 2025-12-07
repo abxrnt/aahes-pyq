@@ -17,13 +17,8 @@
   <!-- Lucide icons -->
   <script src="https://unpkg.com/lucide@latest"></script>
 
-<style>
-  /* -------------------------
-     Base
-     ------------------------- */
-  :root {
-    --sidebar-w: 260px;
-  }
+  <style>
+  :root { --sidebar-w: 260px; }
 
   html, body {
     margin: 0;
@@ -34,17 +29,15 @@
     -moz-osx-font-smoothing:grayscale;
   }
 
-  /* Make the whole login area fixed and non-scrollable */
+  /* ---------- LOGIN ---------- */
   #loginSection {
     position: fixed;
     inset: 0;
     width: 100vw;
     height: 100vh;
-    overflow: hidden !important; /* force no scroll */
+    overflow: hidden !important;
     z-index: 40;
   }
-
-  /* ---------- LOGIN (left/right) ---------- */
   .login-bg {
     display: flex;
     height: 100%;
@@ -52,127 +45,94 @@
     background: linear-gradient(135deg, #1f2a44, #117a65);
     overflow: hidden;
   }
-
-  /* left = form */
   .login-left {
     flex: 1 1 50%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding: 5rem 3rem;
-    color: #f0f0f0;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    padding:5rem 3rem;
+    color:#f0f0f0;
     backdrop-filter: blur(10px);
     background: rgba(0,0,0,0.25);
     animation: fadeSlide 0.8s ease forwards;
     border-radius: 0 2rem 2rem 0;
-    min-height: 0; /* allow flex children to shrink without causing scroll */
+    min-height:0;
     box-sizing: border-box;
   }
-
-  .login-left h1 { font-size: 2rem; margin-bottom: 1.5rem; }
+  .login-left h1 { font-size:2rem; margin-bottom:1.5rem; }
   .login-left input {
-    width: 100%;
-    padding: 0.9rem;
-    margin-bottom: 1.2rem;
-    border-radius: 1rem;
-    border: none;
+    width:100%;
+    padding:0.9rem;
+    margin-bottom:1.2rem;
+    border-radius:1rem;
+    border:none;
     background: rgba(255,255,255,0.1);
     color: #f0f0f0;
-    font-size: .95rem;
-    outline: none;
+    font-size:.95rem;
+    outline:none;
     transition: all .25s;
-    box-sizing: border-box;
+    box-sizing:border-box;
   }
   .login-left input::placeholder { color: rgba(240,240,240,0.65); }
   .login-left input:focus { background: rgba(255,255,255,0.18); box-shadow: 0 0 12px rgba(255,255,255,0.18); }
-
   .login-left button {
-    width: 100%;
-    padding: .9rem;
-    border-radius: 1rem;
-    border: none;
-    background: #14b8a6;
-    color: white;
-    font-weight: 600;
-    font-size: 1rem;
-    cursor: pointer;
+    width:100%;
+    padding:.9rem;
+    border-radius:1rem;
+    border:none;
+    background:#14b8a6;
+    color:white;
+    font-weight:600;
+    font-size:1rem;
+    cursor:pointer;
     box-shadow: 0 5px 15px rgba(0,0,0,0.3);
     transition: all .2s;
   }
-  .login-left button:hover { transform: translateY(-3px) scale(1.02); background: #0d9488; }
+  .login-left button:hover { transform: translateY(-3px) scale(1.02); background:#0d9488; }
 
-  /* right = image + logo + text */
   .login-right {
     flex: 1 1 50%;
     background: url('https://images.unsplash.com/photo-1688494930045-328d0f95efe9?fm=jpg&q=60&w=3000') center/cover no-repeat;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    color: white;
-    position: relative;
-    padding: 3rem;
-    border-radius: 2rem 0 0 2rem;
-    overflow: hidden;
-    min-height: 0; /* prevent flex overflow */
-    box-sizing: border-box;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+    color:white;
+    position:relative;
+    padding:3rem;
+    border-radius:2rem 0 0 2rem;
+    overflow:hidden;
+    min-height:0;
+    box-sizing:border-box;
   }
-
   .login-right::before {
     content: '';
-    position: absolute;
-    inset: 0;
+    position:absolute;
+    inset:0;
     background: rgba(0,0,0,0.35);
-    border-radius: 2rem 0 0 2rem;
-    z-index: 0;
+    border-radius:2rem 0 0 2rem;
+    z-index:0;
   }
-
-  /* Center content inside the right panel */
-.login-right > div {
-  position: relative;
-  z-index: 1;
-  animation: fadeInUp 1s ease forwards;
-
-  display: flex;
-  flex-direction: column;
-  align-items: center;    /* horizontally center logo + text */
-  justify-content: center;/* vertically center content inside the panel */
-  gap: 0.5rem;            /* small gap between logo, title and text */
-  text-align: center;
-}
-
-/* Logo: block-level and perfectly centered */
-#logoimg {
-  display: block;
-  margin: 0 auto 1rem; /* center horizontally; 1rem space below */
-  width: 110px;
-  max-width: 28%;      /* keeps it responsive on very wide screens */
-  height: auto;
-  filter: drop-shadow(0 0 12px rgba(255,255,255,0.4));
-}
-
-/* Desktop: nudge logo slightly up if you want a lifted look */
-@media (min-width: 901px) {
-  #logoimg { margin-top: -0.6rem; }
-}
-
-/* Mobile: smaller logo and tighter spacing */
-@media (max-width: 420px) {
-  #logoimg { width: 92px; margin-bottom: 0.6rem; }
-  .login-right > div { gap: 0.35rem; }
-  .login-right h2 { font-size: 1.6rem; }
-}
-
-  .login-right > div { position: relative; z-index: 1; animation: fadeInUp 1s ease forwards; }
-  #logoimg { width: 110px; margin-bottom: 1rem; filter: drop-shadow(0 0 12px rgba(255,255,255,0.4)); }
-  .login-right h2 { font-size: 2.6rem; font-weight: 600; margin-bottom: 1rem; text-shadow: 0 3px 10px rgba(0,0,0,0.6); }
-  .login-right p { font-size: 1.05rem; line-height: 1.6; opacity: .95; text-shadow: 0 2px 6px rgba(0,0,0,0.5); }
+  .login-right > div {
+    position:relative;
+    z-index:1;
+    animation: fadeInUp 1s ease forwards;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:0.5rem;
+    text-align:center;
+  }
+  #logoimg { display:block; margin:0 auto 1rem; width:110px; max-width:28%; height:auto; filter: drop-shadow(0 0 12px rgba(255,255,255,0.4)); }
+  .login-right h2 { font-size:2.6rem; font-weight:600; margin-bottom:1rem; text-shadow: 0 3px 10px rgba(0,0,0,0.6); }
+  .login-right p { font-size:1.05rem; line-height:1.6; opacity:.95; text-shadow: 0 2px 6px rgba(0,0,0,0.5); }
 
   @keyframes fadeSlide { 0%{opacity:0;transform:translateX(-40px)}100%{opacity:1;transform:translateX(0)} }
   @keyframes fadeInUp  { 0%{opacity:0;transform:translateY(30px)}100%{opacity:1;transform:translateY(0)} }
 
   /* ---------- MAIN APP ---------- */
-  #mainApp { display: none; height: 100vh; width: 100%; flex-direction: row; overflow: hidden; }
+  #mainApp { display:none; height:100vh; width:100%; flex-direction:row; overflow:hidden; }
 
   /* Sidebar */
   #sidebar {
@@ -180,81 +140,82 @@
     min-width: var(--sidebar-w);
     background: #1f2937;
     padding: 1.5rem 1rem;
-    color: white;
-    height: 100vh;
+    color:white;
+    height:100vh;
     display:flex;
-    flex-direction: column;
-    justify-content: space-between;
-    gap: .5rem;
-    box-sizing: border-box;
+    flex-direction:column;
+    justify-content:space-between;
+    gap:.5rem;
+    box-sizing:border-box;
   }
-  #sidebar .logo-block { text-align:center; margin-bottom: .5rem; }
-  #sidebar .logo-block img { width: 64px; margin: 0 auto .35rem; }
-  #sidebar p#welcomeMsg { font-size: .95rem; margin-top: .3rem; color: #facc15; text-align:center; }
-
-  #sidebar h3 { margin-bottom: .25rem; font-size: .85rem; color: #cbd5e1; }
-  #sidebar button { padding: .4rem .6rem; border-radius: .5rem; font-weight:500; font-size:.85rem; color: white; border:none; display:flex; gap:.5rem; align-items:center; cursor:pointer; transition:all .2s; }
+  #sidebar .logo-block { text-align:center; margin-bottom:.5rem; }
+  #sidebar .logo-block img { width:64px; margin:0 auto .35rem; }
+  #sidebar p#welcomeMsg { font-size:.95rem; margin-top:.3rem; color:#facc15; text-align:center; }
+  #sidebar h3 { margin-bottom:.25rem; font-size:.85rem; color:#cbd5e1; }
+  #sidebar button { padding:.4rem .6rem; border-radius:.5rem; font-weight:500; font-size:.85rem; color:white; border:none; display:flex; gap:.5rem; align-items:center; cursor:pointer; transition:all .2s; }
   #sidebar button:hover { transform: translateX(3px); }
-
-  .profile-btn { background: #070e6b; color: #e6eef5; padding:.45rem .85rem; border-radius:.7rem; box-shadow: 0 4px 8px rgba(0,0,0,0.18); }
+  .profile-btn { background:#070e6b; color:#e6eef5; padding:.45rem .85rem; border-radius:.7rem; box-shadow: 0 4px 8px rgba(0,0,0,0.18); }
   .profile-btn:hover { background:#166cb3; transform: translateY(-2px); }
   .logout-btn { background:#f43f5e; padding:.45rem .85rem; border-radius:.7rem; }
   .logout-btn:hover { background:#e11d48; transform: translateY(-2px); }
-
   .tab-active { background: linear-gradient(135deg,#2563eb,#1e40af); color:#f8fafc; font-weight:600; box-shadow:0 6px 18px rgba(30,64,175,0.15); transform: translateY(-2px); }
 
   /* ---------- MAIN CONTENT ---------- */
   .main-content {
-    flex: 1;
-    overflow-y: auto;
-    padding: 0;
-    background: #ffffff;
-    min-height: 100vh;
-    box-sizing: border-box;
+    flex:1;
+    overflow-y:auto;
+    padding:0;              /* <-- no padding so table touches edges */
+    background:#ffffff;
+    min-height:100vh;
+    box-sizing:border-box;
   }
 
   /* Table */
-  table {
-  width: 100% !important;
-}
+  .table-wrap { overflow-x:auto; margin:0; width:100%; }
+  table { width:100% !important; border-collapse: collapse; font-size:.95rem; }
+  thead th {
+    background:#0c2b4e; color:white; padding:.6rem .75rem;
+    text-align:left; vertical-align: middle;
+  }
 
-  .table-wrap { overflow-x:auto; margin:0;}
-  table { width: 100%; border-collapse: collapse; font-size: .95rem; }
-  thead th { background: #0c2b4e; color: white; padding: .6rem .75rem; text-align:left; vertical-align: middle; }
-  tbody td { padding: .6rem .75rem; vertical-align: top; }
-  tbody tr:not(:last-child) { border-bottom: 2px solid #e5e7eb; } /* separator between rows */
-  tbody tr:hover { background: #ffffff; transition: background .18s; }
-  .pyq-img { max-width: 350px; height: auto; border-radius: .6rem; cursor:pointer; display:block; margin: 0 auto; }
-/* Centre the Solution column content (both text and images) */
-table tbody td:nth-child(3),
-table thead th:nth-child(3) {
-  text-align: center;      /* horizontal centering */
-  vertical-align: middle;  /* vertical centering inside the row */
-  padding: .9rem .75rem;   /* a little breathing room */
-}
+  /* default cells */
+  tbody td { padding:.6rem .75rem; vertical-align: top; }
+  tbody tr:not(:last-child) { border-bottom: 2px solid #e5e7eb; }
+  tbody tr:hover { background:#ffffff; transition: background .18s; }
 
-/* If solution uses images, make sure they are centered and not stretched */
-table tbody td:nth-child(3) .pyq-img,
-table tbody td:nth-child(3) img {
-  display: block;
-  margin: 0.35rem auto;    /* horizontally centre image and add small top/bottom gap */
-  max-width: 90%;
-  height: auto;
-}
+  /* images inside table */
+  .pyq-img { max-width:350px; height:auto; border-radius:.6rem; cursor:pointer; display:block; margin:0 auto; }
 
-/* If you used align-top class for cells, override it for solution column */
-table tbody td.align-top:nth-child(3) {
-  vertical-align: middle;
-}
+  /* ----------------------------
+     CENTER SOLUTION COLUMN (horizontal + vertical)
+     ---------------------------- */
+  table thead th:nth-child(3),
+  table tbody td:nth-child(3) {
+    text-align: center;
+    vertical-align: middle;
+    padding: .9rem .75rem;
+  }
 
-/* Ensure the "Solution:" label (if plain text) also remains centered */
-table tbody td:nth-child(3) p,
-table tbody td:nth-child(3) .solution-text {
-  margin: 0 auto;
-  display: inline-block;
-  text-align: center;
-  line-height: 1.45;
-}
+  /* images in solution column responsive and centered */
+  table tbody td:nth-child(3) img,
+  table tbody td:nth-child(3) .pyq-img {
+    display:block;
+    margin: 0.35rem auto;
+    max-width: 90%;
+    height:auto;
+  }
+
+  /* ensure inline solution text is centered */
+  table tbody td:nth-child(3) p,
+  table tbody td:nth-child(3) .solution-text {
+    margin: 0 auto;
+    display: inline-block;
+    text-align: center;
+    line-height: 1.45;
+  }
+
+  /* override align-top if present */
+  table tbody td.align-top:nth-child(3) { vertical-align: middle; }
 
   /* Modal */
   .modal { display:none; position:fixed; inset:0; background: rgba(0,0,0,0.6); justify-content:center; align-items:center; z-index:50; }
@@ -262,196 +223,59 @@ table tbody td:nth-child(3) .solution-text {
   .modal-content { background:white; padding:2rem; border-radius:1.2rem; max-width:900px; width:92%; max-height:90vh; overflow:auto; position:relative; box-shadow:0 15px 30px rgba(0,0,0,0.35); }
   .close-btn { position:absolute; top:1rem; right:1rem; font-size:1.3rem; font-weight:bold; cursor:pointer; transition:all .15s; }
   .close-btn:hover { color:#f39c12; transform:scale(1.1); }
-
-  /* Profile modal smaller form */
   #profileCard { max-width:500px; width:100%; }
 
-  /* fine tuning header/top gap fix */
-  .main-content .table-wrap { margin-top: 0; }
-  .main-content thead th { padding-top: .4rem !important; }
-
-  /* -------------------------
-     Responsive / Mobile
-     ------------------------- */
+  /* small device adjustments */
   @media (max-width: 900px) {
-    /* hide sidebar in compact view */
     #sidebar { display:none; }
     #mainApp { padding: 0; }
+    .pyq-img { max-width:220px; }
 
-    /* ensure question images don't get huge */
-    .pyq-img { max-width: 220px; }
-
-    /* stack with image (right) on top and form (left) at bottom */
-    .login-bg {
-      flex-direction: column-reverse; /* this puts .login-right first (top) */
-      height: 100%;
-      align-items: stretch;
-    }
-
-    .login-right, .login-left {
-      width: 100%;
-      border-radius: 0;
-      padding-left: 1.5rem;
-      padding-right: 1.5rem;
-    }
-
-    /* allow the top image section to occupy ~40% of viewport */
-    .login-right {
-      min-height: 40vh;
-      max-height: 60vh;
-      padding-top: 1.8rem;
-      padding-bottom: 1.8rem;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-
-    /* form section occupies remaining space, keep content centered without overflow */
-    .login-left {
-      min-height: 60vh;
-      display:flex;
-      justify-content: center;
-      padding-top: 2rem;
-      padding-bottom: 2rem;
-      overflow: hidden;
-    }
-
-    /* reduce padding and font sizes for small screens */
-    .login-left { padding: 2.5rem 1.5rem; }
-    .login-left h1 { font-size: 1.6rem; margin-bottom: 1rem; }
-    .login-right h2 { font-size: 1.6rem; }
-    .login-right p { font-size: 0.95rem; line-height: 1.4; }
-
-    /* keep inputs comfortable on mobile */
-    .login-left input { padding: 0.8rem; font-size: .95rem; }
-    .login-left button { padding: 0.9rem; font-size: 0.95rem; }
-
-    /* small-screen tweaks for modals/tables */
-    .modal-content { max-width: 95%; padding: 1.25rem; }
-  }
-
-  /* optional very small phones */
-  @media (max-width: 420px) {
-    .login-right { min-height: 38vh; }
-    .login-left { min-height: 62vh; padding: 1.5rem; }
-    #logoimg { width: 92px; }
+    .login-bg { flex-direction: column-reverse; height:100%; align-items:stretch; }
+    .login-right, .login-left { width:100%; border-radius:0; padding-left:1.5rem; padding-right:1.5rem; }
+    .login-right { min-height:40vh; max-height:60vh; padding-top:1.8rem; padding-bottom:1.8rem; display:flex; justify-content:center; align-items:center; }
+    .login-left { min-height:60vh; display:flex; justify-content:center; padding-top:2rem; padding-bottom:2rem; overflow:hidden; }
+    .login-left { padding:2.5rem 1.5rem; }
+    .login-left h1 { font-size:1.6rem; margin-bottom:1rem; }
+    .login-right h2 { font-size:1.6rem; }
+    .login-right p { font-size:0.95rem; line-height:1.4; }
+    .login-left input { padding:0.8rem; font-size:.95rem; }
+    .login-left button { padding:0.9rem; font-size:0.95rem; }
+    .modal-content { max-width:95%; padding:1.25rem; }
   }
 
   @media (max-width: 700px) {
-  /* Hide the Solution column (3rd column) */
-  table thead th:nth-child(3),
-  table tbody td:nth-child(3) {
-    display: none;
+    /* Hide solution column on small phones */
+    table thead th:nth-child(3),
+    table tbody td:nth-child(3) { display:none; }
+    table thead th:nth-child(2), table tbody td:nth-child(2) { width:80%; }
+    table thead th:nth-child(1), table tbody td:nth-child(1) { width:20%; }
   }
 
-  /* Reduce Question column width */
-  table thead th:nth-child(2),
-  table tbody td:nth-child(2) {
-    width: 80%;
+  /* MOBILE hamburger and sidebar overlay */
+  .mobile-hamburger {
+    position: fixed; left:14px; top:14px; z-index:80; width:44px; height:44px; display:none;
+    background: rgba(0,0,0,0.45); border:none; border-radius:8px; padding:8px; box-sizing:border-box;
+    align-items:center; justify-content:center; cursor:pointer; backdrop-filter: blur(6px);
+    transition: transform .18s ease, background .18s ease;
   }
+  .mobile-hamburger:hover { transform: translateY(-2px); background: rgba(0,0,0,0.55); }
+  .mobile-hamburger span { display:block; height:2px; width:20px; background:#fff; margin:4px 0; border-radius:2px; transition: transform .18s cubic-bezier(.2,.9,.2,1), opacity .12s; }
 
-  /* QNo column stays visible */
-  table thead th:nth-child(1),
-  table tbody td:nth-child(1) {
-    width: 20%;
-  }
-}
-/* -----------------------
-   Hide solution column on small screens
-   ----------------------- */
-@media (max-width: 900px) {
-  /* hide the 3rd column (Solution) */
-  table thead th:nth-child(3),
-  table tbody td:nth-child(3) {
-    display: none;
-  }
+  #sidebar.overlay { position: fixed; left:0; top:0; height:100vh; width: min(320px, 84vw); transform: translateX(-110%); transition: transform .28s cubic-bezier(.2,.9,.2,1); z-index:85; box-shadow: 0 20px 40px rgba(2,6,23,0.45); }
+  #sidebar.overlay.open { transform: translateX(0); }
+  #sidebarBackdrop { display:none; position:fixed; inset:0; background: rgba(0,0,0,0.45); z-index:82; opacity:0; transition: opacity .22s ease; }
+  #sidebarBackdrop.show { display:block; opacity:1; }
 
-  /* adjust column widths so remaining columns look ok */
-  table thead th:nth-child(1) { width: 10%; }
-  table thead th:nth-child(2) { width: 90%; }
-}
-
-/* -----------------------
-   Mobile hamburger + sidebar overlay styles
-   ----------------------- */
-.mobile-hamburger {
-  position: fixed;
-  left: 14px;
-  top: 14px;
-  z-index: 80;
-  width: 44px;
-  height: 44px;
-  display: none; /* visible only on mobile via media query below */
-  background: rgba(0,0,0,0.45);
-  border: none;
-  border-radius: 8px;
-  padding: 8px;
-  box-sizing: border-box;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  backdrop-filter: blur(6px);
-  transition: transform .18s ease, background .18s ease;
-}
-.mobile-hamburger:hover { transform: translateY(-2px); background: rgba(0,0,0,0.55); }
-.mobile-hamburger span {
-  display: block;
-  height: 2px;
-  width: 20px;
-  background: #fff;
-  margin: 4px 0;
-  border-radius: 2px;
-  transition: transform .18s cubic-bezier(.2,.9,.2,1), opacity .12s;
-}
-
-/* sidebar overlay mode */
-#sidebar.overlay {
-  position: fixed;
-  left: 0;
-  top: 0;
-  height: 100vh;
-  width: min(320px, 84vw);
-  transform: translateX(-110%);
-  transition: transform .28s cubic-bezier(.2,.9,.2,1);
-  z-index: 85;
-  box-shadow: 0 20px 40px rgba(2,6,23,0.45);
-}
-
-/* when open, slide in */
-#sidebar.overlay.open {
-  transform: translateX(0);
-}
-
-/* dim backdrop when overlay open */
-#sidebarBackdrop {
-  display: none;
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.45);
-  z-index: 82;
-  opacity: 0;
-  transition: opacity .22s ease;
-}
-#sidebarBackdrop.show { display: block; opacity: 1; }
-
-/* hamburger visible on small screens only */
-@media (max-width: 900px) {
-  .mobile-hamburger { display: flex; }
-  /* ensure sidebar hidden by default (we still keep #sidebar off-canvas) */
-  #sidebar { display: block; } /* keep it available for JS to convert to overlay */
-  /* when overlay is active, hide original layout's gap */
-  #mainApp { padding-left: 0; }
-}
-
-</style>
-
+  @media (max-width: 900px) { .mobile-hamburger { display:flex; } #sidebar { display:block; } #mainApp { padding-left: 0; } }
+  </style>
 </head>
-
 <body>
-  <!-- MOBILE HAMBURGER (visible only on small screens) -->
-<button id="mobileHamburger" aria-label="Open menu" class="mobile-hamburger" title="Open menu">
-  <span></span><span></span><span></span>
-</button>
+
+  <!-- MOBILE HAMBURGER -->
+  <button id="mobileHamburger" aria-label="Open menu" class="mobile-hamburger" title="Open menu">
+    <span></span><span></span><span></span>
+  </button>
 
   <!-- LOGIN -->
   <div class="login-bg" id="loginSection">
@@ -526,10 +350,7 @@ table tbody td:nth-child(3) .solution-text {
         </table>
       </div>
 
-      <!-- Extra area for notes -->
-      <div class="mt-4 text-gray-600">
-        <!-- placeholder -->
-      </div>
+      <div class="mt-4 text-gray-600"></div>
     </div>
   </section>
 
@@ -546,18 +367,15 @@ table tbody td:nth-child(3) .solution-text {
     <div class="modal-content" id="profileCard">
       <button id="closeProfileModal" class="close-btn">&times;</button>
       <h2 class="text-2xl font-semibold text-center mb-4">👤 Profile Settings</h2>
-
       <form id="profileForm" class="space-y-4">
         <div>
           <label class="block font-medium mb-1">Full Name</label>
           <input id="profileName" type="text" class="w-full border px-3 py-2 rounded-lg outline-none" placeholder="Enter your name">
         </div>
-
         <div>
           <label class="block font-medium mb-1">Class</label>
           <input id="profileClass" type="text" class="w-full border px-3 py-2 rounded-lg outline-none" placeholder="Enter your class">
         </div>
-
         <div>
           <label class="block font-medium mb-1">Change Password</label>
           <div class="relative">
@@ -565,26 +383,25 @@ table tbody td:nth-child(3) .solution-text {
             <button type="button" id="togglePassword" class="absolute right-3 top-2 text-gray-500">👁</button>
           </div>
         </div>
-
         <button type="submit" id="saveProfileBtn" class="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition">Save Changes</button>
       </form>
     </div>
   </div>
 
+  <div id="sidebarBackdrop"></div>
+
   <!-- JS (module) -->
   <script type="module">
-    // Firebase imports
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
     import { getFirestore, collection, query, where, getDocs, doc, updateDoc } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
     import { getAuth, updatePassword } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
 
-    // ---------- FIREBASE CONFIG ----------
     const firebaseConfig = {
       apiKey: "AIzaSyBOVl1hdmprJXpgdN_sNTO3FsNePD_zNZY",
       authDomain: "aahes-cee-cutoffs.firebaseapp.com",
       databaseURL: "https://aahes-cee-cutoffs-default-rtdb.asia-southeast1.firebasedatabase.app",
       projectId: "aahes-cee-cutoffs",
-      storageBucket: "aahes-cee-cutoffs.firebasestorage.app",
+      storageBucket: "aahes-cee-cutoffs.firebasedatabase.app",
       messagingSenderId: "706066626405",
       appId: "1:706066626405:web:0d254ab82beb288108938c"
     };
@@ -593,7 +410,7 @@ table tbody td:nth-child(3) .solution-text {
     const db = getFirestore(app);
     const auth = getAuth(app);
 
-    // ---------- DOM REFS ----------
+    // DOM refs
     const loginBtn = document.getElementById("loginBtn");
     const loginSection = document.getElementById("loginSection");
     const mainApp = document.getElementById("mainApp");
@@ -601,7 +418,6 @@ table tbody td:nth-child(3) .solution-text {
     const subjectButtons = document.getElementById("subjectButtons");
     const yearButtons = document.getElementById("yearButtons");
 
-    // profile refs
     const profileModal = document.getElementById("profileModal");
     const profileBtn = document.getElementById("profileBtn");
     const closeProfileModal = document.getElementById("closeProfileModal");
@@ -611,19 +427,22 @@ table tbody td:nth-child(3) .solution-text {
     const togglePassword = document.getElementById("togglePassword");
     const profileForm = document.getElementById("profileForm");
 
-    // image modal refs
     const imageModal = document.getElementById("imageModal");
     const pyqImage = document.getElementById("pyqImage");
     const imageModalClose = document.getElementById("imageModalClose");
 
-    // ---------- STATE ----------
+    // mobile sidebar
+    const hamburger = document.getElementById('mobileHamburger');
+    const sidebar = document.getElementById('sidebar');
+    const backdrop = document.getElementById('sidebarBackdrop');
+
     let currentUser = null;
     let currentSubject = "physics";
     let currentYear = 2025;
-    const subjects = ["physics", "chemistry", "maths"];
-    const years = [2025, 2024, 2023, 2022];
+    const subjects = ["physics","chemistry","maths"];
+    const years = [2025,2024,2023,2022];
 
-    // ---------- LOGIN ----------
+    // login logic (simple Firestore check)
     loginBtn.addEventListener("click", async () => {
       const email = document.getElementById("emailInput").value.trim();
       const password = document.getElementById("passInput").value.trim();
@@ -652,17 +471,14 @@ table tbody td:nth-child(3) .solution-text {
     });
 
     function onLoginSuccess() {
-      // hide login, show main app
       loginSection.style.display = "none";
       mainApp.style.display = "flex";
       document.getElementById("welcomeMsg").innerText = `Welcome, ${currentUser.name || 'User'}! 😊`;
       generateButtons();
       loadPYQs().catch(e => console.error(e));
-      // render lucide icons
       if (window.lucide) window.lucide.createIcons();
     }
 
-    // ---------- BUTTON GENERATION ----------
     function generateButtons() {
       // subjects
       subjectButtons.innerHTML = "";
@@ -684,7 +500,7 @@ table tbody td:nth-child(3) .solution-text {
       years.forEach(y => {
         const btn = document.createElement("button");
         btn.innerText = y;
-        btn.classList.add("py-1", "rounded");
+        btn.classList.add("py-1","rounded");
         if (y === currentYear) btn.classList.add("tab-active");
         btn.addEventListener("click", () => {
           currentYear = y;
@@ -696,11 +512,11 @@ table tbody td:nth-child(3) .solution-text {
       });
     }
 
-    // ---------- LOAD PYQS ----------
+    // load pyqs from Firestore
     async function loadPYQs() {
       try {
         pyqTableBody.innerHTML = "<tr><td colspan='3' class='text-center p-4'>Loading...</td></tr>";
-        const q = query(collection(db, "pyqs"), where("subject", "==", currentSubject), where("year", "==", currentYear));
+        const q = query(collection(db, "pyqs"), where("subject","==",currentSubject), where("year","==",currentYear));
         const snapshot = await getDocs(q);
         pyqTableBody.innerHTML = "";
 
@@ -710,21 +526,14 @@ table tbody td:nth-child(3) .solution-text {
         }
 
         const items = [];
-        snapshot.forEach(docSnap => {
-          const d = docSnap.data();
-          // include id optionally
-          items.push({ id: docSnap.id, ...d });
-        });
+        snapshot.forEach(docSnap => items.push({ id: docSnap.id, ...docSnap.data() }));
+        items.sort((a,b) => (a.qno ?? Infinity) - (b.qno ?? Infinity));
 
-        // sort by qno if available
-        items.sort((a, b) => (a.qno ?? Infinity) - (b.qno ?? Infinity));
-
-        // render rows
         items.forEach(item => {
           const tr = document.createElement("tr");
           tr.innerHTML = `
             <td class="text-center font-medium align-top">${item.qno ?? '-'}</td>
-            <td class="text-center align-top">
+            <td class="text-left align-top">
               ${item.img ? `<img data-src="${item.img}" class="pyq-img" alt="Question ${item.qno ?? ''}">` : '-'}
             </td>
             <td class="text-center align-top">
@@ -734,25 +543,22 @@ table tbody td:nth-child(3) .solution-text {
           pyqTableBody.appendChild(tr);
         });
 
-        // watermark question images
+        // watermark question images (only those with data-src)
         const allImgs = pyqTableBody.querySelectorAll(".pyq-img");
         for (const img of allImgs) {
-          // we only watermark images that came from data-src (questions)
           const src = img.getAttribute("data-src");
-          if (!src) continue; // skip solution preview images (they already have src)
+          if (!src) continue; // skip solution previews (they already have src)
           try {
             const watermarked = await addWatermarkToImage(src, "AAHES");
             img.src = watermarked;
-            // clicking should open modal with watermarked version
             img.addEventListener("click", () => openImageModal(watermarked));
           } catch (err) {
             console.warn("Watermark failed, using original src", err);
-            img.src = src; // fallback
+            img.src = src;
             img.addEventListener("click", () => openImageModal(src));
           }
         }
 
-        // refresh icons
         if (window.lucide) window.lucide.createIcons();
       } catch (err) {
         console.error(err);
@@ -760,21 +566,18 @@ table tbody td:nth-child(3) .solution-text {
       }
     }
 
-    // ---------- WATERMARK FUNCTION ----------
-    // Repeats watermarkText diagonally across image, small and subtle
+    // watermark helper
     async function addWatermarkToImage(imgUrl, watermarkText = "AAHES") {
       return new Promise((resolve, reject) => {
         const img = new Image();
-        img.crossOrigin = "anonymous"; // try to allow cross origin
+        img.crossOrigin = "anonymous";
         img.onload = () => {
           try {
             const canvas = document.createElement("canvas");
             const ctx = canvas.getContext("2d");
-            // set canvas size to natural image size
             canvas.width = img.naturalWidth || img.width;
             canvas.height = img.naturalHeight || img.height;
 
-            // limit extremely large images to avoid huge canvases
             const MAX_DIM = 2400;
             let scale = 1;
             if (canvas.width > MAX_DIM || canvas.height > MAX_DIM) {
@@ -783,28 +586,20 @@ table tbody td:nth-child(3) .solution-text {
               canvas.height = Math.floor(canvas.height * scale);
             }
 
-            // draw the image scaled
             ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
 
-            // watermark styling
-            // responsive font size
             const fontSize = Math.max(10, Math.floor(canvas.width / 25));
             ctx.font = `bold ${fontSize}px Quicksand, sans-serif`;
-            // white semi transparent, suits dark images. uses subtle alpha
             ctx.fillStyle = "rgba(255,255,255,0.10)";
             ctx.textAlign = "center";
             ctx.textBaseline = "middle";
 
-            // rotate canvas context and fill repeated text in a grid
             ctx.save();
             ctx.translate(canvas.width / 2, canvas.height / 2);
-            ctx.rotate(-Math.PI / 6); // -30 degrees
+            ctx.rotate(-Math.PI / 6);
 
-            // spacing steps (relative to font size)
             const stepX = fontSize * 6;
             const stepY = fontSize * 4;
-
-            // start positions large enough to cover the canvas when rotated
             const startX = -canvas.width;
             const endX = canvas.width * 2;
             const startY = -canvas.height;
@@ -815,25 +610,20 @@ table tbody td:nth-child(3) .solution-text {
                 ctx.fillText(watermarkText, x - canvas.width / 2, y - canvas.height / 2);
               }
             }
-
             ctx.restore();
 
-            // final image
             const dataUrl = canvas.toDataURL("image/png");
             resolve(dataUrl);
           } catch (err) {
             reject(err);
           }
         };
-        img.onerror = (e) => {
-          reject(new Error("Image load failed: " + e?.message));
-        };
+        img.onerror = (e) => reject(new Error("Image load failed: " + (e?.message || 'error')));
         img.src = imgUrl;
       });
     }
 
-    // ---------- IMAGE MODAL HANDLERS ----------
-    // global function used in some inline handlers
+    // image modal open (global for inline handlers)
     window.openImageModal = function (imgUrl) {
       if (!imgUrl) { alert("No image available."); return; }
       pyqImage.src = imgUrl;
@@ -846,63 +636,42 @@ table tbody td:nth-child(3) .solution-text {
       imageModal.setAttribute("aria-hidden", "true");
       pyqImage.src = "";
     });
-    imageModal.addEventListener("click", (e) => {
-      if (e.target === imageModal) {
-        imageModal.classList.remove("show");
-        imageModal.setAttribute("aria-hidden", "true");
-        pyqImage.src = "";
-      }
-    });
+    imageModal.addEventListener("click", (e) => { if (e.target === imageModal) { imageModal.classList.remove("show"); imageModal.setAttribute("aria-hidden", "true"); pyqImage.src = ""; } });
     pyqImage.addEventListener("click", (e) => e.stopPropagation());
 
-    // ---------- LOGOUT ----------
+    // logout
     document.getElementById("logoutBtn").addEventListener("click", () => {
       currentUser = null;
       loginSection.style.display = "flex";
       mainApp.style.display = "none";
     });
 
-    // ---------- PROFILE MODAL OPEN/CLOSE ----------
+    // profile modal
     profileBtn.addEventListener("click", () => {
-      // prefill current values
       profileName.value = currentUser?.name || "";
       profileClass.value = currentUser?.class || "";
       newPassword.value = "";
       profileModal.classList.add("show");
       profileModal.setAttribute("aria-hidden", "false");
     });
-
     closeProfileModal.addEventListener("click", () => {
       profileModal.classList.remove("show");
       profileModal.setAttribute("aria-hidden", "true");
     });
+    profileModal.addEventListener("click", (e) => { if (e.target === profileModal) { profileModal.classList.remove("show"); profileModal.setAttribute("aria-hidden", "true"); } });
 
-    profileModal.addEventListener("click", (e) => {
-      if (e.target === profileModal) {
-        profileModal.classList.remove("show");
-        profileModal.setAttribute("aria-hidden", "true");
-      }
-    });
-
-    // password toggle
     togglePassword.addEventListener("click", () => {
       newPassword.type = newPassword.type === "password" ? "text" : "password";
       togglePassword.innerText = newPassword.type === "password" ? "👁" : "🙈";
     });
 
-    // ---------- SAVE PROFILE CHANGES ----------
     profileForm.addEventListener("submit", async (e) => {
       e.preventDefault();
-
       const name = profileName.value.trim();
       const className = profileClass.value.trim();
       const password = newPassword.value.trim();
 
-      if (!currentUser?.id) {
-        alert("User not logged in.");
-        return;
-      }
-
+      if (!currentUser?.id) { alert("User not logged in."); return; }
       try {
         const userRef = doc(db, "users", currentUser.id);
         const updates = {};
@@ -910,19 +679,12 @@ table tbody td:nth-child(3) .solution-text {
         if (className) updates.class = className;
         if (password) updates.password = password;
 
-        // update Firestore
         await updateDoc(userRef, updates);
-        // update local copy
         currentUser = { ...currentUser, ...updates };
 
-        // if firebase auth currentUser exists, try update auth password
         if (password && auth.currentUser) {
-          try {
-            await updatePassword(auth.currentUser, password);
-          } catch (authErr) {
-            console.warn("Password not updated in Auth (requires recent sign-in or email/password provider).", authErr);
-            // it's safe to continue — Firestore was updated
-          }
+          try { await updatePassword(auth.currentUser, password); }
+          catch (authErr) { console.warn("Password not updated in Auth (requires recent signin).", authErr); }
         }
 
         alert("Profile updated successfully ✅");
@@ -935,119 +697,53 @@ table tbody td:nth-child(3) .solution-text {
       }
     });
 
-    // --------- Init lucide icons if available on first load ----------
+    // Init lucide icons if available
     if (window.lucide) window.lucide.createIcons();
-    // ------------------------
-// MOBILE SIDEBAR TOGGLE + SWIPE
-// ------------------------
-(function () {
-  const hamburger = document.getElementById('mobileHamburger');
-  const sidebar = document.getElementById('sidebar');
-  // create a backdrop element to close when clicked
-  let backdrop = document.getElementById('sidebarBackdrop');
-  if (!backdrop) {
-    backdrop = document.createElement('div');
-    backdrop.id = 'sidebarBackdrop';
-    document.body.appendChild(backdrop);
-  }
 
-  // set overlay mode on sidebar (so CSS handles slide in)
-  function enableOverlayMode() {
-    sidebar.classList.add('overlay');
-  }
-  // open / close functions
-  function openSidebar() {
-    enableOverlayMode();
-    sidebar.classList.add('open');
-    backdrop.classList.add('show');
-    // prevent body scroll when sidebar open
-    document.body.style.overflow = 'hidden';
-  }
-  function closeSidebar() {
-    sidebar.classList.remove('open');
-    backdrop.classList.remove('show');
-    // restore body scroll shortly after animation
-    setTimeout(() => { document.body.style.overflow = ''; }, 300);
-  }
+    // MOBILE SIDEBAR TOGGLE + SWIPE
+    (function () {
+      function enableOverlayMode() { sidebar.classList.add('overlay'); }
+      function openSidebar() { enableOverlayMode(); sidebar.classList.add('open'); backdrop.classList.add('show'); document.body.style.overflow = 'hidden'; }
+      function closeSidebar() { sidebar.classList.remove('open'); backdrop.classList.remove('show'); setTimeout(()=>{ document.body.style.overflow = ''; }, 300); }
 
-  // hamburger click toggles
-  hamburger?.addEventListener('click', () => {
-    if (!sidebar.classList.contains('open')) openSidebar(); else closeSidebar();
-  });
+      hamburger?.addEventListener('click', () => {
+        if (!sidebar.classList.contains('open')) openSidebar(); else closeSidebar();
+      });
 
-  // click on backdrop closes
-  backdrop.addEventListener('click', closeSidebar);
+      backdrop.addEventListener('click', closeSidebar);
 
-  // if user resizes to mobile, ensure overlay mode enabled
-  function checkAndEnableOverlay() {
-    if (window.innerWidth <= 900) {
-      enableOverlayMode();
-      // keep sidebar hidden initially
-      sidebar.classList.remove('open');
-      backdrop.classList.remove('show');
-    } else {
-      // on larger screens we remove overlay class so sidebar behaves as normal
-      sidebar.classList.remove('overlay', 'open');
-      backdrop.classList.remove('show');
-      document.body.style.overflow = '';
-    }
-  }
-  window.addEventListener('resize', checkAndEnableOverlay);
-  checkAndEnableOverlay();
-
-  // --------------- swipe handling ---------------
-  // Only active on touch devices (mobile)
-  let touchStartX = 0;
-  let touchStartY = 0;
-  let touchActive = false;
-
-  document.addEventListener('touchstart', (e) => {
-    if (e.touches && e.touches.length === 1) {
-      touchStartX = e.touches[0].clientX;
-      touchStartY = e.touches[0].clientY;
-      touchActive = true;
-    }
-  }, { passive: true });
-
-  document.addEventListener('touchmove', (e) => {
-    // nothing here — we rely on touchend to detect swipe
-  }, { passive: true });
-
-  document.addEventListener('touchend', (e) => {
-    if (!touchActive) return;
-    touchActive = false;
-    const touch = (e.changedTouches && e.changedTouches[0]);
-    if (!touch) return;
-    const dx = touch.clientX - touchStartX;
-    const dy = touch.clientY - touchStartY;
-
-    // require mostly-horizontal swipe and minimum distance
-    if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.5) {
-      if (dx > 0) {
-        // swipe right
-        if (window.innerWidth <= 900) openSidebar();
-      } else {
-        // swipe left
-        if (window.innerWidth <= 900) closeSidebar();
+      function checkAndEnableOverlay() {
+        if (window.innerWidth <= 900) {
+          enableOverlayMode();
+          sidebar.classList.remove('open');
+          backdrop.classList.remove('show');
+        } else {
+          sidebar.classList.remove('overlay', 'open');
+          backdrop.classList.remove('show');
+          document.body.style.overflow = '';
+        }
       }
-    }
-  }, { passive: true });
+      window.addEventListener('resize', checkAndEnableOverlay);
+      checkAndEnableOverlay();
 
-  // close sidebar on ESC
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') closeSidebar();
-  });
-})();
+      // swipe
+      let touchStartX = 0, touchStartY = 0, touchActive = false;
+      document.addEventListener('touchstart', (e) => { if (e.touches && e.touches.length === 1) { touchStartX = e.touches[0].clientX; touchStartY = e.touches[0].clientY; touchActive = true; } }, { passive:true });
+      document.addEventListener('touchend', (e) => {
+        if (!touchActive) return;
+        touchActive = false;
+        const touch = (e.changedTouches && e.changedTouches[0]);
+        if (!touch) return;
+        const dx = touch.clientX - touchStartX;
+        const dy = touch.clientY - touchStartY;
+        if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.5) {
+          if (dx > 0) { if (window.innerWidth <= 900) openSidebar(); } else { if (window.innerWidth <= 900) closeSidebar(); }
+        }
+      }, { passive:true });
 
+      // ESC to close
+      document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeSidebar(); });
+    })();
   </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
