@@ -126,6 +126,43 @@
     border-radius: 2rem 0 0 2rem;
     z-index: 0;
   }
+
+  /* Center content inside the right panel */
+.login-right > div {
+  position: relative;
+  z-index: 1;
+  animation: fadeInUp 1s ease forwards;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;    /* horizontally center logo + text */
+  justify-content: center;/* vertically center content inside the panel */
+  gap: 0.5rem;            /* small gap between logo, title and text */
+  text-align: center;
+}
+
+/* Logo: block-level and perfectly centered */
+#logoimg {
+  display: block;
+  margin: 0 auto 1rem; /* center horizontally; 1rem space below */
+  width: 110px;
+  max-width: 28%;      /* keeps it responsive on very wide screens */
+  height: auto;
+  filter: drop-shadow(0 0 12px rgba(255,255,255,0.4));
+}
+
+/* Desktop: nudge logo slightly up if you want a lifted look */
+@media (min-width: 901px) {
+  #logoimg { margin-top: -0.6rem; }
+}
+
+/* Mobile: smaller logo and tighter spacing */
+@media (max-width: 420px) {
+  #logoimg { width: 92px; margin-bottom: 0.6rem; }
+  .login-right > div { gap: 0.35rem; }
+  .login-right h2 { font-size: 1.6rem; }
+}
+
   .login-right > div { position: relative; z-index: 1; animation: fadeInUp 1s ease forwards; }
   #logoimg { width: 110px; margin-bottom: 1rem; filter: drop-shadow(0 0 12px rgba(255,255,255,0.4)); }
   .login-right h2 { font-size: 2.6rem; font-weight: 600; margin-bottom: 1rem; text-shadow: 0 3px 10px rgba(0,0,0,0.6); }
@@ -757,6 +794,7 @@
   </script>
 </body>
 </html>
+
 
 
 
