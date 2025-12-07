@@ -225,6 +225,36 @@
   tbody tr:not(:last-child) { border-bottom: 2px solid #e5e7eb; } /* separator between rows */
   tbody tr:hover { background: #ffffff; transition: background .18s; }
   .pyq-img { max-width: 350px; height: auto; border-radius: .6rem; cursor:pointer; display:block; margin: 0 auto; }
+/* Centre the Solution column content (both text and images) */
+table tbody td:nth-child(3),
+table thead th:nth-child(3) {
+  text-align: center;      /* horizontal centering */
+  vertical-align: middle;  /* vertical centering inside the row */
+  padding: .9rem .75rem;   /* a little breathing room */
+}
+
+/* If solution uses images, make sure they are centered and not stretched */
+table tbody td:nth-child(3) .pyq-img,
+table tbody td:nth-child(3) img {
+  display: block;
+  margin: 0.35rem auto;    /* horizontally centre image and add small top/bottom gap */
+  max-width: 90%;
+  height: auto;
+}
+
+/* If you used align-top class for cells, override it for solution column */
+table tbody td.align-top:nth-child(3) {
+  vertical-align: middle;
+}
+
+/* Ensure the "Solution:" label (if plain text) also remains centered */
+table tbody td:nth-child(3) p,
+table tbody td:nth-child(3) .solution-text {
+  margin: 0 auto;
+  display: inline-block;
+  text-align: center;
+  line-height: 1.45;
+}
 
   /* Modal */
   .modal { display:none; position:fixed; inset:0; background: rgba(0,0,0,0.6); justify-content:center; align-items:center; z-index:50; }
@@ -1012,6 +1042,7 @@
   </script>
 </body>
 </html>
+
 
 
 
