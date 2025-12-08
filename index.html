@@ -5,658 +5,148 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>PROYAX PYQ Portal</title>
 
-  <!-- Tailwind (optional, but harmless) -->
+  <!-- Tailwind -->
   <script src="https://cdn.tailwindcss.com"></script>
-
-  <!-- Google font -->
   <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600&family=Merriweather:ital,wght@0,400;0,700;1,700&display=swap" rel="stylesheet">
-
-  <!-- Lucide icons -->
   <script src="https://unpkg.com/lucide@latest"></script>
 
   <style>
-    :root{
-      --sidebar-w: 260px;
-      --card-radius: 18px;
-      --accent-1: #06a6ff;
-      --accent-2: #0ea5a3;
-      --qno-w: 60px;
-    }
+    :root{--accent-1:#06a6ff;--accent-2:#0ea5a3}
+    html,body{height:100%;margin:0;font-family:'Quicksand',sans-serif;background:#061826;color:#fff}
+    /* split layout like your screenshot */
+    .split{display:flex;height:100vh;overflow:hidden}
+    .left{flex:1;display:flex;align-items:center;padding:6rem 6vw;background:linear-gradient(120deg,#063147 0%, #0b4b4d 100%);border-top-right-radius:40px;border-bottom-right-radius:40px}
+    .right{flex:1;display:flex;align-items:center;justify-content:center;padding:4rem;background:url('bg-right.jpg') center/cover no-repeat}
 
-    html,body{height:100%;margin:0;font-family:'Quicksand',sans-serif;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;background:#fff;color:#111}
+    .card{width:100%;max-width:520px}
+    .title{font-family:'Merriweather',serif;font-size:52px;margin-bottom:1.2rem;color:#f3fbff}
+    .subtitle{color:rgba(243,251,255,0.85);margin-bottom:2rem}
 
-    /* ======================
-       Centered split auth card
-       ====================== */
-    .auth-overlay{
-      position:fixed; inset:0; z-index:80;
-      background: rgba(8,10,20,0.36);
-      display:flex; align-items:center; justify-content:center;
-      backdrop-filter: blur(6px) saturate(1.03);
-    }
+    .input{width:100%;padding:18px 20px;border-radius:18px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.03);color:#e6f7fb;margin-bottom:16px;box-sizing:border-box}
+    .input::placeholder{color:rgba(230,247,251,0.45)}
 
-    .auth-card{
-      width: min(1100px, 94vw);
-      border-radius: 18px;
-      overflow: hidden;
-      display: flex;
-      box-shadow: 0 30px 80px rgba(2,6,23,0.45);
-      min-height: 60vh;
-      max-height: 90vh;
-    }
+    .btn{display:block;width:100%;padding:16px;border-radius:16px;background:linear-gradient(90deg,var(--accent-2),var(--accent-1));color:#003; font-weight:700;border:none;margin-top:6px}
+    .link{color:#ffd24d;cursor:pointer;text-decoration:underline}
 
-    /* pale left panel */
-    .auth-left {
-      flex: 1 1 48%;
-      background: linear-gradient(180deg,#f3f9fc,#eef6fb);
-      padding: 38px 42px;
-      box-sizing: border-box;
-      display:flex; flex-direction:column; justify-content:center;
-      gap: 14px;
-      color: #0b2740;
-    }
-    .auth-left .brand {
-      display:flex; align-items:center; gap:14px; margin-bottom:6px;
-    }
-    .auth-left .brand img { width:56px; height:56px; object-fit:contain; }
-    .auth-left .brand h3 { margin:0; font-family:'Merriweather',serif; font-weight:700; font-size:20px; color:#07223b; }
-    .promo-title { font-family:'Merriweather',serif; font-size:34px; margin:8px 0; color:#07223b; }
-    .promo-desc { color:#294156; line-height:1.6; font-size:15px; margin-bottom:12px; }
+    .small{font-size:14px;color:rgba(255,255,255,0.8);margin-top:12px}
+    .center{display:flex;gap:12px;align-items:center}
 
-    .bullet-list { margin:12px 0 8px 0; padding-left:20px; color:#304b60; }
-    .bullet-list li { margin:8px 0; }
+    /* register form styles (slightly different) */
+    .muted{color:rgba(255,255,255,0.6)}
 
-    .left-cta { display:flex; gap:14px; margin-top:14px; align-items:center; }
-    .btn-ghost {
-      padding:12px 22px; border-radius:12px; background:#ffffff; border:none; font-weight:700; cursor:pointer;
-      box-shadow: 0 6px 18px rgba(2,6,23,0.06);
-    }
-    .btn-primary {
-      padding:12px 22px; border-radius:12px; background: linear-gradient(90deg,var(--accent-2),var(--accent-1));
-      color:white; font-weight:700; border:none; cursor:pointer;
-      box-shadow: 0 10px 30px rgba(6,165,255,0.12);
-    }
-
-    /* white right form */
-    .auth-right {
-      flex: 1 1 52%;
-      background: #ffffff;
-      padding: 36px 46px;
-      box-sizing:border-box;
-      display:flex; align-items:center; justify-content:center;
-    }
-    .form-wrap {
-      width:100%; max-width:520px;
-    }
-    label.form-label { display:block; margin-bottom:8px; font-weight:600; color:#264152; }
-    .form-input {
-      width:100%; padding:14px 16px; border-radius:12px; border:1px solid #eef2f6; background:#fbfdff; font-size:15px; box-sizing:border-box;
-      outline:none; box-shadow: 0 6px 12px rgba(13,38,60,0.03);
-    }
-    .form-input::placeholder { color:#9aa9b6; }
-
-    .form-row { margin-bottom:14px; }
-    .btn-full {
-      width:100%; padding:14px 18px; border-radius:12px; background: linear-gradient(90deg,var(--accent-2),var(--accent-1));
-      color:#fff; font-weight:700; border:none; cursor:pointer; font-size:16px; box-shadow: 0 10px 30px rgba(6,165,255,0.12);
-    }
-    .btn-secondary {
-      padding:10px 14px; border-radius:10px; background:#fff; border:1px solid #e6eef6; color:#27404b; font-weight:600; cursor:pointer;
-    }
-    .form-actions { display:flex; gap:12px; align-items:center; margin-top:10px; }
-
-    /* subtle vertical divider */
-    .auth-divider { width:1px; background: linear-gradient(180deg, rgba(0,0,0,0.03), rgba(0,0,0,0.01)); position:absolute; left:48%; top:0; bottom:0; }
-
-    /* small tabs for login/register */
-    .auth-tabs{ display:flex; gap:8px; margin-bottom:18px; }
-    .auth-tab{ padding:8px 12px; border-radius:10px; cursor:pointer; font-weight:700; border:1px solid #eef2f6; background:#fff; }
-    .auth-tab.active{ background: linear-gradient(90deg,var(--accent-2),var(--accent-1)); color:white; }
-
-    /* responsive */
-    @media (max-width: 920px){
-      .auth-card{flex-direction:column; width: min(920px,98vw);} 
-      .auth-left, .auth-right { padding:20px; }
-      .promo-title{font-size:26px}
-      .auth-divider { display:none; }
-    }
-
-    /* ============= rest of the app =============== */
-    #mainApp{display:none;height:100vh;width:100%;flex-direction:row;overflow:hidden;}
-    #sidebar{width:var(--sidebar-w);min-width:var(--sidebar-w);background:#1f2937;padding:1.5rem 1rem;color:white;height:100vh;display:flex;flex-direction:column;justify-content:space-between;gap:.5rem;box-sizing:border-box;}
-    #sidebar .logo-block img{width:64px;margin:0 auto .35rem;}
-    #sidebar p#welcomeMsg{font-size:.95rem;margin-top:.3rem;color:#facc15;text-align:center;}
-    .profile-btn{background:#070e6b;color:#e6eef5;padding:.45rem .85rem;border-radius:.7rem;}
-    .logout-btn{background:#f43f5e;padding:.45rem .85rem;border-radius:.7rem;}
-    .tab-active{background: linear-gradient(135deg,#2563eb,#1e40af); color:#f8fafc; font-weight:600;}
-
-    .main-content{flex:1;overflow-y:auto;padding:0;background:#ffffff;min-height:100vh;box-sizing:border-box;}
-    .table-wrap{overflow-x:auto;margin:0;width:100%;}
-    table{width:100% !important;border-collapse:collapse;font-size:.95rem;table-layout:fixed;}
-    thead th{background:#0c2b4e;color:white;padding:.6rem .75rem;text-align:left;vertical-align:middle;}
-    table thead th:nth-child(1), table tbody td:nth-child(1){width:var(--qno-w);min-width:var(--qno-w);max-width:var(--qno-w);text-align:center;padding:.5rem .5rem;box-sizing:border-box;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-    table thead th:nth-child(2), table tbody td:nth-child(2){width:auto;text-align:left;padding:.9rem .9rem;}
-    table thead th:nth-child(3), table tbody td:nth-child(3){text-align:center;vertical-align:middle;padding:.9rem .75rem;width:36%;}
-    tbody td{padding:.6rem .75rem;vertical-align:top;}
-    tbody tr:not(:last-child){border-bottom:2px solid #e5e7eb;}
-    .pyq-img{max-width:520px;width:100%;height:auto;border-radius:.6rem;cursor:pointer;display:block;margin:0.35rem auto;object-fit:contain;}
-    .modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);justify-content:center;align-items:center;z-index:90;}
-    .modal.show{display:flex;}
-    .modal-content{background:white;padding:2rem;border-radius:1.2rem;max-width:900px;width:92%;max-height:90vh;overflow:auto;position:relative;box-shadow:0 15px 30px rgba(0,0,0,0.35);}
-    .close-btn{position:absolute;top:1rem;right:1rem;font-size:1.3rem;font-weight:bold;cursor:pointer;transition:all .15s;}
-    @media (max-width:900px){#sidebar{display:none;} .pyq-img{max-width:420px}}
-    @media (max-width:700px){table thead th:nth-child(3),table tbody td:nth-child(3){display:none;} table thead th:nth-child(2),table tbody td:nth-child(2){width:80%;} table thead th:nth-child(1),table tbody td:nth-child(1){width:20%;min-width:48px;max-width:80px;} .pyq-img{max-width:320px}}
+    @media (max-width:900px){.split{flex-direction:column}.left{border-radius:0;padding:3rem}.right{height:40vh}}
   </style>
 </head>
 <body>
 
-  <!-- AUTH OVERLAY (shown until login) -->
-  <div id="authOverlay" class="auth-overlay" aria-hidden="false">
-    <div class="auth-card" role="dialog" aria-modal="true">
+  <div class="split">
+    <!-- LEFT: form area (matches screenshot look) -->
+    <div class="left">
+      <div class="card" id="authCard">
+        <div id="loginView">
+          <div class="title">Welcome Back</div>
+          <div class="subtitle muted">Login to access previous year questions and practice faster.</div>
 
-      <!-- LEFT: promo/pale panel -->
-      <div class="auth-left">
-        <div class="brand">
-          <img src="favicon.png" alt="logo">
-          <h3>AAHES • PROYAX</h3>
+          <input id="email" class="input" placeholder="Email" />
+          <input id="password" type="password" class="input" placeholder="Password" />
+          <button id="loginBtn" class="btn">Login</button>
+
+          <div class="small">Forgot your password? <a class="link" id="forgot">Click here</a></div>
+          <div class="small" style="margin-top:18px">Don't have an account? <a id="showRegister" class="link">Register</a></div>
         </div>
 
-        <div class="promo-title">Learn. Practice. Conquer.</div>
-        <div class="promo-desc">Clear conceptual lessons, concise notes, and specially designed study materials to help you ace your exams & entrance tests.</div>
+        <div id="registerView" style="display:none">
+          <div class="title">Create Account</div>
+          <div class="subtitle muted">Register with your full name and email to get started.</div>
 
-        <ul class="bullet-list">
-          <li>Fast revision notes</li>
-          <li>PYQ-based practice</li>
-          <li>Campus & placements data</li>
-        </ul>
+          <input id="regName" class="input" placeholder="Full name" />
+          <input id="regEmail" class="input" placeholder="Email" />
+          <input id="regPass" type="password" class="input" placeholder="Password (min 6 chars)" />
 
-        <div class="left-cta">
-          <button id="leftLoginBtn" class="btn-ghost">Login</button>
-          <button id="leftRegisterBtn" class="btn-primary">Register</button>
+          <button id="registerBtn" class="btn">Register</button>
+
+          <div class="small">Already have an account? <a id="showLogin" class="link">Login</a></div>
         </div>
       </div>
+    </div>
 
-      <!-- thin divider (visual) -->
-      <div class="auth-divider" aria-hidden="true"></div>
-
-      <!-- RIGHT: white form panel (now has tabs to choose Login / Register) -->
-      <div class="auth-right">
-        <div class="form-wrap" aria-hidden="false">
-
-          <div class="auth-tabs" role="tablist" aria-label="Auth options">
-            <div id="tabLogin" class="auth-tab active" role="tab" aria-selected="true">Login</div>
-            <div id="tabRegister" class="auth-tab" role="tab" aria-selected="false">Register</div>
-          </div>
-
-          <!-- LOGIN FORM -->
-          <form id="loginForm" style="display:block;">
-            <div class="form-row">
-              <label class="form-label" for="loginEmail">Email</label>
-              <input id="loginEmail" class="form-input" placeholder="you@example.com" />
-            </div>
-
-            <div class="form-row">
-              <label class="form-label" for="loginPassword">Password</label>
-              <input id="loginPassword" type="password" class="form-input" placeholder="********" />
-            </div>
-
-            <div class="form-actions">
-              <button id="loginSubmit" type="button" class="btn-full">Login</button>
-              <button id="needHelp" type="button" class="btn-secondary">Need help?</button>
-            </div>
-          </form>
-
-          <!-- REGISTER FORM (simplified: full name, email, password) -->
-          <form id="registerForm" style="display:none;">
-            <div class="form-row">
-              <label class="form-label" for="regFullName">Full name</label>
-              <input id="regFullName" class="form-input" placeholder="Your full name" />
-            </div>
-
-            <div class="form-row">
-              <label class="form-label" for="regEmail">Email</label>
-              <input id="regEmail" class="form-input" placeholder="name@example.com" />
-            </div>
-
-            <div class="form-row">
-              <label class="form-label" for="regPass">Password</label>
-              <input id="regPass" type="password" class="form-input" placeholder="Minimum 6 characters" />
-            </div>
-
-            <div class="form-actions">
-              <button id="registerSubmit" type="button" class="btn-full">Register</button>
-              <button id="registerCancel" type="button" class="btn-secondary">Cancel</button>
-            </div>
-          </form>
-
-        </div>
+    <!-- RIGHT: branding area (keeps your hero look) -->
+    <div class="right" aria-hidden="true">
+      <div style="text-align:center;color:#fff;max-width:520px">
+        <img src="favicon.png" alt="logo" style="width:96px;margin-bottom:16px">
+        <h1 style="font-family:'Merriweather',serif;font-size:42px;margin:0 0 12px">PROYAX PYQ Portal</h1>
+        <p style="opacity:0.9;line-height:1.6">Access previous year questions as images easily. Prepare smarter and faster for your exams.</p>
       </div>
     </div>
   </div>
 
-  <!-- MAIN APP (hidden until login) -->
-  <section id="mainApp" class="flex h-screen" aria-hidden="true">
-    <!-- SIDEBAR -->
-    <div id="sidebar">
-      <div>
-        <div class="logo-block">
-          <img src="favicon.png" alt="Logo">
-          <div class="font-semibold text-lg">PROYAX PYQ</div>
-          <p id="welcomeMsg" class="mt-2 text-sm text-yellow-400 font-medium">Welcome, User! 😊</p>
-          <p>Best of Luck!</p>
-        </div>
-
-        <div id="sidebarTop" class="mb-4 text-center">
-          <div class="flex justify-center gap-2">
-            <button id="profileBtn" class="profile-btn"><i data-lucide="user"></i> Profile</button>
-            <button id="logoutBtn" class="logout-btn"><i data-lucide="log-out"></i> Logout</button>
-          </div>
-        </div>
-
-        <div class="mb-3">
-          <h3>Subjects</h3>
-          <div id="subjectButtons" class="flex flex-col gap-2"></div>
-        </div>
-
-        <div class="mb-3">
-          <h3>Years</h3>
-          <div id="yearButtons" class="grid grid-cols-2 gap-2"></div>
-        </div>
-      </div>
-
-      <div class="text-center">
-        <small class="text-gray-400">AAHES • PYQ Portal</small>
-      </div>
-    </div>
-
-    <!-- MAIN CONTENT -->
-    <div class="main-content">
-      <div class="table-wrap mb-4 -mt-2">
-        <table>
-          <thead>
-            <tr>
-              <th>QNo</th>
-              <th>Question</th>
-              <th>Solution</th>
-            </tr>
-          </thead>
-          <tbody id="pyqTableBody">
-            <tr>
-              <td colspan="3" class="text-center p-4">Select a subject and year</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </section>
-
-  <!-- IMAGE MODAL -->
-  <div id="imageModal" class="modal" aria-hidden="true">
-    <div class="modal-content">
-      <span id="imageModalClose" class="close-btn">&times;</span>
-      <img id="pyqImage" src="" alt="Question preview" style="max-width:100%; height:auto; border-radius:.6rem;">
-    </div>
-  </div>
-
-  <!-- PROFILE MODAL -->
-  <div id="profileModal" class="modal" aria-hidden="true">
-    <div class="modal-content" id="profileCard">
-      <button id="closeProfileModal" class="close-btn">&times;</button>
-      <h2 style="text-align:center;margin:0 0 12px;">👤 Profile Settings</h2>
-      <form id="profileForm" style="display:flex;flex-direction:column;gap:10px;">
-        <input id="profileName" class="form-input" placeholder="Full name" />
-        <input id="profileClass" class="form-input" placeholder="Class" />
-        <input id="newPassword" type="password" class="form-input" placeholder="New password" />
-        <button type="submit" class="btn-full">Save Changes</button>
-      </form>
-    </div>
-  </div>
-
-  <!-- Sidebar backdrop -->
-  <div id="sidebarBackdrop"></div>
-
-  <!-- JS (Firebase + app) -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
-    import { getFirestore, collection, query, where, getDocs, doc, updateDoc, addDoc } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
+    import { getFirestore, collection, addDoc, query, where, getDocs } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
     import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyBOVl1hdmprJXpgdN_sNTO3FsNePD_zNZY",
-      authDomain: "aahes-cee-cutoffs.firebaseapp.com",
-      databaseURL: "https://aahes-cee-cutoffs-default-rtdb.asia-southeast1.firebasedatabase.app",
-      projectId: "aahes-cee-cutoffs",
-      storageBucket: "aahes-cee-cutoffs.firebasedatabase.app",
-      messagingSenderId: "706066626405",
-      appId: "1:706066626405:web:0d254ab82beb288108938c"
-    };
-
+    const firebaseConfig = { apiKey: "AIzaSyBOVl1hdmprJXpgdN_sNTO3FsNePD_zNZY", authDomain: "aahes-cee-cutoffs.firebaseapp.com", projectId: "aahes-cee-cutoffs", storageBucket: "aahes-cee-cutoffs.firebasedatabase.app", messagingSenderId: "706066626405", appId: "1:706066626405:web:0d254ab82beb288108938c" };
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
     const auth = getAuth(app);
 
-    // DOM refs
-    const authOverlay = document.getElementById('authOverlay');
-    const loginForm = document.getElementById('loginForm');
-    const registerForm = document.getElementById('registerForm');
-    const leftLoginBtn = document.getElementById('leftLoginBtn');
-    const leftRegisterBtn = document.getElementById('leftRegisterBtn');
-    const loginSubmit = document.getElementById('loginSubmit');
-    const needHelp = document.getElementById('needHelp');
-    const registerSubmit = document.getElementById('registerSubmit');
-    const registerCancel = document.getElementById('registerCancel');
+    // elements
+    const loginView = document.getElementById('loginView');
+    const registerView = document.getElementById('registerView');
+    const showRegister = document.getElementById('showRegister');
+    const showLogin = document.getElementById('showLogin');
 
-    const loginEmail = document.getElementById('loginEmail');
-    const loginPassword = document.getElementById('loginPassword');
-    const regFullName = document.getElementById('regFullName');
-    const regPass = document.getElementById('regPass');
+    const email = document.getElementById('email');
+    const password = document.getElementById('password');
+    const loginBtn = document.getElementById('loginBtn');
+
+    const regName = document.getElementById('regName');
     const regEmail = document.getElementById('regEmail');
+    const regPass = document.getElementById('regPass');
+    const registerBtn = document.getElementById('registerBtn');
 
-    const mainApp = document.getElementById('mainApp');
-    const pyqTableBody = document.getElementById('pyqTableBody');
-    const subjectButtons = document.getElementById('subjectButtons');
-    const yearButtons = document.getElementById('yearButtons');
+    // toggle
+    showRegister.addEventListener('click', ()=>{ loginView.style.display='none'; registerView.style.display='block'; window.scrollTo(0,0); });
+    showLogin.addEventListener('click', ()=>{ registerView.style.display='none'; loginView.style.display='block'; window.scrollTo(0,0); });
 
-    const imageModal = document.getElementById('imageModal');
-    const imageModalClose = document.getElementById('imageModalClose');
-    const pyqImage = document.getElementById('pyqImage');
-
-    const profileModal = document.getElementById('profileModal');
-    const profileBtn = document.getElementById('profileBtn');
-    const closeProfileModal = document.getElementById('closeProfileModal');
-    const profileName = document.getElementById('profileName');
-    const profileClass = document.getElementById('profileClass');
-    const newPassword = document.getElementById('newPassword');
-    const profileForm = document.getElementById('profileForm');
-
-    const sidebar = document.getElementById('sidebar');
-    const sidebarBackdrop = document.getElementById('sidebarBackdrop');
-    const logoutBtn = document.getElementById('logoutBtn');
-
-    // auth tabs
-    const tabLogin = document.getElementById('tabLogin');
-    const tabRegister = document.getElementById('tabRegister');
-
-    // state
-    let currentUser = null;
-    let currentSubject = "physics";
-    let currentYear = 2025;
-    const subjects = ["physics","chemistry","maths"];
-    const years = [2025,2024,2023,2022];
-
-    // Show login by default: authOverlay visible, mainApp hidden
-    function showAuth(){ authOverlay.style.display = 'flex'; authOverlay.setAttribute('aria-hidden','false'); mainApp.style.display = 'none'; }
-    function hideAuth(){ authOverlay.style.display = 'none'; authOverlay.setAttribute('aria-hidden','true'); mainApp.style.display = 'flex'; }
-    showAuth();
-
-    // toggle left panel quick buttons to switch tabs
-    leftLoginBtn.addEventListener('click', ()=> setAuthTab('login'));
-    leftRegisterBtn.addEventListener('click', ()=> setAuthTab('register'));
-
-    // tab switcher
-    function setAuthTab(tab){
-      if(tab === 'login'){
-        tabLogin.classList.add('active'); tabLogin.setAttribute('aria-selected','true');
-        tabRegister.classList.remove('active'); tabRegister.setAttribute('aria-selected','false');
-        loginForm.style.display = 'block'; registerForm.style.display = 'none';
-      } else {
-        tabRegister.classList.add('active'); tabRegister.setAttribute('aria-selected','true');
-        tabLogin.classList.remove('active'); tabLogin.setAttribute('aria-selected','false');
-        registerForm.style.display = 'block'; loginForm.style.display = 'none';
-      }
-    }
-
-    tabLogin.addEventListener('click', ()=> setAuthTab('login'));
-    tabRegister.addEventListener('click', ()=> setAuthTab('register'));
-
-    registerCancel.addEventListener('click', ()=>{ setAuthTab('login'); });
-
-    // ---------- LOGIN (use Firebase Auth if possible, fallback to firestore lookup) ----------
-    loginSubmit.addEventListener('click', async () => {
-      const email = loginEmail.value.trim();
-      const password = loginPassword.value.trim();
-      if(!email || !password){ alert('Enter email and password'); return; }
-
-      try {
-        // try Firebase Auth sign-in first
+    // login handler (attempt Firebase Auth, fallback to users collection match)
+    loginBtn.addEventListener('click', async ()=>{
+      const e = email.value.trim(); const p = password.value.trim();
+      if(!e || !p){ alert('Enter email and password'); return; }
+      try{
         try{
-          const cred = await signInWithEmailAndPassword(auth, email, password);
-          // attempt to fetch user profile from Firestore by email
-          const q = query(collection(db, 'users'), where('email','==', email));
-          const snap = await getDocs(q);
-          if(!snap.empty){
-            const d = snap.docs[0].data();
-            currentUser = { id: snap.docs[0].id, ...d };
-          } else {
-            currentUser = { name: cred.user.email.split('@')[0], email: cred.user.email };
-          }
-        } catch(authErr){
-          // fallback to Firestore credential check (existing behaviour)
-          const q = query(collection(db, 'users'), where('email','==', email));
+          await signInWithEmailAndPassword(auth, e, p);
+        } catch(err){
+          // fallback: check users collection
+          const q = query(collection(db,'users'), where('email','==', e));
           const snap = await getDocs(q);
           if(snap.empty){ alert('User not found'); return; }
-          let found=false;
-          snap.forEach(docSnap => {
-            const d = docSnap.data();
-            if(d.password === password){ found=true; currentUser = { id: docSnap.id, ...d }; }
-          });
-          if(!found){ alert('Incorrect password'); return; }
+          let ok=false;
+          snap.forEach(d=>{ if(d.data().password === p) ok=true; });
+          if(!ok){ alert('Incorrect password'); return; }
         }
-
-        // on success
-        hideAuth();
-        document.getElementById('welcomeMsg').innerText = `Welcome, ${currentUser.name || currentUser.username || 'User'}! 😊`;
-        generateButtons();
-        await loadPYQs();
-        if(window.lucide) window.lucide.createIcons();
-      } catch (err) {
-        console.error(err);
-        alert('Login failed');
-      }
+        // success: hide overlay, redirect or show main app (here we just alert)
+        alert('Login successful — hiding auth. (Replace this with your hideAuth() code)');
+        // TODO: call hideAuth() and initialize app state here
+      } catch(e){ console.error(e); alert('Login failed'); }
     });
 
-    // ---------- REGISTER (simplified fields: full name, email, password) ----------
-    registerSubmit.addEventListener('click', async () => {
-      const name = regFullName.value.trim();
-      const email = regEmail.value.trim();
-      const pass = regPass.value.trim();
-
-      if(!name || !email || !pass){ alert('Please provide full name, email and password'); return; }
-      if(pass.length < 6){ alert('Password must be at least 6 characters'); return; }
-
-      try {
-        // create user document in Firestore
-        await addDoc(collection(db, 'users'), { name, email, password: pass, createdAt: new Date() });
-        // try to create in Firebase Auth (best-effort)
-        try { await createUserWithEmailAndPassword(auth, email, pass); } catch(e){ console.warn('Auth create skipped or failed:', e); }
-
-        alert('Registered successfully — please login now.');
-        // switch to login tab and prefill email
-        setAuthTab('login');
-        loginEmail.value = email;
-        regFullName.value = '';
-        regEmail.value = '';
-        regPass.value = '';
-      } catch (err) {
-        console.error('Registration failed', err);
-        alert('Registration failed');
-      }
-    });
-
-    // ---------- generate sidebar buttons ----------
-    function generateButtons(){
-      subjectButtons.innerHTML = '';
-      subjects.forEach(s=>{
-        const b = document.createElement('button');
-        b.innerText = s.charAt(0).toUpperCase()+s.slice(1);
-        if(s === currentSubject) b.classList.add('tab-active');
-        b.addEventListener('click', ()=>{ currentSubject = s; subjectButtons.querySelectorAll('button').forEach(x=>x.classList.remove('tab-active')); b.classList.add('tab-active'); loadPYQs(); });
-        subjectButtons.appendChild(b);
-      });
-
-      yearButtons.innerHTML = '';
-      years.forEach(y=>{
-        const b = document.createElement('button');
-        b.innerText = y;
-        if(y === currentYear) b.classList.add('tab-active');
-        b.addEventListener('click', ()=>{ currentYear = y; yearButtons.querySelectorAll('button').forEach(x=>x.classList.remove('tab-active')); b.classList.add('tab-active'); loadPYQs(); });
-        yearButtons.appendChild(b);
-      });
-    }
-
-    // ---------- load PYQs ----------
-    async function loadPYQs(){
+    // register handler
+    registerBtn.addEventListener('click', async ()=>{
+      const name = regName.value.trim(); const e = regEmail.value.trim(); const p = regPass.value.trim();
+      if(!name || !e || !p){ alert('Provide name, email and password'); return; }
+      if(p.length < 6){ alert('Password must be at least 6 characters'); return; }
       try{
-        pyqTableBody.innerHTML = "<tr><td colspan='3' class='text-center p-4'>Loading...</td></tr>";
-        const q = query(collection(db, 'pyqs'), where('subject','==', currentSubject), where('year','==', currentYear));
-        const snap = await getDocs(q);
-        pyqTableBody.innerHTML = '';
-        if(snap.empty){ pyqTableBody.innerHTML = "<tr><td colspan='3' class='text-center p-4'>No questions found</td></tr>"; return; }
-
-        const items = [];
-        snap.forEach(docSnap => items.push({ id: docSnap.id, ...docSnap.data() }));
-        items.sort((a,b) => (a.qno ?? Infinity) - (b.qno ?? Infinity));
-
-        items.forEach(item => {
-          const tr = document.createElement('tr');
-          tr.innerHTML = `
-            <td class="text-center font-medium align-top">${item.qno ?? '-'}</td>
-            <td class="text-left align-top">${item.img ? `<img data-src="${item.img}" class="pyq-img" alt="Q ${item.qno ?? ''}">` : '-'}</td>
-            <td class="text-center align-top">${item.sol ? `<img src="${item.sol}" class="pyq-img" alt="Sol ${item.qno ?? ''}" onclick="openImageModal('${item.sol}')">` : '-'}</td>
-          `;
-          pyqTableBody.appendChild(tr);
-        });
-
-        // watermark questions (images with data-src)
-        const allImgs = pyqTableBody.querySelectorAll('.pyq-img');
-        for(const img of allImgs){
-          const src = img.getAttribute('data-src');
-          if(!src) continue;
-          try {
-            const watermarked = await addWatermarkToImage(src, 'AAHES');
-            img.src = watermarked;
-            img.addEventListener('click', ()=> openImageModal(watermarked));
-          } catch (err) {
-            console.warn('Watermark failed, using original', err);
-            img.src = src;
-            img.addEventListener('click', ()=> openImageModal(src));
-          }
-        }
-      } catch (err) {
-        console.error(err);
-        pyqTableBody.innerHTML = "<tr><td colspan='3' class='text-center p-4'>Failed to load questions</td></tr>";
-      }
-    }
-
-    // ---------- watermark helper ----------
-    async function addWatermarkToImage(imgUrl, watermarkText='AAHES'){
-      return new Promise((resolve, reject) => {
-        const img = new Image();
-        img.crossOrigin = 'anonymous';
-        img.onload = () => {
-          try{
-            const canvas = document.createElement('canvas');
-            const ctx = canvas.getContext('2d');
-            canvas.width = img.naturalWidth || img.width;
-            canvas.height = img.naturalHeight || img.height;
-            const MAX_DIM = 2400;
-            let scale = 1;
-            if(canvas.width > MAX_DIM || canvas.height > MAX_DIM){
-              scale = Math.min(MAX_DIM / canvas.width, MAX_DIM / canvas.height);
-              canvas.width = Math.floor(canvas.width * scale);
-              canvas.height = Math.floor(canvas.height * scale);
-            }
-            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-            const fontSize = Math.max(10, Math.floor(canvas.width / 25));
-            ctx.font = `bold ${fontSize}px Quicksand, sans-serif`;
-            ctx.fillStyle = 'rgba(255,255,255,0.10)';
-            ctx.textAlign = 'center';
-            ctx.textBaseline = 'middle';
-            ctx.save();
-            ctx.translate(canvas.width/2, canvas.height/2);
-            ctx.rotate(-Math.PI/6);
-            const stepX = fontSize * 6;
-            const stepY = fontSize * 4;
-            const startX = -canvas.width;
-            const endX = canvas.width * 2;
-            const startY = -canvas.height;
-            const endY = canvas.height * 2;
-            for(let x = startX; x < endX; x += stepX){
-              for(let y = startY; y < endY; y += stepY){
-                ctx.fillText(watermarkText, x - canvas.width/2, y - canvas.height/2);
-              }
-            }
-            ctx.restore();
-            resolve(canvas.toDataURL('image/png'));
-          } catch (e) { reject(e); }
-        };
-        img.onerror = () => reject(new Error('Image load failed'));
-        img.src = imgUrl;
-      });
-    }
-
-    // ---------- modal handlers ----------
-    window.openImageModal = function(imgUrl){
-      if(!imgUrl){ alert('No image'); return; }
-      pyqImage.src = imgUrl;
-      imageModal.classList.add('show');
-      imageModal.setAttribute('aria-hidden','false');
-    };
-    imageModalClose.addEventListener('click', ()=>{ imageModal.classList.remove('show'); imageModal.setAttribute('aria-hidden','true'); pyqImage.src=''; });
-    imageModal.addEventListener('click', (e)=>{ if(e.target === imageModal){ imageModal.classList.remove('show'); imageModal.setAttribute('aria-hidden','true'); pyqImage.src=''; }});
-    pyqImage.addEventListener('click', e=> e.stopPropagation());
-
-    // ---------- profile modal ----------
-    profileBtn?.addEventListener('click', ()=> {
-      profileName.value = currentUser?.name || '';
-      profileClass.value = currentUser?.class || '';
-      profileModal.classList.add('show');
-      profileModal.setAttribute('aria-hidden','false');
+        // create Firestore user doc
+        await addDoc(collection(db,'users'), { name, email: e, password: p, createdAt: new Date() });
+        // try to create auth user (best effort)
+        try{ await createUserWithEmailAndPassword(auth, e, p); } catch(e){ console.warn('Auth create skipped', e); }
+        alert('Registered successfully — please login.');
+        // switch to login view
+        registerView.style.display='none'; loginView.style.display='block'; email.value = e; password.value = '';
+        regName.value=''; regEmail.value=''; regPass.value='';
+      } catch(err){ console.error('Registration failed', err); alert('Registration failed'); }
     });
-    closeProfileModal.addEventListener('click', ()=>{ profileModal.classList.remove('show'); profileModal.setAttribute('aria-hidden','true'); });
-
-    profileForm?.addEventListener('submit', async (e)=>{
-      e.preventDefault();
-      if(!currentUser?.id){ alert('Not logged in'); return; }
-      const updates = {};
-      if(profileName.value.trim()) updates.name = profileName.value.trim();
-      if(profileClass.value.trim()) updates.class = profileClass.value.trim();
-      if(newPassword.value.trim()) updates.password = newPassword.value.trim();
-      try {
-        const userRef = doc(db, 'users', currentUser.id);
-        await updateDoc(userRef, updates);
-        currentUser = {...currentUser, ...updates};
-        alert('Profile updated ✅');
-        profileModal.classList.remove('show');
-      } catch (err) {
-        console.error('Profile update', err);
-        alert('Failed to update profile');
-      }
-    });
-
-    // ---------- logout ----------
-    logoutBtn.addEventListener('click', ()=> {
-      currentUser = null;
-      showAuth();
-    });
-
-    // ESC to close modals / overlay safe handling
-    window.addEventListener('keydown', (e)=> {
-      if(e.key === 'Escape'){
-        if(imageModal.classList.contains('show')) imageModal.classList.remove('show');
-        else if(profileModal.classList.contains('show')) profileModal.classList.remove('show');
-      }
-    });
-
-    // init lucide icons if available
-    if(window.lucide) window.lucide.createIcons();
-
-    // mobile sidebar overlay handling (kept simple)
-    window.addEventListener('resize', ()=>{
-      if(window.innerWidth <= 900) sidebar.classList.add('overlay');
-      else sidebar.classList.remove('overlay', 'open');
-    });
-    sidebarBackdrop.addEventListener('click', ()=> { sidebar.classList.remove('open'); sidebarBackdrop.classList.remove('show'); });
   </script>
 </body>
 </html>
