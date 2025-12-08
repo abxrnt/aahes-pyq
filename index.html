@@ -108,9 +108,14 @@
     /* subtle vertical divider */
     .auth-divider { width:1px; background: linear-gradient(180deg, rgba(0,0,0,0.03), rgba(0,0,0,0.01)); position:absolute; left:48%; top:0; bottom:0; }
 
+    /* small tabs for login/register */
+    .auth-tabs{ display:flex; gap:8px; margin-bottom:18px; }
+    .auth-tab{ padding:8px 12px; border-radius:10px; cursor:pointer; font-weight:700; border:1px solid #eef2f6; background:#fff; }
+    .auth-tab.active{ background: linear-gradient(90deg,var(--accent-2),var(--accent-1)); color:white; }
+
     /* responsive */
     @media (max-width: 920px){
-      .auth-card{flex-direction:column; width: min(920px,98vw);}
+      .auth-card{flex-direction:column; width: min(920px,98vw);} 
       .auth-left, .auth-right { padding:20px; }
       .promo-title{font-size:26px}
       .auth-divider { display:none; }
@@ -174,14 +179,20 @@
       <!-- thin divider (visual) -->
       <div class="auth-divider" aria-hidden="true"></div>
 
-      <!-- RIGHT: white form panel -->
+      <!-- RIGHT: white form panel (now has tabs to choose Login / Register) -->
       <div class="auth-right">
         <div class="form-wrap" aria-hidden="false">
+
+          <div class="auth-tabs" role="tablist" aria-label="Auth options">
+            <div id="tabLogin" class="auth-tab active" role="tab" aria-selected="true">Login</div>
+            <div id="tabRegister" class="auth-tab" role="tab" aria-selected="false">Register</div>
+          </div>
+
           <!-- LOGIN FORM -->
           <form id="loginForm" style="display:block;">
             <div class="form-row">
-              <label class="form-label" for="loginUsername">Username</label>
-              <input id="loginUsername" class="form-input" placeholder="your username" />
+              <label class="form-label" for="loginEmail">Email</label>
+              <input id="loginEmail" class="form-input" placeholder="you@example.com" />
             </div>
 
             <div class="form-row">
@@ -195,26 +206,11 @@
             </div>
           </form>
 
-          <!-- REGISTER FORM (hidden initially) -->
+          <!-- REGISTER FORM (simplified: full name, email, password) -->
           <form id="registerForm" style="display:none;">
-            <div class="form-row">
-              <label class="form-label" for="regUsername">Username</label>
-              <input id="regUsername" class="form-input" placeholder="choose a username" />
-            </div>
-
             <div class="form-row">
               <label class="form-label" for="regFullName">Full name</label>
               <input id="regFullName" class="form-input" placeholder="Your full name" />
-            </div>
-
-            <div class="form-row">
-              <label class="form-label" for="regPass">Password</label>
-              <input id="regPass" type="password" class="form-input" placeholder="Minimum 6 characters" />
-            </div>
-
-            <div class="form-row">
-              <label class="form-label" for="regPhone">Phone</label>
-              <input id="regPhone" class="form-input" placeholder="+91 98765 43210" />
             </div>
 
             <div class="form-row">
@@ -222,11 +218,17 @@
               <input id="regEmail" class="form-input" placeholder="name@example.com" />
             </div>
 
+            <div class="form-row">
+              <label class="form-label" for="regPass">Password</label>
+              <input id="regPass" type="password" class="form-input" placeholder="Minimum 6 characters" />
+            </div>
+
             <div class="form-actions">
               <button id="registerSubmit" type="button" class="btn-full">Register</button>
               <button id="registerCancel" type="button" class="btn-secondary">Cancel</button>
             </div>
           </form>
+
         </div>
       </div>
     </div>
@@ -317,7 +319,7 @@
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
     import { getFirestore, collection, query, where, getDocs, doc, updateDoc, addDoc } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
-    import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+    import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyBOVl1hdmprJXpgdN_sNTO3FsNePD_zNZY",
@@ -344,12 +346,10 @@
     const registerSubmit = document.getElementById('registerSubmit');
     const registerCancel = document.getElementById('registerCancel');
 
-    const loginUsername = document.getElementById('loginUsername');
+    const loginEmail = document.getElementById('loginEmail');
     const loginPassword = document.getElementById('loginPassword');
-    const regUsername = document.getElementById('regUsername');
     const regFullName = document.getElementById('regFullName');
     const regPass = document.getElementById('regPass');
-    const regPhone = document.getElementById('regPhone');
     const regEmail = document.getElementById('regEmail');
 
     const mainApp = document.getElementById('mainApp');
@@ -373,6 +373,10 @@
     const sidebarBackdrop = document.getElementById('sidebarBackdrop');
     const logoutBtn = document.getElementById('logoutBtn');
 
+    // auth tabs
+    const tabLogin = document.getElementById('tabLogin');
+    const tabRegister = document.getElementById('tabRegister');
+
     // state
     let currentUser = null;
     let currentSubject = "physics";
@@ -385,34 +389,52 @@
     function hideAuth(){ authOverlay.style.display = 'none'; authOverlay.setAttribute('aria-hidden','true'); mainApp.style.display = 'flex'; }
     showAuth();
 
-    // toggle forms
-    leftLoginBtn.addEventListener('click', ()=>{ registerForm.style.display='none'; loginForm.style.display='block'; });
-    leftRegisterBtn.addEventListener('click', ()=>{ loginForm.style.display='none'; registerForm.style.display='block'; });
+    // toggle left panel quick buttons to switch tabs
+    leftLoginBtn.addEventListener('click', ()=> setAuthTab('login'));
+    leftRegisterBtn.addEventListener('click', ()=> setAuthTab('register'));
 
-    registerCancel.addEventListener('click', ()=>{ registerForm.style.display='none'; loginForm.style.display='block'; });
+    // tab switcher
+    function setAuthTab(tab){
+      if(tab === 'login'){
+        tabLogin.classList.add('active'); tabLogin.setAttribute('aria-selected','true');
+        tabRegister.classList.remove('active'); tabRegister.setAttribute('aria-selected','false');
+        loginForm.style.display = 'block'; registerForm.style.display = 'none';
+      } else {
+        tabRegister.classList.add('active'); tabRegister.setAttribute('aria-selected','true');
+        tabLogin.classList.remove('active'); tabLogin.setAttribute('aria-selected','false');
+        registerForm.style.display = 'block'; loginForm.style.display = 'none';
+      }
+    }
 
-    // ---------- LOGIN (Firestore-based credential check like original) ----------
+    tabLogin.addEventListener('click', ()=> setAuthTab('login'));
+    tabRegister.addEventListener('click', ()=> setAuthTab('register'));
+
+    registerCancel.addEventListener('click', ()=>{ setAuthTab('login'); });
+
+    // ---------- LOGIN (use Firebase Auth if possible, fallback to firestore lookup) ----------
     loginSubmit.addEventListener('click', async () => {
-      const username = loginUsername.value.trim();
+      const email = loginEmail.value.trim();
       const password = loginPassword.value.trim();
-      if(!username || !password){ alert('Enter username and password'); return; }
+      if(!email || !password){ alert('Enter email and password'); return; }
 
       try {
-        // search by username or email in 'users' collection
-        const q = query(collection(db, 'users'), where('username','==', username));
-        const snap = await getDocs(q);
-        if(snap.empty){
-          // fallback: try email match
-          const q2 = query(collection(db, 'users'), where('email','==', username));
-          const snap2 = await getDocs(q2);
-          if(snap2.empty){ alert('User not found'); return; }
-          let found=false;
-          snap2.forEach(docSnap => {
-            const d = docSnap.data();
-            if(d.password === password){ found=true; currentUser = { id: docSnap.id, ...d }; }
-          });
-          if(!found){ alert('Incorrect password'); return; }
-        } else {
+        // try Firebase Auth sign-in first
+        try{
+          const cred = await signInWithEmailAndPassword(auth, email, password);
+          // attempt to fetch user profile from Firestore by email
+          const q = query(collection(db, 'users'), where('email','==', email));
+          const snap = await getDocs(q);
+          if(!snap.empty){
+            const d = snap.docs[0].data();
+            currentUser = { id: snap.docs[0].id, ...d };
+          } else {
+            currentUser = { name: cred.user.email.split('@')[0], email: cred.user.email };
+          }
+        } catch(authErr){
+          // fallback to Firestore credential check (existing behaviour)
+          const q = query(collection(db, 'users'), where('email','==', email));
+          const snap = await getDocs(q);
+          if(snap.empty){ alert('User not found'); return; }
           let found=false;
           snap.forEach(docSnap => {
             const d = docSnap.data();
@@ -433,27 +455,28 @@
       }
     });
 
-    // ---------- REGISTER ----------
+    // ---------- REGISTER (simplified fields: full name, email, password) ----------
     registerSubmit.addEventListener('click', async () => {
-      const username = regUsername.value.trim();
       const name = regFullName.value.trim();
-      const pass = regPass.value.trim();
-      const phone = regPhone.value.trim();
       const email = regEmail.value.trim();
+      const pass = regPass.value.trim();
 
-      if(!username || !pass || !email){ alert('Provide username, email and password'); return; }
+      if(!name || !email || !pass){ alert('Please provide full name, email and password'); return; }
       if(pass.length < 6){ alert('Password must be at least 6 characters'); return; }
 
       try {
-        // store in Firestore 'users'
-        await addDoc(collection(db, 'users'), { username, name, password: pass, phone, email, createdAt: new Date(), class: '' });
-        // optionally create in Firebase Auth (non-blocking)
+        // create user document in Firestore
+        await addDoc(collection(db, 'users'), { name, email, password: pass, createdAt: new Date() });
+        // try to create in Firebase Auth (best-effort)
         try { await createUserWithEmailAndPassword(auth, email, pass); } catch(e){ console.warn('Auth create skipped or failed:', e); }
 
         alert('Registered successfully — please login now.');
-        // show login panel
-        registerForm.style.display='none'; loginForm.style.display='block';
-        loginUsername.value = username;
+        // switch to login tab and prefill email
+        setAuthTab('login');
+        loginEmail.value = email;
+        regFullName.value = '';
+        regEmail.value = '';
+        regPass.value = '';
       } catch (err) {
         console.error('Registration failed', err);
         alert('Registration failed');
